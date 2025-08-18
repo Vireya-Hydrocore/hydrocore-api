@@ -1,0 +1,24 @@
+name: Deploy Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-prod:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Build project
+        run: ./mvnw clean package
+
+      - name: Deploy to Production
+        run: docker-compose -f docker-compose.prod.yml up -d --build
