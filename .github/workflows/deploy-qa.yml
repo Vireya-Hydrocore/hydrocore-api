@@ -1,24 +1,21 @@
-name: Deploy QA via Label
+name: Deploy QA by Label
 
 on:
   pull_request:
-    types: labeled
+    types: [labeled]
 
 jobs:
-  deploy-qa:
-    if: github.event.label.name == 'deploy-qa'
+  deploy:
+    if: contains(github.event.label.name, 'deploy-qa')
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: temurin
-          java-version: '17'
-
-      - name: Build project
-        run: ./mvnw clean package
-
-      - name: Deploy to QA
-        run: docker-compose -f docker-compose.qa.yml up -d --build
+      - name: Trigger Render QA Deploy
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{"branch":"main"}' \
+            https://api.render.com/deploy/srv-XXXXXXXXXXXX
