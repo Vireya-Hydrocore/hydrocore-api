@@ -1,4 +1,4 @@
-name: Deploy QA by Label
+name: Deploy to Render QA
 
 on:
   pull_request:
