@@ -1,4 +1,4 @@
-name: Fazendo o check de build do pull request
+name: Build PR
 
 on:
   pull_request:
