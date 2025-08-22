@@ -1,4 +1,4 @@
-name: Deploy QA by Label
+name: Deploy em dash to Render QA
 
 on:
   pull_request:
