@@ -5,17 +5,34 @@ on:
     types: [labeled]
 
 jobs:
-  deploy:
-    if: contains(github.event.label.name, 'deploy-qa')
+  build-and-deploy:
+    if: github.event.label.name == 'deploy-qa'
     runs-on: ubuntu-latest
+
+    env:
+      IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/my-app:${{ github.event.pull_request.number }}
 
     steps:
       - uses: actions/checkout@v3
 
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: docker build -t $IMAGE_NAME .
+
+      - name: Push Docker image
+        run: docker push $IMAGE_NAME
+
       - name: Trigger Render QA Deploy
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
         run: |
-          curl -X POST \
-            -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
-            -H "Content-Type: application/json" \
-            -d "{\"branch\":\"${{ github.head_ref }}\"}" \
-            https://api.render.com/v1/services/srv-d2hjn5q4d50c739g1ejg/deploys
+          curl -X PATCH https://api.render.com/v1/services/srv-d2hjn5q4d50c739g1ejg \
+          -H "Authorization: Bearer $RENDER_API_KEY" \
+          -H "Content-Type: application/json" \
+          -d "{\"dockerImage\":\"$IMAGE_NAME\"}"
