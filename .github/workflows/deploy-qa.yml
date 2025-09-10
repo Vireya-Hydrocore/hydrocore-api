@@ -1,21 +1,39 @@
-name: Deploy QA by Label
+name: Deploy to Render QA
 
 on:
   pull_request:
     types: [labeled]
 
 jobs:
-  deploy:
-    if: contains(github.event.label.name, 'deploy-qa')
+  build-and-deploy:
+    if: github.event.label.name == 'deploy-qa'
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
 
-      - name: Trigger Render QA Deploy
+      - name: Set image name
+        id: vars
         run: |
-          curl -X POST \
-            -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
-            -H "Content-Type: application/json" \
-            -d "{\"branch\":\"${{ github.head_ref }}\"}" \
-            https://api.render.com/v1/services/srv-d2hjn5q4d50c739g1ejg/deploys
+          echo "image_name=docker.io/${{ secrets.DOCKERHUB_USERNAME }}/hydrocore-api:${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: docker build -t ${{ steps.vars.outputs.image_name }} .
+
+      - name: Push Docker image
+        run: docker push ${{ steps.vars.outputs.image_name }}
+
+      - name: Trigger Render QA Deploy
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+        run: |
+          curl -X PATCH https://api.render.com/v1/services/srv-d2hjn5q4d50c739g1ejg \
+          -H "Authorization: Bearer $RENDER_API_KEY" \
+          -H "Content-Type: application/json" \
+          -d "{\"dockerImage\":\"${{ steps.vars.outputs.image_name }}\"}"
