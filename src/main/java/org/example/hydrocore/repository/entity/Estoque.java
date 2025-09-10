@@ -1,9 +1,6 @@
 package org.example.hydrocore.repository.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,8 +21,13 @@ public class Estoque {
 
     private Integer quantidade;
 
-    private Long idProduto;
+    @ManyToOne
+    @JoinColumn(name = "id_produto")
+    private Produto produto;
 
-    private Long idEta;
+    @ManyToOne
+    @JoinColumn(name = "id_eta")  // apenas o nome da coluna, sem referencedColumnName
+    private EstacaoTratamentoDaAgua eta;
+
 
 }

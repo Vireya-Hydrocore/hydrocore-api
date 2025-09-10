@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EstoqueDTO {
+public class EstoqueResponseDTO {
 
     private Long idEstoque;
 
@@ -18,5 +18,6 @@ public class EstoqueDTO {
     private String nomeProduto;
 
     private String nomeEta;
-}
 
+    private String status;
+}

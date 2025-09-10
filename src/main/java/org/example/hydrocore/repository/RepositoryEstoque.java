@@ -9,12 +9,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface RepositoryEstoque extends JpaRepository<Estoque,Integer> {
+public interface RepositoryEstoque extends JpaRepository<Estoque, Integer> {
 
-    @Query("SELECT e.idEstoque, e.quantidade, p.nomeProduto, et.nome " +
+    @Query("SELECT new org.example.hydrocore.estoque.dto.EstoqueDTO(" +
+            "e.idEstoque, e.quantidade, p.nomeProduto, eta.nome) " +
             "FROM estoque e " +
-            "JOIN produto p ON e.idProduto = p.idProduto " +
-            "JOIN eta et ON e.idEta = et.idEta")
+            "JOIN e.produto p " +
+            "JOIN e.eta eta")
     List<EstoqueDTO> findAllEstoqueComNomes();
 
 }

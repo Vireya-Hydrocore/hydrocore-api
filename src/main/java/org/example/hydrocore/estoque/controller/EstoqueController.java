@@ -3,6 +3,8 @@ package org.example.hydrocore.estoque.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.example.hydrocore.estoque.dto.EstoqueDTO;
+import org.example.hydrocore.estoque.dto.EstoqueResponseDTO;
+import org.example.hydrocore.estoque.service.EstoqueService;
 import org.example.hydrocore.repository.RepositoryEstoque;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,12 +19,12 @@ import java.util.List;
 public class EstoqueController {
 
     @Autowired
-    RepositoryEstoque repositoryEstoque;
+    private EstoqueService estoqueService;
 
     @Operation(summary = "Listar as informações de estoque com os nomes dos produtos e etas")
     @GetMapping("/mostrar/nomes")
-    public List<EstoqueDTO> mostrarEstoqueComNomes(){
-        return repositoryEstoque.findAllEstoqueComNomes();
+    public List<EstoqueResponseDTO> mostrarEstoqueComNomes(){
+        return estoqueService.mostrarEstoqueComNome();
     }
 
 }
