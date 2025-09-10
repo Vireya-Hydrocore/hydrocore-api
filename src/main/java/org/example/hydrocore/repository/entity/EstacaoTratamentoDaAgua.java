@@ -13,17 +13,16 @@ public class EstacaoTratamentoDaAgua {
 
     @Id
     @Column(name = "id_eta")
-    public Long idEta;
+    private Long idEta;
 
-    public String nome;
+    private String nome;
 
-    public String telefone;
+    private String telefone;
 
     @Column(name = "capacidade_tratamento")
     private Integer capacidadeTratamento;
 
     @Column(name = "id_endereco")
     private Long idEndereco;
-
 
 }
