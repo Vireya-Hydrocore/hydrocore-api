@@ -6,6 +6,7 @@ import org.example.hydrocore.calculadora.dto.request.CalculoRequestDTO;
 import org.example.hydrocore.calculadora.dto.response.CalculoResponseDTO;
 import org.example.hydrocore.calculadora.service.CalculadoraPhService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +24,13 @@ public class CalculadoraPhController {
 
     @Operation(summary = "Calcula a quantidade de produto necessária para atingir o pH desejado")
     @PostMapping("/calcular")
-    public List<CalculoResponseDTO> calcular(@RequestBody CalculoRequestDTO req) {
-        return service.calcular(req);
+    public ResponseEntity<List<CalculoResponseDTO>> calcular(@RequestBody CalculoRequestDTO req) {
+        List<CalculoResponseDTO> calcular = service.calcular(req);
+
+        if (calcular.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(calcular);
     }
 }

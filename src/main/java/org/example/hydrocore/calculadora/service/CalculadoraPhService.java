@@ -4,10 +4,7 @@ import org.example.hydrocore.calculadora.dto.request.CalculoRequestDTO;
 import org.example.hydrocore.calculadora.dto.response.CalculoResponseDTO;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class CalculadoraPhService {
@@ -37,6 +34,10 @@ public class CalculadoraPhService {
                     produto,
                     Math.round(dose * 100.0) / 100.0
             ));
+        }
+
+        if (resultados.isEmpty()) {
+            return Collections.emptyList();
         }
 
         return resultados;

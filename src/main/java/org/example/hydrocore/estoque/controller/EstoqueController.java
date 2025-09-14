@@ -2,11 +2,11 @@ package org.example.hydrocore.estoque.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.example.hydrocore.estoque.dto.EstoqueDTO;
-import org.example.hydrocore.estoque.dto.EstoqueResponseDTO;
+import org.apache.coyote.Response;
+import org.example.hydrocore.estoque.dto.response.EstoqueResponseDTO;
 import org.example.hydrocore.estoque.service.EstoqueService;
-import org.example.hydrocore.repository.RepositoryEstoque;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,8 +23,14 @@ public class EstoqueController {
 
     @Operation(summary = "Listar as informações de estoque com os nomes dos produtos e etas")
     @GetMapping("/mostrar/nomes")
-    public List<EstoqueResponseDTO> mostrarEstoqueComNomes(){
-        return estoqueService.mostrarEstoqueComNome();
+    public ResponseEntity<List<EstoqueResponseDTO>> mostrarEstoqueComNomes(){
+        List<EstoqueResponseDTO> estoqueResponseDTOS = estoqueService.mostrarEstoqueComNome();
+
+        if (estoqueResponseDTOS.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(estoqueResponseDTOS);
     }
 
 }
