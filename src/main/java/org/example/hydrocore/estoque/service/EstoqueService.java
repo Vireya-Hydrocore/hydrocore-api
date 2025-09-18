@@ -2,11 +2,12 @@ package org.example.hydrocore.estoque.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.hydrocore.estoque.dto.EstoqueDTO;
-import org.example.hydrocore.estoque.dto.EstoqueResponseDTO;
+import org.example.hydrocore.estoque.dto.response.EstoqueResponseDTO;
 import org.example.hydrocore.repository.RepositoryEstoque;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -22,7 +23,7 @@ public class EstoqueService {
         List<EstoqueDTO> stock = repositoryEstoque.findAllEstoqueComNomes();
 
         if (stock.isEmpty()) {
-            throw new RuntimeException("Estoque vazio");
+            return Collections.emptyList();
         }
 
         return stock.stream()

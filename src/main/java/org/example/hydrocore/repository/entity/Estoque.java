@@ -26,7 +26,7 @@ public class Estoque {
     private Produto produto;
 
     @ManyToOne
-    @JoinColumn(name = "id_eta")  // apenas o nome da coluna, sem referencedColumnName
+    @JoinColumn(name = "id_eta")
     private EstacaoTratamentoDaAgua eta;
 
 
