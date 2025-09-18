@@ -2,6 +2,7 @@ package org.example.hydrocore.tarefas.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.hydrocore.repository.RepositoryTarefas;
+import org.example.hydrocore.repository.entity.Tarefas;
 import org.example.hydrocore.tarefas.dto.TarefasDTO;
 import org.example.hydrocore.tarefas.dto.response.TarefasResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,18 @@ public class TarefasService {
         }
 
         return allTarefas.stream()
+                .map(t -> objectMapper.convertValue(t, TarefasResponseDTO.class))
+                .toList();
+    }
+
+    public List<TarefasResponseDTO> buscarTarefaPorNome(String nome) {
+        List<TarefasDTO> allTarefasPorNome = repositoryTarefas.findAllTarefasPorNome(nome);
+
+        if (allTarefasPorNome.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return allTarefasPorNome.stream()
                 .map(t -> objectMapper.convertValue(t, TarefasResponseDTO.class))
                 .toList();
     }

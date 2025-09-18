@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity(name = "tarefa")
 @Getter
@@ -22,10 +22,10 @@ public class Tarefas {
     private String descricao;
 
     @Column(name = "data_criacao")
-    private Date dataCriacao;
+    private LocalDateTime dataCriacao;
 
     @Column(name = "data_conclusao")
-    private Date dataConclusao;
+    private LocalDateTime dataConclusao;
 
     private String status;
 

@@ -3,8 +3,7 @@ package org.example.hydrocore.repository.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
-@Table(name = "cargo")
+@Entity(name = "cargo")
 @Getter
 @Setter
 @AllArgsConstructor

@@ -72,7 +72,6 @@ CREATE TABLE funcionario (
                              email VARCHAR(150) UNIQUE NOT NULL,
                              data_admissao DATE NOT NULL DEFAULT CURRENT_DATE,
                              data_nascimento DATE CHECK (data_nascimento <= CURRENT_DATE),
-                             id_tarefa INT,
                              id_eta INT,
                              id_cargo INT NOT NULL,
                              CONSTRAINT fk_func_eta FOREIGN KEY (id_eta) REFERENCES eta (id_eta),
@@ -97,7 +96,9 @@ CREATE TABLE tarefa (
                         data_conclusao DATE,
                         status VARCHAR(30) CHECK (status IN ('pendente','andamento','concluída')),
                         id_prioridade INT NOT NULL,
+                        id_funcionario INT,
                         CONSTRAINT fk_tarefa_prioridade FOREIGN KEY (id_prioridade) REFERENCES prioridade (id_prioridade),
+                        CONSTRAINT fk_tarefa_func FOREIGN KEY (id_funcionario) REFERENCES funcionario (id_funcionario),
                         CONSTRAINT chk_data_tarefa CHECK (data_conclusao IS NULL OR data_conclusao >= data_criacao)
 );
 
