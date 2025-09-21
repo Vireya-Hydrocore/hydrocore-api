@@ -37,9 +37,14 @@ $ git clone https://github.com/Vireya-Hydrocore/hydrocore-api.git
 # Limpe e instale as dependências
 $ mvn clean install
 
-# Ao iniciar, ele rodará em
-[http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+# Builde o container PostgreSQL com docker
+$ docker run --name hydrocore-docker -e POSTGRES_USER=hydrocore -e POSTGRES_PASSWORD=segundoano -e POSTGRES_DB=meubanco -p 5432:5432 -d postgres:16
+
 ```
+
+## Ao iniciar, ele rodará em
+[http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+
 
 ###
 
