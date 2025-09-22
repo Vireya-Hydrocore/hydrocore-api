@@ -2,19 +2,17 @@ package org.example.hydrocore.tarefas.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.example.hydrocore.tarefas.dto.request.TarefasRequestDTO;
 import org.example.hydrocore.tarefas.dto.response.TarefasResponseDTO;
 import org.example.hydrocore.tarefas.service.TarefasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/tarefas")
+@RequestMapping("/v1/tarefas")
 @Tag(name = "Tarefas controller")
 public class TarefasController {
 
@@ -45,6 +43,20 @@ public class TarefasController {
         return ResponseEntity.ok(tarefasResponseDTOS);
     }
 
+    @PostMapping("/criar-tarefa")
+    @Operation(summary = "Criar uma nova tarefa")
+    public ResponseEntity<TarefasResponseDTO> criarTarefa(
+            @RequestHeader Long idFuncionario,
+            @RequestBody TarefasRequestDTO tarefasRequestDTO){
 
+        Boolean tarefa = tarefasService.criarTarefa(idFuncionario, tarefasRequestDTO);
+
+        if (tarefa==true){
+            return ResponseEntity.ok().build();
+        }
+
+        return ResponseEntity.noContent().build();
+
+    }
 
 }

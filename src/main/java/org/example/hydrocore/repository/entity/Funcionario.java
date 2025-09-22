@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -27,10 +28,10 @@ public class Funcionario {
     private String email;
 
     @Column(name = "data_admissao")
-    private LocalDate dataAdmissao;
+    private LocalDateTime dataAdmissao;
 
     @Column(name = "data_nascimento")
-    private LocalDate dataNascimento;
+    private LocalDateTime dataNascimento;
 
     @ManyToOne
     @JoinColumn(name = "id_tarefa")

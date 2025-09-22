@@ -1,0 +1,31 @@
+package org.example.hydrocore.funcionario.dto;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class FuncionarioRelatorioDTO {
+
+    private String nome;
+    private String email;
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime dataAdmissao;
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime dataNascimento;
+
+    private String eta;
+    private String cargo;
+    private String descricaoTarefa;
+    private String statusTarefa;
+
+}
