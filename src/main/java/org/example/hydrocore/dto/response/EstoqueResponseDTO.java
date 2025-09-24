@@ -1,4 +1,4 @@
-package org.example.hydrocore.estoque.dto.response;
+package org.example.hydrocore.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

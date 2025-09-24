@@ -1,7 +1,7 @@
-package org.example.hydrocore.calculadora.service;
+package org.example.hydrocore.service;
 
-import org.example.hydrocore.calculadora.dto.request.CalculoRequestDTO;
-import org.example.hydrocore.calculadora.dto.response.CalculoResponseDTO;
+import org.example.hydrocore.dto.request.CalculoRequestDTO;
+import org.example.hydrocore.dto.response.CalculoResponseDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.*;

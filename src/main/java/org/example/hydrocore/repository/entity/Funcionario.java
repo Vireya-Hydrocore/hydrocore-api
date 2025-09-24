@@ -8,12 +8,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
+@Entity(name = "funcionario")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "funcionario")
 public class Funcionario {
 
     @Id
@@ -33,15 +34,14 @@ public class Funcionario {
     private LocalDate dataNascimento;
 
     @ManyToOne
-    @JoinColumn(name = "id_tarefa")
-    private Tarefas idTarefa;
-
-    @ManyToOne
     @JoinColumn(name = "id_eta")
     private EstacaoTratamentoDaAgua idEta;
 
     @ManyToOne
     @JoinColumn(name = "id_cargo")
     private Cargo idCargo;
+
+    @OneToMany(mappedBy = "idFuncionario")
+    private List<Tarefas> tarefas;
 
 }

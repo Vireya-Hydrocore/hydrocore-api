@@ -1,4 +1,4 @@
-package org.example.hydrocore.tarefas.dto.response;
+package org.example.hydrocore.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;

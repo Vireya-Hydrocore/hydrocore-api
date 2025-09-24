@@ -94,7 +94,7 @@ CREATE TABLE tarefa (
                         descricao TEXT NOT NULL,
                         data_criacao DATE NOT NULL DEFAULT CURRENT_DATE,
                         data_conclusao DATE,
-                        status VARCHAR(30) CHECK (status IN ('pendente','andamento','concluída')),
+                        status VARCHAR(30) CHECK (status IN ('pendente','concluida')),
                         id_prioridade INT NOT NULL,
                         id_funcionario INT,
                         CONSTRAINT fk_tarefa_prioridade FOREIGN KEY (id_prioridade) REFERENCES prioridade (id_prioridade),
@@ -304,3 +304,30 @@ INSERT INTO estoque (quantidade, id_produto, id_eta) VALUES
                                                          (30, 2, 2),(10, 3, 3),
                                                          (25, 4, 4),
                                                          (5, 5, 5);
+
+-- ==============================
+-- Relatório de funcionários com suas tarefas (Func)
+-- ==============================
+
+CREATE OR REPLACE FUNCTION relatorio_funcionarios() RETURNS TABLE(
+    nome VARCHAR,
+    email VARCHAR,
+    data_admissao DATE,
+    data_nascimento DATE,
+    eta VARCHAR,
+    cargo VARCHAR,
+    descricao_tarefa text,
+    status_tarefa VARCHAR
+) AS $$
+BEGIN
+RETURN QUERY
+SELECT f.nome, f.email, f.data_admissao, f.data_nascimento,
+       e.nome AS eta, c.nome AS cargo,
+       t.descricao AS tarefa,
+       t.status AS status_tarefa
+FROM funcionario f
+         JOIN eta e ON f.id_eta = e.id_eta
+         JOIN cargo c ON f.id_cargo = c.id_cargo
+         LEFT JOIN tarefa t ON f.id_funcionario = t.id_funcionario;
+END;
+$$ LANGUAGE plpgsql;

@@ -1,10 +1,9 @@
-package org.example.hydrocore.estoque.controller;
+package org.example.hydrocore.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.coyote.Response;
-import org.example.hydrocore.estoque.dto.response.EstoqueResponseDTO;
-import org.example.hydrocore.estoque.service.EstoqueService;
+import org.example.hydrocore.dto.response.EstoqueResponseDTO;
+import org.example.hydrocore.service.EstoqueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
