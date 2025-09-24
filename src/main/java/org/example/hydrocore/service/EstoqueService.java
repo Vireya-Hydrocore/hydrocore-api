@@ -16,6 +16,7 @@ public class EstoqueService {
     @Autowired
     private RepositoryEstoque repositoryEstoque;
 
+    @Autowired
     private ObjectMapper objectMapper;
 
     public List<EstoqueResponseDTO> mostrarEstoqueComNome() {
