@@ -38,7 +38,7 @@ $ git clone https://github.com/Vireya-Hydrocore/hydrocore-api.git
 $ mvn clean install
 
 # Builde o container PostgreSQL com docker
-$ docker run --name hydrocore-docker -e POSTGRES_USER=hydrocore -e POSTGRES_PASSWORD=segundoano -e POSTGRES_DB=meubanco -p 5432:5432 -d postgres:16
+$ docker-compose up --build
 
 ```
 
