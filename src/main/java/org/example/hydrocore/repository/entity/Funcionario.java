@@ -8,13 +8,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
 
+@Entity(name = "funcionario")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "funcionario")
 public class Funcionario {
 
     @Id
@@ -28,14 +28,10 @@ public class Funcionario {
     private String email;
 
     @Column(name = "data_admissao")
-    private LocalDateTime dataAdmissao;
+    private LocalDate dataAdmissao;
 
     @Column(name = "data_nascimento")
-    private LocalDateTime dataNascimento;
-
-    @ManyToOne
-    @JoinColumn(name = "id_tarefa")
-    private Tarefas idTarefa;
+    private LocalDate dataNascimento;
 
     @ManyToOne
     @JoinColumn(name = "id_eta")
@@ -44,5 +40,8 @@ public class Funcionario {
     @ManyToOne
     @JoinColumn(name = "id_cargo")
     private Cargo idCargo;
+
+    @OneToMany(mappedBy = "idFuncionario")
+    private List<Tarefas> tarefas;
 
 }

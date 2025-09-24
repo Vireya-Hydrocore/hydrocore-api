@@ -1,7 +1,7 @@
 package org.example.hydrocore.repository;
 
 import org.example.hydrocore.repository.entity.Tarefas;
-import org.example.hydrocore.tarefas.dto.TarefasDTO;
+import org.example.hydrocore.dto.TarefasDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,7 +13,7 @@ import java.util.List;
 public interface RepositoryTarefas extends JpaRepository<Tarefas, Integer> {
 
     @Query("""
-       SELECT new org.example.hydrocore.tarefas.dto.TarefasDTO(
+       SELECT new org.example.hydrocore.dto.TarefasDTO(
             t.idTarefa,
             t.descricao,
             t.dataCriacao,
@@ -29,7 +29,7 @@ public interface RepositoryTarefas extends JpaRepository<Tarefas, Integer> {
     List<TarefasDTO> findAllTarefas();
 
     @Query("""
-       SELECT new org.example.hydrocore.tarefas.dto.TarefasDTO(
+       SELECT new org.example.hydrocore.dto.TarefasDTO(
             t.idTarefa,
             t.descricao,
             t.dataCriacao,

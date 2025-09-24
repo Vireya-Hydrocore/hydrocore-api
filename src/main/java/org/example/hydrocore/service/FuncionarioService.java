@@ -1,7 +1,7 @@
-package org.example.hydrocore.funcionario.service;
+package org.example.hydrocore.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.hydrocore.funcionario.dto.FuncionarioRelatorioDTO;
+import org.example.hydrocore.dto.FuncionarioFunctionDTO;
 import org.example.hydrocore.repository.RepositoryFuncionario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,20 +18,17 @@ public class FuncionarioService {
     @Autowired
     private ObjectMapper objectMapper;
 
-    public List<FuncionarioRelatorioDTO> getAllFuncionarios() {
-        List<FuncionarioRelatorioDTO> all = funcionarioRepository.listarFuncionarios();
+    public List<FuncionarioFunctionDTO> getAllFuncionarios() {
+        List<FuncionarioFunctionDTO> all = funcionarioRepository.listarFuncionarios();
 
         if (all.isEmpty()) {
             return Collections.emptyList();
         }
 
-        return all;
+        return all.stream()
+                .map(m -> objectMapper.convertValue(m, FuncionarioFunctionDTO.class))
+                .toList();
     }
-
-//    private FuncionarioResponseDTO deleteFuncionarioById(Long id) {
-//
-//    }
-
 
 
 }

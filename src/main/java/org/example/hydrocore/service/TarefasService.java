@@ -1,13 +1,13 @@
-package org.example.hydrocore.tarefas.service;
+package org.example.hydrocore.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.hydrocore.dto.TarefasDTO;
+import org.example.hydrocore.dto.request.TarefasRequestDTO;
+import org.example.hydrocore.dto.response.TarefasResponseDTO;
 import org.example.hydrocore.repository.RepositoryFuncionario;
 import org.example.hydrocore.repository.RepositoryTarefas;
 import org.example.hydrocore.repository.entity.Funcionario;
 import org.example.hydrocore.repository.entity.Tarefas;
-import org.example.hydrocore.tarefas.dto.TarefasDTO;
-import org.example.hydrocore.tarefas.dto.request.TarefasRequestDTO;
-import org.example.hydrocore.tarefas.dto.response.TarefasResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +19,10 @@ import java.util.Optional;
 @Service
 public class TarefasService {
 
+    @Autowired
     private RepositoryTarefas repositoryTarefas;
-    
+
+    @Autowired
     private RepositoryFuncionario repositoryFuncionario;
 
     @Autowired
@@ -51,7 +53,7 @@ public class TarefasService {
     }
 
     public Boolean criarTarefa(Long idFuncionario, TarefasRequestDTO requestDTO) {
-        Optional<Funcionario> idFunc = repositoryFuncionario.findById(idFuncionario.intValue());
+        Optional<Funcionario> idFunc = repositoryFuncionario.findById(idFuncionario);
 
         if (!idFunc.isPresent()) {
             throw new IllegalArgumentException("Funcionário não encontrado");
@@ -74,25 +76,40 @@ public class TarefasService {
 
     }
 
-//    public TarefasResponseDTO atualizarStatusTarefa(Long idTarefa, TarefasRequestDTO requestDTO) {
-//        Optional<Tarefas> idTarefaDB = repositoryTarefas.findById(idTarefa.intValue());
-//
-//        if (!idTarefaDB.isPresent()) {
-//            throw new IllegalArgumentException("Tarefa não encontrada");
-//        }
-//
-//        TarefasDTO save = new TarefasDTO();
-//        save.setIdTarefa(idTarefaDB.get().getIdTarefa());
-//        save.setDataCriacao(idTarefaDB.get().getDataCriacao());
-//        save.setDataConclusao(idTarefaDB.get().getDataConclusao());
-//        save.setStatus(requestDTO.getStatus());
-//        save.setDescricao(requestDTO.getDescricao());
-//        save.setNivel(requestDTO.getNivel());
-//        save.setIdFuncionario(requestDTO.getIdFuncionario());
-//
-//        repositoryTarefas.save(save);
-//
-//        return objectMapper.convertValue(save, TarefasResponseDTO.class);
-//    }
+    public TarefasResponseDTO atualizarStatusTarefa(Long idTarefa, String status) {
+        Tarefas tarefa = repositoryTarefas.findById(idTarefa.intValue())
+                .orElseThrow(() -> new IllegalArgumentException("Tarefa não encontrada"));
+
+        if ("pendente".equalsIgnoreCase(status)) {
+            tarefa.setStatus("pendente");
+            tarefa.setDataConclusao(null);
+        } else if ("concluida".equalsIgnoreCase(status)) {
+            tarefa.setStatus("concluida");
+            tarefa.setDataConclusao(LocalDateTime.now());
+        } else {
+            throw new IllegalArgumentException("Status inválido");
+        }
+
+        Tarefas tarefaAtualizada = repositoryTarefas.save(tarefa);
+
+        return objectMapper.convertValue(tarefaAtualizada, TarefasResponseDTO.class);
+
+    }
+
+    public TarefasResponseDTO atribuirTarefa(Long idTarefa, Long idFuncionario) {
+        Tarefas tarefa = repositoryTarefas.findById(idTarefa.intValue())
+                .orElseThrow(() -> new IllegalArgumentException("Tarefa não encontrada"));
+
+        Optional<Funcionario> idFunc = repositoryFuncionario.findById(idFuncionario);
+
+        if (!idFunc.isPresent()) {
+            throw new IllegalArgumentException("Funcionário não encontrado");
+        }
+
+        tarefa.setIdFuncionario(idFunc.get());
+        Tarefas save = repositoryTarefas.save(tarefa);
+
+        return objectMapper.convertValue(save, TarefasResponseDTO.class);
+    }
 }
 

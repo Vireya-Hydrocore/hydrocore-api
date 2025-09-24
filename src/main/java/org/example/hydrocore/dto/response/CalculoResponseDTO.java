@@ -1,4 +1,4 @@
-package org.example.hydrocore.calculadora.dto.response;
+package org.example.hydrocore.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

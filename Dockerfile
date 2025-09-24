@@ -5,10 +5,11 @@ RUN mvn clean package -DskipTests
 
 FROM openjdk:17-jdk-slim
 WORKDIR /app
+
 COPY --from=builder /app/target/*.jar app.jar
+
 EXPOSE 8080
 
-# Permite definir o profile via variável de ambiente externa
-ENV SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-local}
+ENV SPRING_PROFILES_ACTIVE=dev
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
