@@ -59,7 +59,7 @@ public class TarefasController {
 
     }
 
-    @GetMapping("/atualizar-status")
+    @PatchMapping("/atualizar-status")
     @Operation(summary = "Atualizar o status da tarefa")
     public ResponseEntity<TarefasResponseDTO> atualizarStatusTarefa(
             @RequestHeader Long idTarefa,
@@ -75,7 +75,7 @@ public class TarefasController {
 
     }
 
-    @GetMapping("/atribuir-tarefa")
+    @PatchMapping("/atribuir-tarefa")
     @Operation(summary = "Atribuir a tarefa a outro usuário")
     public ResponseEntity<TarefasResponseDTO> atribuirTarefa(
             @RequestHeader Long idTarefa,
