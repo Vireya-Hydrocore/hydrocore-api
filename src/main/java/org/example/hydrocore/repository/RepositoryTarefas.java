@@ -26,7 +26,7 @@ public interface RepositoryTarefas extends JpaRepository<Tarefas, Integer> {
        LEFT JOIN t.prioridade p
        LEFT JOIN t.idFuncionario f
        """)
-    List<TarefasDTO> findAllTarefas();
+    List<Tarefas> findAllTarefas();
 
     @Query("""
        SELECT new org.example.hydrocore.dto.TarefasDTO(
@@ -43,6 +43,6 @@ public interface RepositoryTarefas extends JpaRepository<Tarefas, Integer> {
        JOIN t.prioridade p
        WHERE f.nome LIKE CONCAT('%', :nome, '%')
        """)
-    List<TarefasDTO> findAllTarefasPorNome(@Param("nome") String nome);
+    List<Tarefas> findAllTarefasPorNome(@Param("nome") String nome);
 
 }

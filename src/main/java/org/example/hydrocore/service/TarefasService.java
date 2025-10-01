@@ -29,7 +29,7 @@ public class TarefasService {
     private ObjectMapper objectMapper;
 
     public List<TarefasResponseDTO> listarTarefas() {
-        List<TarefasDTO> allTarefas = repositoryTarefas.findAllTarefas();
+        List<Tarefas> allTarefas = repositoryTarefas.findAllTarefas();
 
         if (allTarefas.isEmpty()) {
             return Collections.emptyList();
@@ -41,7 +41,7 @@ public class TarefasService {
     }
 
     public List<TarefasResponseDTO> buscarTarefaPorNome(String nome) {
-        List<TarefasDTO> allTarefasPorNome = repositoryTarefas.findAllTarefasPorNome(nome);
+        List<Tarefas> allTarefasPorNome = repositoryTarefas.findAllTarefasPorNome(nome);
 
         if (allTarefasPorNome.isEmpty()) {
             return Collections.emptyList();
@@ -52,7 +52,7 @@ public class TarefasService {
                 .toList();
     }
 
-    public Boolean criarTarefa(Long idFuncionario, TarefasRequestDTO requestDTO) {
+    public Boolean criarTarefa(Integer idFuncionario, TarefasRequestDTO requestDTO) {
         Optional<Funcionario> idFunc = repositoryFuncionario.findById(idFuncionario);
 
         if (!idFunc.isPresent()) {
@@ -96,8 +96,8 @@ public class TarefasService {
 
     }
 
-    public TarefasResponseDTO atribuirTarefa(Long idTarefa, Long idFuncionario) {
-        Tarefas tarefa = repositoryTarefas.findById(idTarefa.intValue())
+    public TarefasResponseDTO atribuirTarefa(Integer idTarefa, Integer idFuncionario) {
+        Tarefas tarefa = repositoryTarefas.findById(idTarefa)
                 .orElseThrow(() -> new IllegalArgumentException("Tarefa não encontrada"));
 
         Optional<Funcionario> idFunc = repositoryFuncionario.findById(idFuncionario);

@@ -1,9 +1,9 @@
 package org.example.hydrocore.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.hydrocore.dto.EstoqueDTO;
 import org.example.hydrocore.dto.response.EstoqueResponseDTO;
 import org.example.hydrocore.repository.RepositoryEstoque;
+import org.example.hydrocore.repository.entity.Estoque;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ public class EstoqueService {
     private ObjectMapper objectMapper;
 
     public List<EstoqueResponseDTO> mostrarEstoqueComNome() {
-        List<EstoqueDTO> stock = repositoryEstoque.findAllEstoqueComNomes();
+        List<Estoque> stock = repositoryEstoque.findAllEstoqueComNomes();
 
         if (stock.isEmpty()) {
             return Collections.emptyList();

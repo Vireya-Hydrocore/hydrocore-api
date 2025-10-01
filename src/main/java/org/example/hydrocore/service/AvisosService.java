@@ -42,7 +42,7 @@ public class AvisosService {
         return mapper.convertValue(salvo, AvisosResponseDTO.class);
     }
 
-    public AvisosResponseDTO atualizarAviso(Long id, AvisosRequestDTO novoAviso) {
+    public AvisosResponseDTO atualizarAviso(Integer id, AvisosRequestDTO novoAviso) {
         Avisos existente = repositoryAvisos.findById(id)
                 .orElseThrow(() -> new RuntimeException("Aviso não encontrado"));
 
@@ -54,6 +54,14 @@ public class AvisosService {
         Avisos atualizado = repositoryAvisos.save(existente);
         return mapper.convertValue(atualizado, AvisosResponseDTO.class);
 
+    }
+
+    public AvisosResponseDTO deletarAviso(Integer id) {
+        Avisos avisos = repositoryAvisos.findById(id)
+                   .orElseThrow(() -> new EntityNotFoundException("Aviso não encontrado"));
+
+        repositoryAvisos.deleteByIdAvisos(id);
+        return mapper.convertValue(avisos, AvisosResponseDTO.class);
     }
 
 }

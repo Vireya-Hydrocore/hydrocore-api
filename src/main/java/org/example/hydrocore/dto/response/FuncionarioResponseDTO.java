@@ -1,4 +1,4 @@
-package org.example.hydrocore.dto;
+package org.example.hydrocore.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FuncionarioFunctionDTO {
+public class FuncionarioResponseDTO {
 
     private Long idFuncionario;
     private String nome;

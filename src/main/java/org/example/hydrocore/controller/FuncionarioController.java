@@ -1,37 +1,71 @@
 package org.example.hydrocore.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.example.hydrocore.dto.FuncionarioFunctionDTO;
-import org.example.hydrocore.service.FuncionarioService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.hydrocore.dto.request.FuncionarioRequestDTO;
+import org.example.hydrocore.dto.response.FuncionarioResponseDTO;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
 @Tag(name = "Funcionario Controller")
 @RequestMapping("/v1/funcionario")
-public class FuncionarioController {
+public interface FuncionarioController {
 
-    @Autowired
-    private FuncionarioService  funcionarioService;
+    @GetMapping
+    @Operation(summary = "Retorna uma lista de funcionários", description = "Lista todos os funcionários cadastrados")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista de funcionários retornada com sucesso",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = FuncionarioResponseDTO.class))),
+            @ApiResponse(responseCode = "204", description = "Nenhum funcionário encontrado")
+    })
+    ResponseEntity<List<FuncionarioResponseDTO>> listarFuncionarios();
 
-    @GetMapping("/listar-funcionarios")
-    @Operation(summary = "Listar todos os funcionarios")
-    public ResponseEntity<List<FuncionarioFunctionDTO>> listarFuncionarios() {
-        List<FuncionarioFunctionDTO> allFuncionarios = funcionarioService.getAllFuncionarios();
+    @GetMapping("/{id}")
+    @Operation(summary = "Retorna um funcionário por ID", description = "Busca um funcionário específico pelo seu ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Funcionário encontrado",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = FuncionarioResponseDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Funcionário não encontrado")
+    })
+    ResponseEntity<FuncionarioResponseDTO> getFuncionarioById(@PathVariable Integer id);
 
-        if (allFuncionarios.isEmpty()){
-            return ResponseEntity.noContent().build();
-        }
+    @PostMapping
+    @Operation(summary = "Salva um novo funcionário", description = "Cria um novo funcionário no sistema")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Funcionário criado com sucesso",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = FuncionarioResponseDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos")
+    })
+    ResponseEntity<FuncionarioResponseDTO> salvarFuncionario(@Valid @RequestBody FuncionarioRequestDTO requestDTO);
 
-        return ResponseEntity.ok(allFuncionarios);
+    @PutMapping("/{id}")
+    @Operation(summary = "Atualiza um funcionário existente", description = "Atualiza todos os dados de um funcionário")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Funcionário atualizado com sucesso",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = FuncionarioResponseDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Funcionário não encontrado")
+    })
+    ResponseEntity<FuncionarioResponseDTO> atualizarFuncionario(@PathVariable Integer id,
+                                                                @Valid @RequestBody FuncionarioRequestDTO requestDTO);
 
-    }
-
-
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Deleta um funcionário", description = "Remove um funcionário do sistema pelo ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Funcionário deletado com sucesso",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = FuncionarioResponseDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Funcionário não encontrado")
+    })
+    ResponseEntity<FuncionarioResponseDTO> deletarFuncionario(@PathVariable Integer id);
 }
