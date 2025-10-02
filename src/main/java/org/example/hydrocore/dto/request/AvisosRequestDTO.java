@@ -24,10 +24,10 @@ public class AvisosRequestDTO {
 
     @NonNull
     @Min(1)
-    private Long idEta;
+    private Integer idEta;
 
     @NonNull
     @Min(1)
-    private Long idPrioridade;
+    private Integer idPrioridade;
 
 }

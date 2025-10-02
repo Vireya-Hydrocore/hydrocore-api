@@ -17,7 +17,7 @@ public class Estoque {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @PositiveOrZero
-    private Long idEstoque;
+    private Integer idEstoque;
 
     private Integer quantidade;
 

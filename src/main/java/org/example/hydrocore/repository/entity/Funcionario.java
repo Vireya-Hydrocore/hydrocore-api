@@ -20,7 +20,7 @@ public class Funcionario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_funcionario")
-    private Long idFuncionario;
+    private Integer idFuncionario;
 
     private String nome;
 

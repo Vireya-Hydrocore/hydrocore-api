@@ -16,7 +16,7 @@ public class Prioridade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_prioridade")
-    private Long idPrioridade;
+    private Integer idPrioridade;
 
     private String nivel;
 

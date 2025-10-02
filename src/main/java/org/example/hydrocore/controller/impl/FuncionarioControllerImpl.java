@@ -1,7 +1,9 @@
 package org.example.hydrocore.controller.impl;
 
 import org.example.hydrocore.controller.FuncionarioController;
+import org.example.hydrocore.dto.request.FuncionarioPatchRequestDTO;
 import org.example.hydrocore.dto.request.FuncionarioRequestDTO;
+import org.example.hydrocore.dto.response.FuncionarioIdResponseDTO;
 import org.example.hydrocore.dto.response.FuncionarioResponseDTO;
 import org.example.hydrocore.service.FuncionarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +20,7 @@ public class FuncionarioControllerImpl implements FuncionarioController {
 
     @Override
     public ResponseEntity<List<FuncionarioResponseDTO>> listarFuncionarios() {
-        List<FuncionarioResponseDTO> all = funcionarioService.getAllFuncionarios();
-        return all.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(all);
+        return ResponseEntity.ok(funcionarioService.getAllFuncionarios());
     }
 
     @Override
@@ -41,4 +42,15 @@ public class FuncionarioControllerImpl implements FuncionarioController {
     public ResponseEntity<FuncionarioResponseDTO> deletarFuncionario(Integer id) {
         return ResponseEntity.ok(funcionarioService.deletarFuncionario(id));
     }
+
+    @Override
+    public ResponseEntity<FuncionarioIdResponseDTO> buscarIdFuncionarioPorEmail(String email) {
+        return ResponseEntity.ok(funcionarioService.mostrarFuncionarioPorEmail(email));
+    }
+
+    @Override
+    public ResponseEntity<FuncionarioResponseDTO> atualizarFuncionarioParcial(Integer id, FuncionarioPatchRequestDTO requestDTO) {
+        return ResponseEntity.ok(funcionarioService.atualizarParcialFuncionario(id, requestDTO));
+    }
+
 }

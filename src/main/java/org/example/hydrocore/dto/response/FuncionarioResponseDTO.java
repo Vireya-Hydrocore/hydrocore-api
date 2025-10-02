@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class FuncionarioResponseDTO {
 
-    private Long idFuncionario;
+    private Integer idFuncionario;
     private String nome;
     private String email;
 

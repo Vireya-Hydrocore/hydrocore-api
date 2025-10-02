@@ -309,7 +309,8 @@ INSERT INTO estoque (quantidade, id_produto, id_eta) VALUES
 -- Relatório de funcionários com suas tarefas (Func)
 -- ==============================
 
-CREATE OR REPLACE FUNCTION relatorio_funcionarios() RETURNS TABLE(
+CREATE OR REPLACE FUNCTION relatorio_funcionarios(p_id_funcionario INT)
+RETURNS TABLE(
     nome VARCHAR,
     email VARCHAR,
     data_admissao DATE,
@@ -323,11 +324,12 @@ BEGIN
 RETURN QUERY
 SELECT f.nome, f.email, f.data_admissao, f.data_nascimento,
        e.nome AS eta, c.nome AS cargo,
-       t.descricao AS tarefa,
+       t.descricao AS descricao_tarefa,
        t.status AS status_tarefa
 FROM funcionario f
          JOIN eta e ON f.id_eta = e.id_eta
          JOIN cargo c ON f.id_cargo = c.id_cargo
-         LEFT JOIN tarefa t ON f.id_funcionario = t.id_funcionario;
+         LEFT JOIN tarefa t ON f.id_funcionario = t.id_funcionario
+WHERE f.id_funcionario = p_id_funcionario;
 END;
 $$ LANGUAGE plpgsql;

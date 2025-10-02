@@ -3,7 +3,7 @@ package org.example.hydrocore.projection;
 import java.time.LocalDate;
 
 public interface FuncionarioDTO {
-    Long getIdFuncionario();
+    Integer getIdFuncionario();
     String getNome();
     String getEmail();
     LocalDate getDataAdmissao();

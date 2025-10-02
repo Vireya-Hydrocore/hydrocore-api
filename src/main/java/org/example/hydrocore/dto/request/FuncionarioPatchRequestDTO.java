@@ -1,4 +1,4 @@
-package org.example.hydrocore.dto.response;
+package org.example.hydrocore.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -12,17 +12,18 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AvisosResponseDTO {
+public class FuncionarioPatchRequestDTO {
 
-    private Integer idAvisos;
-
-    private String descricao;
+    private String nome;
+    private String email;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate dataOcorrencia;
+    private LocalDate dataAdmissao;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dataNascimento;
     private Integer idEta;
-
-    private Integer idPrioridade;
+    private Integer idCargo;
 
 }
+

@@ -18,7 +18,7 @@ public class Avisos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_avisos")
-    private Long idAvisos;
+    private Integer idAvisos;
 
     private String descricao;
 
@@ -26,10 +26,10 @@ public class Avisos {
     private LocalDate dataOcorrencia;
 
     @Column(name = "id_eta")
-    private Long idEta;
+    private Integer idEta;
 
     @Column(name = "id_prioridade")
-    private Long idPrioridade;
+    private Integer idPrioridade;
 
 }
 
