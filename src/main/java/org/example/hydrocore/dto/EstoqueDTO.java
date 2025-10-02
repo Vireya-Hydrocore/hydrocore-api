@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class EstoqueDTO {
 
-    private Long idEstoque;
+    private Integer idEstoque;
 
     private Integer quantidade;
 

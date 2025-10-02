@@ -1,7 +1,7 @@
 package org.example.hydrocore.repository;
 
-import org.example.hydrocore.repository.entity.Tarefas;
 import org.example.hydrocore.dto.TarefasDTO;
+import org.example.hydrocore.repository.entity.Tarefas;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -36,7 +36,7 @@ public interface RepositoryTarefas extends JpaRepository<Tarefas, Integer> {
             t.dataConclusao,
             t.status,
             p.nivel,
-            f.idFuncionario
+            f.idFuncionario 
        )
        FROM tarefa t
        JOIN t.idFuncionario f
@@ -45,4 +45,6 @@ public interface RepositoryTarefas extends JpaRepository<Tarefas, Integer> {
        """)
     List<TarefasDTO> findAllTarefasPorNome(@Param("nome") String nome);
 
+    @Query(value = "DELETE FROM tarefas WHERE id_tarefa = :idTarefa RETURNING *", nativeQuery = true)
+    Tarefas deletarTarefas(@Param("idFuncionario") Integer idTarefa);
 }

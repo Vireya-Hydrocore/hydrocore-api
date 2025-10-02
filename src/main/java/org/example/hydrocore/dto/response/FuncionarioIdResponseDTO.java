@@ -9,15 +9,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EstoqueResponseDTO {
+public class FuncionarioIdResponseDTO {
 
-    private Integer idEstoque;
+    private Integer idFuncionario;
 
-    private Integer quantidade;
-
-    private String nomeProduto;
-
-    private String nomeEta;
-
-    private String status;
 }

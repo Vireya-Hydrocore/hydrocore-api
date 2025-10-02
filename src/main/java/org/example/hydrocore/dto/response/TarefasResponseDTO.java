@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class TarefasResponseDTO {
 
-    private Long idTarefa;
+    private Integer idTarefa;
 
     private String descricao;
 
@@ -26,7 +26,7 @@ public class TarefasResponseDTO {
 
     private String status;
 
-    private Long idFuncionario;
+    private Integer idFuncionario;
 
     private String nivel;
 

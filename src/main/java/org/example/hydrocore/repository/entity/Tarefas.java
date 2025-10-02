@@ -17,7 +17,8 @@ public class Tarefas {
 
     @Id
     @Column(name = "id_tarefa")
-    private Long idTarefa;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idTarefa;
 
     private String descricao;
 
@@ -29,8 +30,8 @@ public class Tarefas {
 
     private String status;
 
-    @ManyToOne
-    @JoinColumn(name = "id_prioridade")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_prioridade", nullable = false)
     private Prioridade prioridade;
 
     @ManyToOne

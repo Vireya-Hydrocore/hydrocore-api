@@ -12,7 +12,7 @@ public class EstacaoTratamentoDaAgua {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_eta")
-    private Long idEta;
+    private Integer idEta;
 
     private String nome;
 
@@ -22,6 +22,6 @@ public class EstacaoTratamentoDaAgua {
     private Integer capacidadeTratamento;
 
     @Column(name = "id_endereco")
-    private Long idEndereco;
+    private Integer idEndereco;
 
 }

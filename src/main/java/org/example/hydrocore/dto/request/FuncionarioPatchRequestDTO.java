@@ -1,4 +1,4 @@
-package org.example.hydrocore.dto;
+package org.example.hydrocore.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -10,11 +10,10 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class FuncionarioFunctionDTO {
+@NoArgsConstructor
+public class FuncionarioPatchRequestDTO {
 
-    private Long idFuncionario;
     private String nome;
     private String email;
 
@@ -23,10 +22,8 @@ public class FuncionarioFunctionDTO {
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataNascimento;
-
-    private String eta;
-    private String cargo;
-    private String descricaoTarefa;
-    private String statusTarefa;
+    private Integer idEta;
+    private Integer idCargo;
 
 }
+
