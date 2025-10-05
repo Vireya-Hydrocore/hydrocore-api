@@ -1,7 +1,7 @@
 -- Primeiro as tabelas que só possuem FKs para outras
 DROP TABLE IF EXISTS eta_admin;
-DROP TABLE IF EXISTS funcionario;
 DROP TABLE IF EXISTS tarefa;
+DROP TABLE IF EXISTS funcionario;
 DROP TABLE IF EXISTS avisos;
 DROP TABLE IF EXISTS relatorio;
 DROP TABLE IF EXISTS uso_produto;
@@ -17,14 +17,13 @@ DROP TABLE IF EXISTS eta;
 DROP TABLE IF EXISTS cargo;
 DROP TABLE IF EXISTS endereco;
 
-
 -- ==============================
 -- Tabela: Cargo
 -- ==============================
 CREATE TABLE cargo (
                        id_cargo SERIAL PRIMARY KEY,
                        nome VARCHAR(100) NOT NULL UNIQUE,
-                       acesso VARCHAR(50) NOT NULL
+                       acesso VARCHAR(100) NOT NULL
 );
 
 -- ==============================
@@ -61,8 +60,6 @@ CREATE TABLE eta_admin (
                            CONSTRAINT fk_etaadmin_eta FOREIGN KEY (id_eta) REFERENCES eta (id_eta) ON DELETE CASCADE
 );
 
-
-
 -- ==============================
 -- Tabela: Funcionário
 -- ==============================
@@ -70,6 +67,7 @@ CREATE TABLE funcionario (
                              id_funcionario SERIAL PRIMARY KEY,
                              nome VARCHAR(100) NOT NULL,
                              email VARCHAR(150) UNIQUE NOT NULL,
+                             senha VARCHAR(255) NOT NULL, -- ADICIONADO para autenticação
                              data_admissao DATE NOT NULL DEFAULT CURRENT_DATE,
                              data_nascimento DATE CHECK (data_nascimento <= CURRENT_DATE),
                              id_eta INT,
@@ -189,12 +187,12 @@ INSERT INTO cargo (nome, acesso) VALUES
 -- ==============================
 -- Endereco
 -- ==============================
-    INSERT INTO endereco (numero, bairro, cidade, estado, cep) VALUES
-    ('123', 'Centro', 'São Paulo', 'SP', '01001000'),
-    ('45', 'Jardim América', 'São Paulo', 'SP', '01428000'),
-    ('78', 'Boa Vista', 'Campinas', 'SP', '13010100'),
-    ('22', 'Vila Mariana', 'São Paulo', 'SP', '04123010'),
-    ('50', 'Taquaral', 'Campinas', 'SP', '13060500');
+INSERT INTO endereco (numero, bairro, cidade, estado, cep) VALUES
+                                                               ('123', 'Centro', 'São Paulo', 'SP', '01001000'),
+                                                               ('45', 'Jardim América', 'São Paulo', 'SP', '01428000'),
+                                                               ('78', 'Boa Vista', 'Campinas', 'SP', '13010100'),
+                                                               ('22', 'Vila Mariana', 'São Paulo', 'SP', '04123010'),
+                                                               ('50', 'Taquaral', 'Campinas', 'SP', '13060500');
 
 -- ==============================
 -- ETA
@@ -218,13 +216,14 @@ INSERT INTO eta_admin (id_eta, nome_admin) VALUES
 
 -- ==============================
 -- Funcionário
+-- (senha será salva já com hash bcrypt no Spring Boot)
 -- ==============================
-INSERT INTO funcionario (nome, email, data_admissao, data_nascimento, id_eta, id_cargo) VALUES
-                                                                                            ('Lucas Pereira', 'lucas@email.com', '2023-01-10', '1995-05-20', 1, 1),
-                                                                                            ('Fernanda Lima', 'fernanda@email.com', '2022-06-15', '1990-12-12', 1, 2),
-                                                                                            ('Rafael Souza', 'rafael@email.com', '2024-03-01', '1998-07-30', 2, 3),
-                                                                                            ('Camila Alves', 'camila@email.com', '2021-09-20', '1988-11-11', 3, 4),
-                                                                                            ('Bruno Dias', 'bruno@email.com', '2023-05-05', '1992-08-15', 4, 2);
+INSERT INTO funcionario (nome, email, senha, data_admissao, data_nascimento, id_eta, id_cargo) VALUES
+                                                                                                   ('Lucas Pereira', 'lucas@email.com', '$2a$10$1234567890abcdef', '2023-01-10', '1995-05-20', 1, 1),
+                                                                                                   ('Fernanda Lima', 'fernanda@email.com', '$2a$10$abcdef1234567890', '2022-06-15', '1990-12-12', 1, 2),
+                                                                                                   ('Rafael Souza', 'rafael@email.com', '$2a$10$9876543210fedcba', '2024-03-01', '1998-07-30', 2, 3),
+                                                                                                   ('Camila Alves', 'camila@email.com', '$2a$10$qwertyuiopasdfgh', '2021-09-20', '1988-11-11', 3, 4),
+                                                                                                   ('Bruno Dias', 'bruno@email.com', '$2a$10$zxcvbnmlkjhgfdsa', '2023-05-05', '1992-08-15', 4, 2);
 
 -- ==============================
 -- Prioridade
@@ -241,10 +240,10 @@ INSERT INTO prioridade (nivel) VALUES
 -- ==============================
 INSERT INTO tarefa (descricao, status, id_prioridade) VALUES
                                                           ('Verificar qualidade da água', 'pendente', 1),
-                                                          ('Atualizar relatório diário', 'andamento', 2),
-                                                          ('Manutenção dos filtros', 'concluída', 3),
+                                                          ('Atualizar relatório diário', 'pendente', 2),
+                                                          ('Manutenção dos filtros', 'concluida', 3),
                                                           ('Controle de estoque de produtos químicos', 'pendente', 4),
-                                                          ('Assinar relatórios completos', 'andamento', 5);
+                                                          ('Assinar relatórios completos', 'pendente', 5);
 
 -- ==============================
 -- Avisos
@@ -301,14 +300,20 @@ INSERT INTO uso_produto (quantidade, id_processo, id_produto) VALUES
 -- ==============================
 INSERT INTO estoque (quantidade, id_produto, id_eta) VALUES
                                                          (50, 1, 1),
-                                                         (30, 2, 2),(10, 3, 3),
+                                                         (30, 2, 2),
+                                                         (10, 3, 3),
                                                          (25, 4, 4),
                                                          (5, 5, 5);
 
 -- ==============================
--- Relatório de funcionários com suas tarefas (Func)
+-- DROP DA FUNCTION PARA GARANTIR QUE NÃO HAVERÁ ERROS
 -- ==============================
 
+DROP FUNCTION relatorio_funcionarios(INT);
+
+-- ==============================
+-- Relatório de funcionários com suas tarefas (Func)
+-- ==============================
 CREATE OR REPLACE FUNCTION relatorio_funcionarios(p_id_funcionario INT)
 RETURNS TABLE(
     nome VARCHAR,
