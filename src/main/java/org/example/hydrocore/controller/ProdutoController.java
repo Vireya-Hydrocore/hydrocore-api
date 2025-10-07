@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Produto Controller")
+@Tag(name = "Produto Controller", description = "Gerenciamento de produtos")
 @RequestMapping("/v1/produto")
 public interface ProdutoController {
 
@@ -38,7 +38,7 @@ public interface ProdutoController {
     })
     ResponseEntity<ProdutoResponseDTO> buscarProdutoPorId(@PathVariable("id") Integer id);
 
-    @PostMapping("/criar")
+    @PostMapping()
     @Operation(summary = "Cria um produto", description = "Cria um novo produto")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Produto criado com sucesso",
@@ -48,7 +48,7 @@ public interface ProdutoController {
     })
     ResponseEntity<ProdutoResponseDTO> criarProduto(@RequestBody @Valid ProdutoRequestDTO produtoRequestDTO);
 
-    @PutMapping("/{id}")
+    @PutMapping("/atualizar/{id}")
     @Operation(summary = "Atualiza um produto", description = "Atualiza um produto existente")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Produto atualizado com sucesso",
@@ -59,7 +59,7 @@ public interface ProdutoController {
     })
     ResponseEntity<ProdutoResponseDTO> atualizarProduto(@PathVariable("id") Integer id, @RequestBody @Valid ProdutoRequestDTO produtoRequestDTO);
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deletar/{id}")
     @Operation(summary = "Deleta um produto", description = "Deleta um produto existente")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Produto deletado com sucesso",

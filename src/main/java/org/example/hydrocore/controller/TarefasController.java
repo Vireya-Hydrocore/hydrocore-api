@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RequestMapping("/v1/tarefas")
-@Tag(name = "Tarefas controller", description = "Gerenciamento e atribuição de tarefas do Hydrocore")
+@Tag(name = "Tarefas controller", description = "Gerenciamento de tarefas")
 public interface TarefasController {
 
     @GetMapping("/listar")
@@ -48,7 +48,7 @@ public interface TarefasController {
     })
     ResponseEntity<List<TarefasResponseDTO>> buscarTarefaPorNome(@PathVariable String nome);
 
-    @PostMapping("/criar-tarefa")
+    @PostMapping()
     @Operation(summary = "Criar uma nova tarefa", description = "Cria uma nova tarefa e a associa a um funcionário pelo ID.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Tarefa criada com sucesso",

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Avisos Controller")
+@Tag(name = "Avisos Controller", description = "Gerenciamento de avisos")
 @RequestMapping("/v1/avisos")
 public interface AvisosController {
 
@@ -28,7 +28,7 @@ public interface AvisosController {
     })
     ResponseEntity<List<AvisosResponseDTO>> listarAvisos();
 
-    @PostMapping("/criar")
+    @PostMapping()
     @Operation(summary = "Criar um aviso", description = "Cria um novo aviso no sistema")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Aviso criado com sucesso",

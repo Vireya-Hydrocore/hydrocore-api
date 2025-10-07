@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Funcionario Controller")
+@Tag(name = "Funcionario Controller", description = "Gerenciamento de funcionários")
 @RequestMapping("/v1/funcionario")
 public interface FuncionarioController {
 
@@ -30,7 +30,7 @@ public interface FuncionarioController {
     })
     ResponseEntity<List<FuncionarioResponseDTO>> listarFuncionarios();
 
-    @GetMapping("/listar-id/{id}")
+    @GetMapping("/{id}")
     @Operation(summary = "Retorna um funcionário por ID", description = "Busca um funcionário específico pelo seu ID")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Funcionário encontrado",
@@ -40,8 +40,8 @@ public interface FuncionarioController {
     })
     ResponseEntity<FuncionarioResponseDTO> getFuncionarioById(@PathVariable Integer id);
 
-    @PostMapping("/salvar")
-    @Operation(summary = "Salva um novo funcionário", description = "Cria um novo funcionário no sistema")
+    @PostMapping()
+    @Operation(summary = "Criar um novo funcionário", description = "Cria um novo funcionário no sistema")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Funcionário criado com sucesso",
                     content = @Content(mediaType = "application/json",
