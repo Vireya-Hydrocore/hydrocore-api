@@ -241,10 +241,10 @@ INSERT INTO prioridade (nivel) VALUES
 -- ==============================
 INSERT INTO tarefa (descricao, status, id_prioridade) VALUES
                                                           ('Verificar qualidade da água', 'pendente', 1),
-                                                          ('Atualizar relatório diário', 'andamento', 2),
+                                                          ('Atualizar relatório diário', 'pendente', 2),
                                                           ('Manutenção dos filtros', 'concluída', 3),
                                                           ('Controle de estoque de produtos químicos', 'pendente', 4),
-                                                          ('Assinar relatórios completos', 'andamento', 5);
+                                                          ('Assinar relatórios completos', 'pendente', 5);
 
 -- ==============================
 -- Avisos

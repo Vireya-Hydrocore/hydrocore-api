@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.hydrocore.dto.EstoqueDTO;
 import org.example.hydrocore.dto.response.EstoqueResponseDTO;
 import org.example.hydrocore.repository.RepositoryEstoque;
-import org.example.hydrocore.repository.entity.Estoque;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

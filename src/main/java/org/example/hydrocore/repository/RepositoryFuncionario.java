@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface RepositoryFuncionario extends JpaRepository<Funcionario, Integer> {
 
@@ -18,5 +19,7 @@ public interface RepositoryFuncionario extends JpaRepository<Funcionario, Intege
 
     @Query(value = "SELECT id_funcionario FROM funcionario WHERE email = :email", nativeQuery = true)
     Integer getIdFuncionario(String email);
+
+    Optional<Funcionario> findByEmail(String email);
 
 }
