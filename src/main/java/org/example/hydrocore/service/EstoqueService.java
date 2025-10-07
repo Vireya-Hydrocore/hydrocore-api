@@ -1,6 +1,7 @@
 package org.example.hydrocore.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.hydrocore.dto.EstoqueDTO;
 import org.example.hydrocore.dto.response.EstoqueResponseDTO;
 import org.example.hydrocore.repository.RepositoryEstoque;
 import org.example.hydrocore.repository.entity.Estoque;
@@ -20,7 +21,7 @@ public class EstoqueService {
     private ObjectMapper objectMapper;
 
     public List<EstoqueResponseDTO> mostrarEstoqueComNome() {
-        List<Estoque> stock = repositoryEstoque.findAllEstoqueComNomes();
+        List<EstoqueDTO> stock = repositoryEstoque.findAllEstoqueComNomes();
 
         if (stock.isEmpty()) {
             return Collections.emptyList();

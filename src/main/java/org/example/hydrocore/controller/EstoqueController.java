@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping("/v1/estoque/")
 public interface EstoqueController {
 
-    @GetMapping("/mostrar/nomes")
+    @GetMapping("/listar")
     @Operation(summary = "Listar as informações de estoque com os nomes dos produtos e etas")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Lista de produtos que há no estoque",
