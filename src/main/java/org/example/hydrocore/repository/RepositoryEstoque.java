@@ -1,5 +1,6 @@
 package org.example.hydrocore.repository;
 
+import org.example.hydrocore.dto.EstoqueDTO;
 import org.example.hydrocore.repository.entity.Estoque;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,6 +16,6 @@ public interface RepositoryEstoque extends JpaRepository<Estoque, Integer> {
             "FROM estoque e " +
             "JOIN e.produto p " +
             "JOIN e.eta eta")
-    List<Estoque> findAllEstoqueComNomes();
+    List<EstoqueDTO> findAllEstoqueComNomes();
 
 }

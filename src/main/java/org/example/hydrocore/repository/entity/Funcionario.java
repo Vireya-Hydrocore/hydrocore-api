@@ -24,6 +24,8 @@ public class Funcionario {
 
     private String nome;
 
+    private String senha;
+
     @Email
     private String email;
 

@@ -2,6 +2,7 @@ package org.example.hydrocore.controller.impl;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.example.hydrocore.controller.CalculadoraPhController;
 import org.example.hydrocore.dto.request.CalculoRequestDTO;
 import org.example.hydrocore.dto.response.CalculoResponseDTO;
 import org.example.hydrocore.service.CalculadoraPhService;
@@ -15,22 +16,18 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/calculadora/ph")
-@Tag(name = "Calculadora pH Controller")
-public class CalculadoraPhControllerImpl {
+public class CalculadoraPhControllerImpl implements CalculadoraPhController {
 
     @Autowired
     private CalculadoraPhService service;
 
-    @Operation(summary = "Calcula a quantidade de produto necessária para atingir o pH desejado")
-    @PostMapping("/calcular")
-    public ResponseEntity<List<CalculoResponseDTO>> calcular(@RequestBody CalculoRequestDTO req) {
-        List<CalculoResponseDTO> calcular = service.calcular(req);
+    @Override
+    public ResponseEntity<CalculoResponseDTO> calcularPhFloculacao(CalculoRequestDTO calculoRequestDTO) {
+        return null;
+    }
 
-        if (calcular.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(calcular);
+    @Override
+    public ResponseEntity<CalculoResponseDTO> calcularPhCoagulacao(CalculoRequestDTO calculoRequestDTO) {
+        return null;
     }
 }
