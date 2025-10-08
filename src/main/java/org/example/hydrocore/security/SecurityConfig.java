@@ -1,5 +1,6 @@
 package org.example.hydrocore.security;
 
+import org.example.hydrocore.exception.CustomAccessDeniedHandler;
 import org.example.hydrocore.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -8,6 +9,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -24,10 +27,16 @@ public class SecurityConfig {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+
+    public SecurityConfig(CustomAccessDeniedHandler customAccessDeniedHandler) {
+        this.customAccessDeniedHandler = customAccessDeniedHandler;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // desabilita CSRF p/ facilitar testes de API
+                .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         // Swagger e documentação liberados para todos
@@ -36,22 +45,23 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/swagger-resources/**",
                                 "/webjars/**"
-                        ).permitAll()
+                        ).authenticated()
 
                         // Regras de acesso específicas por role
                         .requestMatchers("/**").hasRole("ADMIN")
                         .requestMatchers("/v1/estoque/**").hasRole("ESTOQUE")
                         .requestMatchers("/v1/calculadora/pH/**").hasRole("CALC")
                         .requestMatchers(HttpMethod.GET, "/v1/estoque/**").hasRole("CALC")
-
                         .anyRequest().authenticated()
                 )
+                .exceptionHandling(exception -> exception
+                        .accessDeniedHandler(customAccessDeniedHandler))
                 .userDetailsService(customUserDetailsService)
                 .formLogin(form -> form
-                        .defaultSuccessUrl("/swagger-ui/index.html", true) // 👈 redireciona pro Swagger após login
+                        .defaultSuccessUrl("/swagger-ui/index.html", true)
                         .permitAll()
                 )
-                .logout(logout -> logout.permitAll());
+                .logout(LogoutConfigurer::permitAll);
 
         return http.build();
     }
