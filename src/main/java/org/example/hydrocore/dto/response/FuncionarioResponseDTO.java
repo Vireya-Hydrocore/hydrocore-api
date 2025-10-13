@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class FuncionarioResponseDTO {
 
-    private Integer idFuncionario;
+    private Integer id;
     private String nome;
     private String email;
 
@@ -26,7 +26,5 @@ public class FuncionarioResponseDTO {
 
     private String eta;
     private String cargo;
-    private String descricaoTarefa;
-    private String statusTarefa;
 
 }
