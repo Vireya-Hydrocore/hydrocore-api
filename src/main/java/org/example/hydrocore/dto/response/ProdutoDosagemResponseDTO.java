@@ -1,18 +1,13 @@
 package org.example.hydrocore.dto.response;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CalculoResponseDTO {
-
+public class ProdutoDosagemResponseDTO {
     private String produto;
-    private double quantidadeKg;
-
-
+    private double quantidade;
 }
