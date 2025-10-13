@@ -1,19 +1,14 @@
 package org.example.hydrocore.security;
 
 import org.example.hydrocore.exception.CustomAccessDeniedHandler;
-import org.example.hydrocore.service.CustomUserDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -24,13 +19,12 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
-
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final TokenAuthenticationFilter tokenAuthenticationFilter;
 
-    public SecurityConfig(CustomAccessDeniedHandler customAccessDeniedHandler) {
+    public SecurityConfig(CustomAccessDeniedHandler customAccessDeniedHandler, TokenAuthenticationFilter tokenAuthenticationFilter) {
         this.customAccessDeniedHandler = customAccessDeniedHandler;
+        this.tokenAuthenticationFilter = tokenAuthenticationFilter;
     }
 
     @Bean
@@ -38,36 +32,12 @@ public class SecurityConfig {
         http
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        // Swagger e documentação liberados para todos
-                        .requestMatchers(
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/swagger-resources/**",
-                                "/webjars/**"
-                        ).authenticated()
-
-                        // Regras de acesso específicas por role
-                        .requestMatchers("/**").hasRole("ADMIN")
-                        .requestMatchers("/v1/estoque/**").hasRole("ESTOQUE")
-                        .requestMatchers("/v1/calculadora/pH/**").hasRole("CALC")
-                        .requestMatchers(HttpMethod.GET, "/v1/estoque/**").hasRole("CALC")
                         .anyRequest().authenticated()
                 )
-                .exceptionHandling(exception -> exception
-                        .accessDeniedHandler(customAccessDeniedHandler))
-                .userDetailsService(customUserDetailsService)
-                .formLogin(form -> form
-                        .defaultSuccessUrl("/swagger-ui/index.html", true)
-                        .permitAll()
-                )
-                .logout(LogoutConfigurer::permitAll);
-
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(exception -> exception.accessDeniedHandler(customAccessDeniedHandler))
+                .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
     @Bean

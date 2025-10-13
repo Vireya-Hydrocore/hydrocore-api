@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.CannotCreateTransactionException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,14 +43,22 @@ public class FuncionarioService {
     }
 
     public List<FuncionarioResponseDTO> getAllFuncionarios() {
-        List<FuncionarioDTO> all = funcionarioRepository.listarFuncionarios(null);
+        List<FuncionarioDTO> funcionariosProjecao = funcionarioRepository.listarFuncionarios(null);
 
-        if (all.isEmpty()) {
+        if (funcionariosProjecao.isEmpty()) {
             throw new EntityNotFoundException("Nenhum Funcionario encontrado");
         }
 
-        return all.stream()
-                .map(m -> objectMapper.convertValue(m, FuncionarioResponseDTO.class))
+        return funcionariosProjecao.stream()
+                .map(projecao -> new FuncionarioResponseDTO(
+                        projecao.getId(),
+                        projecao.getNome(),
+                        projecao.getEmail(),
+                        projecao.getDataAdmissao(),
+                        projecao.getDataNascimento(),
+                        projecao.getEta(),
+                        projecao.getCargo()
+                ))
                 .toList();
     }
 
@@ -102,11 +111,7 @@ public class FuncionarioService {
                 funcionarioSalvo.getDataAdmissao(),
                 funcionarioSalvo.getDataNascimento(),
                 funcionarioSalvo.getIdEta().getNome(),
-                funcionarioSalvo.getIdCargo().getNome(),
-                funcionarioSalvo.getTarefas() != null && !funcionarioSalvo.getTarefas().isEmpty()
-                        ? funcionarioSalvo.getTarefas().get(0).getDescricao() : null,
-                funcionarioSalvo.getTarefas() != null && !funcionarioSalvo.getTarefas().isEmpty()
-                        ? funcionarioSalvo.getTarefas().get(0).getStatus() : null
+                funcionarioSalvo.getIdCargo().getNome()
         );
     }
 
@@ -136,11 +141,7 @@ public class FuncionarioService {
                 funcionarioAtualizado.getDataAdmissao(),
                 funcionarioAtualizado.getDataNascimento(),
                 funcionarioAtualizado.getIdEta().getNome(),
-                funcionarioAtualizado.getIdCargo().getNome(),
-                funcionarioAtualizado.getTarefas() != null && !funcionarioAtualizado.getTarefas().isEmpty()
-                        ? funcionarioAtualizado.getTarefas().get(0).getDescricao() : null,
-                funcionarioAtualizado.getTarefas() != null && !funcionarioAtualizado.getTarefas().isEmpty()
-                        ? funcionarioAtualizado.getTarefas().get(0).getStatus() : null
+                funcionarioAtualizado.getIdCargo().getNome()
         );
     }
 
@@ -193,11 +194,7 @@ public class FuncionarioService {
                 funcionarioAtualizado.getDataAdmissao(),
                 funcionarioAtualizado.getDataNascimento(),
                 funcionarioAtualizado.getIdEta().getNome(),
-                funcionarioAtualizado.getIdCargo().getNome(),
-                funcionarioAtualizado.getTarefas() != null && !funcionarioAtualizado.getTarefas().isEmpty()
-                        ? funcionarioAtualizado.getTarefas().get(0).getDescricao() : null,
-                funcionarioAtualizado.getTarefas() != null && !funcionarioAtualizado.getTarefas().isEmpty()
-                        ? funcionarioAtualizado.getTarefas().get(0).getStatus() : null
+                funcionarioAtualizado.getIdCargo().getNome()
         );
     }
 
