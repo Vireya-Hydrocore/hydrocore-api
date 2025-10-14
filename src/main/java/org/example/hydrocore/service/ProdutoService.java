@@ -2,6 +2,7 @@ package org.example.hydrocore.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
+import org.example.hydrocore.dto.ProdutoDTO;
 import org.example.hydrocore.dto.request.ProdutoRequestDTO;
 import org.example.hydrocore.dto.response.ProdutoResponseDTO;
 import org.example.hydrocore.repository.RepositoryProduto;
@@ -22,65 +23,125 @@ public class ProdutoService {
     @Autowired
     private ObjectMapper objectMapper;
 
-    public List<ProdutoResponseDTO> getAllProdutos(){
-        List<Produto> all = repositoryProduto.findAll();
+    public List<ProdutoResponseDTO> getAllProdutos() {
+        try {
+            List<ProdutoDTO> all = repositoryProduto.listarProdutos();
 
-        if (all.isEmpty()){
-            throw new EntityNotFoundException("Nenhum produto cadastrado");
+            if (all.isEmpty()) {
+                throw new EntityNotFoundException("Nenhum produto cadastrado");
+            }
+
+            return all.stream()
+                    .map(p -> {
+                        ProdutoResponseDTO dto = new ProdutoResponseDTO();
+                        dto.setId(p.getIdProduto());
+                        dto.setNomeProduto(p.getNomeProduto());
+                        dto.setTipo(p.getTipo());
+                        dto.setUnidadeMedida(p.getUnidadeMedida()); // já vem como String do SELECT
+                        return dto;
+                    })
+                    .toList();
+
+        } catch (EntityNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao buscar produtos: " + e.getMessage(), e);
         }
-
-        return all.stream()
-                .map(p ->
-                    objectMapper.convertValue(p, ProdutoResponseDTO.class)
-                )
-                .toList();
     }
 
-    public ProdutoResponseDTO getProdutoById(Integer id){
-        Optional<Produto> byId = repositoryProduto.findById(id);
+    public ProdutoResponseDTO getProdutoById(Integer id) {
+        try {
+            Optional<Produto> byId = repositoryProduto.findById(id);
 
-        if (byId.isEmpty()){
-            throw new EntityNotFoundException("Produto com id " + id + " não encontrado");
+            if (byId.isEmpty()) {
+                throw new EntityNotFoundException("Produto com id " + id + " não encontrado");
+            }
+
+            Produto p = byId.get();
+            ProdutoResponseDTO dto = new ProdutoResponseDTO();
+            dto.setId(p.getIdProduto());
+            dto.setNomeProduto(p.getNomeProduto());
+            dto.setTipo(p.getTipo());
+            dto.setUnidadeMedida(String.valueOf(p.getIdUnidadeMedida())); // converte ID em string
+            return dto;
+
+        } catch (EntityNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao buscar produto por id: " + e.getMessage(), e);
         }
-
-        return objectMapper.convertValue(byId.get(), ProdutoResponseDTO.class);
     }
 
-    public ProdutoResponseDTO createProduto(ProdutoRequestDTO produto){
-        Produto save = repositoryProduto.save(objectMapper.convertValue(produto, Produto.class));
+    public ProdutoResponseDTO createProduto(ProdutoRequestDTO produto) {
+        try {
+            Produto save = repositoryProduto.save(objectMapper.convertValue(produto, Produto.class));
 
-        repositoryProduto.findById(save.getIdProduto())
-                .orElseThrow(() -> new EntityNotFoundException("Produto não foi salvo no banco"));
+            repositoryProduto.findById(save.getIdProduto())
+                    .orElseThrow(() -> new EntityNotFoundException("Produto não foi salvo no banco"));
 
-        return objectMapper.convertValue(save, ProdutoResponseDTO.class);
+            ProdutoResponseDTO dto = new ProdutoResponseDTO();
+            dto.setId(save.getIdProduto());
+            dto.setNomeProduto(save.getNomeProduto());
+            dto.setTipo(save.getTipo());
+            dto.setUnidadeMedida(String.valueOf(save.getIdUnidadeMedida()));
+            return dto;
+
+        } catch (EntityNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao criar produto: " + e.getMessage(), e);
+        }
     }
 
     public ProdutoResponseDTO updateProduto(Integer id, ProdutoRequestDTO produtoRequestDTO) {
-
-        repositoryProduto.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Produto com id " + id + " não encontrado."));
         try {
+            repositoryProduto.findById(id)
+                    .orElseThrow(() -> new EntityNotFoundException("Produto com id " + id + " não encontrado."));
+
             Produto produtoParaSalvar = objectMapper.convertValue(produtoRequestDTO, Produto.class);
             produtoParaSalvar.setIdProduto(id);
 
             Produto produtoSalvo = repositoryProduto.save(produtoParaSalvar);
-            return objectMapper.convertValue(produtoSalvo, ProdutoResponseDTO.class);
+
+            ProdutoResponseDTO dto = new ProdutoResponseDTO();
+            dto.setId(produtoSalvo.getIdProduto());
+            dto.setNomeProduto(produtoSalvo.getNomeProduto());
+            dto.setTipo(produtoSalvo.getTipo());
+            dto.setUnidadeMedida(String.valueOf(produtoSalvo.getIdUnidadeMedida()));
+            return dto;
+
+        } catch (EntityNotFoundException e) {
+            throw e;
         } catch (DataIntegrityViolationException e) {
             String nomeProduto = produtoRequestDTO.getNomeProduto();
             if (e.getMessage() != null && e.getMessage().contains("produto_nome_produto_key")) {
                 throw new IllegalArgumentException("O nome do produto '" + nomeProduto + "' já está em uso por outro registro.", e);
             }
-            throw e;
+            throw new RuntimeException("Erro de integridade ao atualizar produto: " + e.getMessage(), e);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao atualizar produto: " + e.getMessage(), e);
         }
     }
 
-    public ProdutoResponseDTO deleteProduto(Integer id){
-        Produto produto = repositoryProduto.deletarProduto(id);
+    public ProdutoResponseDTO deleteProduto(Integer id) {
+        try {
+            Produto produto = repositoryProduto.deletarProduto(id);
 
-        if (produto == null){
-            throw new EntityNotFoundException("Produto com id " + id + " não encontrado");
+            if (produto == null) {
+                throw new EntityNotFoundException("Produto com id " + id + " não encontrado");
+            }
+
+            ProdutoResponseDTO dto = new ProdutoResponseDTO();
+            dto.setId(produto.getIdProduto());
+            dto.setNomeProduto(produto.getNomeProduto());
+            dto.setTipo(produto.getTipo());
+            dto.setUnidadeMedida(String.valueOf(produto.getIdUnidadeMedida()));
+            return dto;
+
+        } catch (EntityNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao deletar produto: " + e.getMessage(), e);
         }
-
-        return objectMapper.convertValue(produto, ProdutoResponseDTO.class);
     }
 }

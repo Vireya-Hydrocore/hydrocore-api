@@ -19,7 +19,7 @@ public class Produto {
 
     private String tipo;
 
-    @Column(name = "unidade_medida")
-    private String unidadeMedida;
+    @Column(name = "id_unidade")
+    private Integer idUnidadeMedida;
 
 }
