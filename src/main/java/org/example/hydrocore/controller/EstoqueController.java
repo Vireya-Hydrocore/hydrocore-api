@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.example.hydrocore.dto.response.EstoqueResponseDTO;
+import org.example.hydrocore.dto.response.ProdutoEtaResponseDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,5 +27,15 @@ public interface EstoqueController {
             @ApiResponse(responseCode = "204", description = "Nenhum produto no estoque foi encontrado")
     })
     ResponseEntity<List<EstoqueResponseDTO>> mostrarEstoqueComNomes();
+
+    @GetMapping("/listar/produtos")
+    @Operation(summary = "Listar a quantidade de produtos por eta")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista os produtos por eta",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ProdutoEtaResponseDTO.class))),
+            @ApiResponse(responseCode = "204", description = "Nenhum produto no estoque foi encontrado")
+    })
+    ResponseEntity<List<ProdutoEtaResponseDTO>> mostarQuantidadeProdutosPorEta();
 
 }
