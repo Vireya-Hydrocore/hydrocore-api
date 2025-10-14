@@ -11,12 +11,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProdutoResponseDTO {
 
-    private Integer idProduto;
-
+    private Integer id;
     private String nomeProduto;
-
     private String tipo;
-
     private String unidadeMedida;
 
 }
