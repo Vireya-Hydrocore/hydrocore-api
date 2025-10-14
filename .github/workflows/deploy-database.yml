@@ -3,7 +3,7 @@ name: Verificar Deploy no Render
 on:
   push:
     branches:
-      - main
+      - main  
 
 jobs:
   check-deploy:
@@ -11,14 +11,8 @@ jobs:
 
     steps:
       - name: Checar se o serviço está no ar
-        uses: actions/http-client@v1
-        with:
-          url: https://hydrocore-api-prod.onrender.com/v1/health
-          method: GET
-
-      - name: Validar status
         run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://seu-app-render.onrender.com/health)
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://hydrocore-api-prod.onrender.com/v1/health)
           if [ "$STATUS" -ne 200 ]; then
             echo "Deploy falhou! Status: $STATUS"
             exit 1
