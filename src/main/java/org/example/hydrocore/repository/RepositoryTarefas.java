@@ -18,7 +18,7 @@ public interface RepositoryTarefas extends JpaRepository<Tarefas, Integer> {
             t.descricao,
             t.dataCriacao,
             t.dataConclusao,
-            t.status,
+            t.idStatus,
             p.nivel,
             f.idFuncionario
        )
@@ -34,7 +34,7 @@ public interface RepositoryTarefas extends JpaRepository<Tarefas, Integer> {
             t.descricao,
             t.dataCriacao,
             t.dataConclusao,
-            t.status,
+            t.idStatus,
             p.nivel,
             f.idFuncionario 
        )

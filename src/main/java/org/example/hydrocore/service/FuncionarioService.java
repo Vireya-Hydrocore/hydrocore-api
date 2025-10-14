@@ -2,6 +2,8 @@ package org.example.hydrocore.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
+import org.example.hydrocore.dto.ResumoTarefasDTO;
+import org.example.hydrocore.dto.ResumoTarefasResponseDTO;
 import org.example.hydrocore.dto.request.FuncionarioPatchRequestDTO;
 import org.example.hydrocore.dto.request.FuncionarioRequestDTO;
 import org.example.hydrocore.dto.response.FuncionarioIdResponseDTO;
@@ -198,7 +200,15 @@ public class FuncionarioService {
         );
     }
 
+    public ResumoTarefasResponseDTO resumoTarefasUsuario(Integer idFuncionario){
+        ResumoTarefasDTO resumo = funcionarioRepository.resumoTarefasUsuario(idFuncionario);
 
+        if (resumo == null) {
+            throw new EntityNotFoundException("Nenhuma tarefa encontrada para o usuário com id " + idFuncionario);
+        }
 
+        return objectMapper.convertValue(resumo, ResumoTarefasResponseDTO.class);
+
+    }
 
 }

@@ -1,6 +1,7 @@
 package org.example.hydrocore.controller.impl;
 
 import org.example.hydrocore.controller.FuncionarioController;
+import org.example.hydrocore.dto.ResumoTarefasResponseDTO;
 import org.example.hydrocore.dto.request.FuncionarioPatchRequestDTO;
 import org.example.hydrocore.dto.request.FuncionarioRequestDTO;
 import org.example.hydrocore.dto.response.FuncionarioIdResponseDTO;
@@ -51,6 +52,11 @@ public class FuncionarioControllerImpl implements FuncionarioController {
     @Override
     public ResponseEntity<FuncionarioResponseDTO> atualizarFuncionarioParcial(Integer id, FuncionarioPatchRequestDTO requestDTO) {
         return ResponseEntity.ok(funcionarioService.atualizarParcialFuncionario(id, requestDTO));
+    }
+
+    @Override
+    public ResponseEntity<ResumoTarefasResponseDTO> resumoTarefasUsuario(Integer idFuncionario) {
+        return ResponseEntity.ok(funcionarioService.resumoTarefasUsuario(idFuncionario));
     }
 
 }

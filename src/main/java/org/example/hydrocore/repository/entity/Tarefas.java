@@ -28,7 +28,7 @@ public class Tarefas {
     @Column(name = "data_conclusao")
     private LocalDateTime dataConclusao;
 
-    private String status;
+    private Integer idStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_prioridade", nullable = false)

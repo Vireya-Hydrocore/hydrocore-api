@@ -1,5 +1,6 @@
 package org.example.hydrocore.repository;
 
+import org.example.hydrocore.dto.ResumoTarefasDTO;
 import org.example.hydrocore.projection.FuncionarioDTO;
 import org.example.hydrocore.repository.entity.Funcionario;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,5 +22,8 @@ public interface RepositoryFuncionario extends JpaRepository<Funcionario, Intege
     Integer getIdFuncionario(String email);
 
     Optional<Funcionario> findByEmail(String email);
+
+    @Query(value = "SELECT * FROM resumo_tarefas_usuario(:idFuncionario)", nativeQuery = true)
+    ResumoTarefasDTO resumoTarefasUsuario(@Param("idFuncionario") Integer idFuncionario);
 
 }
