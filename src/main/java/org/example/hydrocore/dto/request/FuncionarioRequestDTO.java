@@ -23,6 +23,10 @@ public class FuncionarioRequestDTO {
     @Email(message = "Formato de email inválido")
     private String email;
 
+    @NotBlank(message = "A senha não pode ser vazia")
+    @Size(min = 8, max = 100, message = "A senha deve ter entre 8 e 100 caracteres")
+    private String senha;
+
     @NotNull(message = "A data de admissão é obrigatória")
     @PastOrPresent(message = "A data de admissão não pode ser futura")
     @JsonFormat(pattern = "yyyy-MM-dd")

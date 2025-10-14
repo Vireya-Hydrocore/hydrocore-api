@@ -99,6 +99,7 @@ public class FuncionarioService {
         Funcionario funcionario = new Funcionario();
         funcionario.setNome(requestDTO.getNome());
         funcionario.setEmail(requestDTO.getEmail());
+        funcionario.setSenha(requestDTO.getSenha());
         funcionario.setDataAdmissao(requestDTO.getDataAdmissao());
         funcionario.setDataNascimento(requestDTO.getDataNascimento());
         funcionario.setIdEta(eta);
