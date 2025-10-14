@@ -1,11 +1,13 @@
 package org.example.hydrocore.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.example.hydrocore.dto.ResumoTarefasResponseDTO;
 import org.example.hydrocore.dto.request.FuncionarioPatchRequestDTO;
 import org.example.hydrocore.dto.request.FuncionarioRequestDTO;
 import org.example.hydrocore.dto.response.FuncionarioIdResponseDTO;
@@ -91,5 +93,16 @@ public interface FuncionarioController {
     })
     ResponseEntity<FuncionarioResponseDTO> atualizarFuncionarioParcial(@PathVariable Integer id,
                                                                 @Valid @RequestBody FuncionarioPatchRequestDTO requestDTO);
+
+
+    @GetMapping("/resumo-tarefas")
+    @Operation(summary = "Mostra o resumo de tarefas do funcionário", description = "Mostra o resumo de tarefas do funcionário por id")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Resumo de tarefas do funcionário retornado com sucesso",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ResumoTarefasResponseDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Funcionário não encontrado")
+    })
+    ResponseEntity<ResumoTarefasResponseDTO> resumoTarefasUsuario(@RequestHeader("id") Integer id);
 
 }

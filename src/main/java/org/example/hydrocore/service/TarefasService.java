@@ -63,7 +63,15 @@ public class TarefasService {
         Tarefas novaTarefa = objectMapper.convertValue(requestDTO, Tarefas.class);
 
         novaTarefa.setDataCriacao(LocalDateTime.now());
-        novaTarefa.setStatus(requestDTO.getStatus() != null ? requestDTO.getStatus() : "Pendente");
+
+        switch (requestDTO.getStatus()) {
+            case "concluida":
+                novaTarefa.setIdStatus(2);
+                break;
+            default:
+                novaTarefa.setIdStatus(1);
+                break;
+        }
 
         if (requestDTO.getNivel() == null || requestDTO.getNivel().isBlank()) {
             throw new IllegalArgumentException("O nível de prioridade (nivel) deve ser fornecido ao criar uma tarefa.");
@@ -77,16 +85,17 @@ public class TarefasService {
 
         return objectMapper.convertValue(salva, TarefasResponseDTO.class);
     }
+
     @Transactional
     public TarefasResponseDTO atualizarStatusTarefa(Integer idTarefa, String status) {
         Tarefas tarefa = repositoryTarefas.findById(idTarefa)
                 .orElseThrow(() -> new EntityNotFoundException("Tarefa com ID " + idTarefa + " não encontrada."));
 
         if ("pendente".equalsIgnoreCase(status)) {
-            tarefa.setStatus("Pendente");
+            tarefa.setIdStatus(1);
             tarefa.setDataConclusao(null);
         } else if ("concluida".equalsIgnoreCase(status)) {
-            tarefa.setStatus("Concluída");
+            tarefa.setIdStatus(3);
             tarefa.setDataConclusao(LocalDateTime.now());
         } else {
             throw new IllegalArgumentException("Status inválido. Use 'pendente' ou 'concluida'.");
@@ -162,10 +171,10 @@ public class TarefasService {
 
         if (requestDTO.getStatus() != null) {
             if ("concluida".equalsIgnoreCase(requestDTO.getStatus())) {
-                tarefaExistente.setStatus("Concluída");
+                tarefaExistente.setIdStatus(3);
                 tarefaExistente.setDataConclusao(LocalDateTime.now());
             } else if ("pendente".equalsIgnoreCase(requestDTO.getStatus())) {
-                tarefaExistente.setStatus("Pendente");
+                tarefaExistente.setIdStatus(1);
                 tarefaExistente.setDataConclusao(null);
             } else {
                 throw new IllegalArgumentException("Status inválido no PUT. Use 'pendente' ou 'concluida'.");
