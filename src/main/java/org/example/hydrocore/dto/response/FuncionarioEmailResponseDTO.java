@@ -9,8 +9,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class FuncionarioIdResponseDTO {
+public class FuncionarioEmailResponseDTO {
 
-    private Integer idFuncionario;
+    private String nome;
+    private String cargo;
+    private Integer id;
 
 }

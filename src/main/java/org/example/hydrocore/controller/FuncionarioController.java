@@ -1,7 +1,6 @@
 package org.example.hydrocore.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -10,7 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.example.hydrocore.dto.ResumoTarefasResponseDTO;
 import org.example.hydrocore.dto.request.FuncionarioPatchRequestDTO;
 import org.example.hydrocore.dto.request.FuncionarioRequestDTO;
-import org.example.hydrocore.dto.response.FuncionarioIdResponseDTO;
+import org.example.hydrocore.dto.response.FuncionarioEmailResponseDTO;
 import org.example.hydrocore.dto.response.FuncionarioResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -74,14 +73,14 @@ public interface FuncionarioController {
     ResponseEntity<FuncionarioResponseDTO> deletarFuncionario(@PathVariable Integer id);
 
     @GetMapping("/email")
-    @Operation(summary = "Retorna o id do funcionario", description = "Busca id do funcionario pelo email")
+    @Operation(summary = "Retorna informações do funcionário", description = "Retorna o ID, nome e cargo do funcionário pelo email")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Funcionario encontrado",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = FuncionarioIdResponseDTO.class))),
+                            schema = @Schema(implementation = FuncionarioEmailResponseDTO.class))),
             @ApiResponse(responseCode = "404", description = "Funcionário não encontrado")
     })
-    ResponseEntity<FuncionarioIdResponseDTO> buscarIdFuncionarioPorEmail(@RequestHeader("email") String email);
+    ResponseEntity<FuncionarioEmailResponseDTO> buscarIdFuncionarioPorEmail(@RequestHeader("email") String email);
 
     @PatchMapping("/atualizar-parcial/{id}")
     @Operation(summary = "Atualiza um funcionário existente", description = "Atualiza parcialmente os dados de um funcionário")

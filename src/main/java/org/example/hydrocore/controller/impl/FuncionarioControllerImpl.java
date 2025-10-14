@@ -4,7 +4,7 @@ import org.example.hydrocore.controller.FuncionarioController;
 import org.example.hydrocore.dto.ResumoTarefasResponseDTO;
 import org.example.hydrocore.dto.request.FuncionarioPatchRequestDTO;
 import org.example.hydrocore.dto.request.FuncionarioRequestDTO;
-import org.example.hydrocore.dto.response.FuncionarioIdResponseDTO;
+import org.example.hydrocore.dto.response.FuncionarioEmailResponseDTO;
 import org.example.hydrocore.dto.response.FuncionarioResponseDTO;
 import org.example.hydrocore.service.FuncionarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +45,7 @@ public class FuncionarioControllerImpl implements FuncionarioController {
     }
 
     @Override
-    public ResponseEntity<FuncionarioIdResponseDTO> buscarIdFuncionarioPorEmail(String email) {
+    public ResponseEntity<FuncionarioEmailResponseDTO> buscarIdFuncionarioPorEmail(String email) {
         return ResponseEntity.ok(funcionarioService.mostrarFuncionarioPorEmail(email));
     }
 

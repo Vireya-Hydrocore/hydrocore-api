@@ -2,11 +2,12 @@ package org.example.hydrocore.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
+import org.example.hydrocore.dto.FuncionarioEmailDTO;
 import org.example.hydrocore.dto.ResumoTarefasDTO;
 import org.example.hydrocore.dto.ResumoTarefasResponseDTO;
 import org.example.hydrocore.dto.request.FuncionarioPatchRequestDTO;
 import org.example.hydrocore.dto.request.FuncionarioRequestDTO;
-import org.example.hydrocore.dto.response.FuncionarioIdResponseDTO;
+import org.example.hydrocore.dto.response.FuncionarioEmailResponseDTO;
 import org.example.hydrocore.dto.response.FuncionarioResponseDTO;
 import org.example.hydrocore.projection.FuncionarioDTO;
 import org.example.hydrocore.repository.RepositoryCargo;
@@ -19,9 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.CannotCreateTransactionException;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class FuncionarioService {
@@ -148,17 +147,21 @@ public class FuncionarioService {
         );
     }
 
-    public FuncionarioIdResponseDTO mostrarFuncionarioPorEmail(String email){
-        Integer idFuncionario = funcionarioRepository.getIdFuncionario(email);
+    public FuncionarioEmailResponseDTO mostrarFuncionarioPorEmail(String email){
+        FuncionarioEmailDTO funcionarioEmailDTO = funcionarioRepository.getFuncionarioByEmail(email);
 
-        if (idFuncionario == null) {
+        if (funcionarioEmailDTO == null) {
             throw new EntityNotFoundException("Funcionário com o e-mail '" + email + "' não foi encontrado.");
         }
 
-        FuncionarioIdResponseDTO responseDTO = new FuncionarioIdResponseDTO();
-        responseDTO.setIdFuncionario(idFuncionario);
+        FuncionarioEmailResponseDTO funcionarioEmailResponseDTO = new FuncionarioEmailResponseDTO();
 
-        return responseDTO;
+        funcionarioEmailResponseDTO.setNome(funcionarioEmailDTO.getNome());
+        funcionarioEmailResponseDTO.setCargo(funcionarioEmailDTO.getCargo());
+        funcionarioEmailResponseDTO.setId(funcionarioEmailDTO.getId());
+
+        return funcionarioEmailResponseDTO;
+
     }
 
     public FuncionarioResponseDTO atualizarParcialFuncionario(Integer id, FuncionarioPatchRequestDTO requestDTO) {
