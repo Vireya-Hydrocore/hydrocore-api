@@ -3,7 +3,7 @@ package org.example.hydrocore.repository;
 import org.example.hydrocore.dto.FuncionarioEmailDTO;
 import org.example.hydrocore.dto.ResumoTarefasDTO;
 import org.example.hydrocore.projection.FuncionarioDTO;
-import org.example.hydrocore.repository.entity.Funcionario;
+import org.example.hydrocore.model.Funcionario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

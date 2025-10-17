@@ -1,7 +1,7 @@
 package org.example.hydrocore.controller.impl;
 
 import org.example.hydrocore.controller.FuncionarioController;
-import org.example.hydrocore.dto.ResumoTarefasResponseDTO;
+import org.example.hydrocore.dto.response.ResumoTarefasResponseDTO;
 import org.example.hydrocore.dto.request.FuncionarioPatchRequestDTO;
 import org.example.hydrocore.dto.request.FuncionarioRequestDTO;
 import org.example.hydrocore.dto.response.FuncionarioEmailResponseDTO;

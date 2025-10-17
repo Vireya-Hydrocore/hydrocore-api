@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.example.hydrocore.dto.ResumoTarefasResponseDTO;
+import org.example.hydrocore.dto.response.ResumoTarefasResponseDTO;
 import org.example.hydrocore.dto.request.FuncionarioPatchRequestDTO;
 import org.example.hydrocore.dto.request.FuncionarioRequestDTO;
 import org.example.hydrocore.dto.response.FuncionarioEmailResponseDTO;

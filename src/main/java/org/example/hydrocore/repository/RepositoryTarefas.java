@@ -1,7 +1,8 @@
 package org.example.hydrocore.repository;
 
-import org.example.hydrocore.dto.TarefasDTO;
-import org.example.hydrocore.repository.entity.Tarefas;
+import org.example.hydrocore.dto.TarefasProjection;
+import org.example.hydrocore.model.Tarefas;
+import org.example.hydrocore.projection.ResumoTarefasEtaProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,39 +13,36 @@ import java.util.List;
 @Repository
 public interface RepositoryTarefas extends JpaRepository<Tarefas, Integer> {
 
-    @Query("""
-       SELECT new org.example.hydrocore.dto.TarefasDTO(
-            t.idTarefa,
-            t.descricao,
-            t.dataCriacao,
-            t.dataConclusao,
-            t.idStatus,
-            p.nivel,
-            f.idFuncionario
-       )
-       FROM tarefa t
-       LEFT JOIN t.prioridade p
-       LEFT JOIN t.idFuncionario f
-       """)
-    List<TarefasDTO> findAllTarefas();
+    @Query(value = """
+        SELECT t.id_tarefa AS id, t.descricao, t.data_criacao AS dataCriacao, t.data_conclusao AS dataConclusao, p.nivel AS prioridade, f.nome AS nome, s.status AS status FROM tarefa t
+       JOIN funcionario f ON t.id_funcionario = f.id_funcionario
+       JOIN cargo c ON f.id_cargo = c.id_cargo
+       JOIN prioridade p ON t.id_prioridade = p.id_prioridade
+       JOIN status s ON t.id_status = s.id_status
+       """, nativeQuery = true)
+    List<TarefasProjection> findAllTarefas();
 
-    @Query("""
-       SELECT new org.example.hydrocore.dto.TarefasDTO(
-            t.idTarefa,
-            t.descricao,
-            t.dataCriacao,
-            t.dataConclusao,
-            t.idStatus,
-            p.nivel,
-            f.idFuncionario 
-       )
-       FROM tarefa t
-       JOIN t.idFuncionario f
-       JOIN t.prioridade p
-       WHERE f.nome LIKE CONCAT('%', :nome, '%')
-       """)
-    List<TarefasDTO> findAllTarefasPorNome(@Param("nome") String nome);
+    @Query(value = """
+   SELECT t.id_tarefa AS id, t.descricao, t.data_criacao AS dataCriacao, t.data_conclusao AS dataConclusao, p.nivel AS prioridade, f.nome AS nome, s.status AS status FROM tarefa t
+   JOIN funcionario f ON t.id_funcionario = f.id_funcionario
+   JOIN cargo c ON f.id_cargo = c.id_cargo
+   JOIN prioridade p ON t.id_prioridade = p.id_prioridade
+   JOIN status s ON t.id_status = s.id_status
+   WHERE LOWER(f.nome) LIKE LOWER(CONCAT('%', :nome, '%'))
+   """, nativeQuery = true)
+    List<TarefasProjection> findAllTarefasPorNome(@Param("nome") String nome);
 
-    @Query(value = "DELETE FROM tarefas WHERE id_tarefa = :idTarefa RETURNING *", nativeQuery = true)
-    Tarefas deletarTarefas(@Param("idFuncionario") Integer idTarefa);
+    @Query(value = """
+       SELECT t.id_tarefa AS id, t.descricao, t.data_criacao AS dataCriacao, t.data_conclusao AS dataConclusao, p.nivel AS prioridade, f.nome AS nome, s.status AS status FROM tarefa t
+       JOIN funcionario f ON t.id_funcionario = f.id_funcionario
+       JOIN cargo c ON f.id_cargo = c.id_cargo
+       JOIN prioridade p ON t.id_prioridade = p.id_prioridade
+       JOIN status s ON t.id_status = s.id_status
+       WHERE t.id_tarefa = :idTarefa
+       """, nativeQuery = true)
+    TarefasProjection findTarefasPorId(@Param("idTarefa") Integer idTarefa);
+
+    @Query(value = "SELECT * FROM resumo_tarefas_eta(:idEta)", nativeQuery = true)
+    ResumoTarefasEtaProjection resumoTarefasEta(@Param("idEta") Integer idEta);
+
 }

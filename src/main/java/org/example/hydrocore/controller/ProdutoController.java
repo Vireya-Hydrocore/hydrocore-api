@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.example.hydrocore.dto.request.ProdutoRequestDTO;
 import org.example.hydrocore.dto.response.ProdutoResponseDTO;
+import org.example.hydrocore.dto.response.ProdutosUsadosMesResponseDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -68,5 +69,15 @@ public interface ProdutoController {
             @ApiResponse(responseCode = "404", description = "Produto não encontrado")
     })
     ResponseEntity<ProdutoResponseDTO> deletarProduto(@PathVariable("id") Integer id);
+
+    @GetMapping("/usados")
+    @Operation(summary = "Mostra os produtos mais usados", description = "Mostra os produtos mais usados no mês e ano")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Produtos encontrados para o mês e ano informado",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ProdutoResponseDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Produtos não encontrado")
+    })
+    ResponseEntity<List<ProdutosUsadosMesResponseDTO>> produtosMaisUsados(@RequestHeader("mes") Integer mes, @RequestHeader ("ano") Integer ano);
 
 }

@@ -1,5 +1,6 @@
-package org.example.hydrocore.repository.entity;
+package org.example.hydrocore.model;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,4 +21,8 @@ public class Prioridade {
 
     private String nivel;
 
+    @JsonValue
+    public String getNivel() {
+        return nivel;
+    }
 }

@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class EstoqueResponseDTO {
 
-    private Integer idEstoque;
+    private Integer id;
 
     private Integer quantidade;
 
