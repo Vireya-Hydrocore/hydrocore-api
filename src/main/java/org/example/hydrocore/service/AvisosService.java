@@ -6,7 +6,7 @@ import org.example.hydrocore.dto.request.AvisoPatchRequestDTO;
 import org.example.hydrocore.dto.request.AvisosRequestDTO;
 import org.example.hydrocore.dto.response.AvisosResponseDTO;
 import org.example.hydrocore.repository.RepositoryAvisos;
-import org.example.hydrocore.repository.entity.Avisos;
+import org.example.hydrocore.model.Avisos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;

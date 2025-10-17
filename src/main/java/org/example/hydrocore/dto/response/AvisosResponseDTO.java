@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class AvisosResponseDTO {
 
-    private Integer idAvisos;
+    private Integer id;
 
     private String descricao;
 

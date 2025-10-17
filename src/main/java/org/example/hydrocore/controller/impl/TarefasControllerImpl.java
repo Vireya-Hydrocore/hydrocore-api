@@ -1,6 +1,7 @@
 package org.example.hydrocore.controller.impl;
 
 import org.example.hydrocore.controller.TarefasController;
+import org.example.hydrocore.dto.ResumoTarefasEtaResponseDTO;
 import org.example.hydrocore.dto.request.TarefasRequestDTO;
 import org.example.hydrocore.dto.response.TarefasResponseDTO;
 import org.example.hydrocore.service.TarefasService;
@@ -54,6 +55,11 @@ public class TarefasControllerImpl implements TarefasController {
     @Override
     public ResponseEntity<TarefasResponseDTO> atualizarTarefaCompleta(Integer idTarefa, TarefasRequestDTO tarefasRequestDTO){
         return ResponseEntity.ok(tarefasService.atualizarTarefaCompleta(idTarefa, tarefasRequestDTO));
+    }
+
+    @Override
+    public ResponseEntity<ResumoTarefasEtaResponseDTO> resumoTarefasPorEta(Integer idEta) {
+        return ResponseEntity.ok(tarefasService.mostrarResumoTarefasEta(idEta));
     }
 
 }

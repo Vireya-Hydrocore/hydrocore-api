@@ -3,10 +3,12 @@ package org.example.hydrocore.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.example.hydrocore.dto.ProdutoDTO;
+import org.example.hydrocore.dto.ProdutosUsadosMesDTO;
 import org.example.hydrocore.dto.request.ProdutoRequestDTO;
 import org.example.hydrocore.dto.response.ProdutoResponseDTO;
+import org.example.hydrocore.dto.response.ProdutosUsadosMesResponseDTO;
 import org.example.hydrocore.repository.RepositoryProduto;
-import org.example.hydrocore.repository.entity.Produto;
+import org.example.hydrocore.model.Produto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -144,4 +146,15 @@ public class ProdutoService {
             throw new RuntimeException("Erro ao deletar produto: " + e.getMessage(), e);
         }
     }
+
+    public List<ProdutosUsadosMesResponseDTO> getProdutosMaisUsadosMes(Integer mes, Integer ano){
+            List<ProdutosUsadosMesDTO> produtos = repositoryProduto.listarProdutosUsadosMes(mes, ano);
+
+            if (produtos.isEmpty()) {
+                throw new EntityNotFoundException("Nenhum produto usado no mês " + mes + " de " + ano);
+            }
+
+            return produtos.stream().map(p -> objectMapper.convertValue(p, ProdutosUsadosMesResponseDTO.class)).toList();
+    }
+
 }

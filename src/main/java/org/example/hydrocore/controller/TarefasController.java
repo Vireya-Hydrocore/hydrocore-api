@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.example.hydrocore.dto.ResumoTarefasEtaResponseDTO;
 import org.example.hydrocore.dto.request.TarefasRequestDTO;
 import org.example.hydrocore.dto.response.TarefasResponseDTO;
 import org.springframework.http.ResponseEntity;
@@ -108,5 +109,15 @@ public interface TarefasController {
     ResponseEntity<TarefasResponseDTO> atualizarTarefaCompleta(
             @PathVariable("id") Integer idTarefa,
             @RequestBody TarefasRequestDTO tarefasRequestDTO);
+
+    @GetMapping("/resumo/{idEta}")
+    @Operation(summary = "Resumo de tarefas por eta", description = "Retorna o resumo de tarefas por eta")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Tarefas encontradas com sucesso",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ResumoTarefasEtaResponseDTO.class))),
+            @ApiResponse(responseCode = "204", description = "Nenhuma tarefa encontrada para a eta especificada")
+    })
+    ResponseEntity<ResumoTarefasEtaResponseDTO> resumoTarefasPorEta(@PathVariable Integer idEta);
 
 }

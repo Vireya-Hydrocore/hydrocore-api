@@ -1,4 +1,4 @@
-package org.example.hydrocore.repository.entity;
+package org.example.hydrocore.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PositiveOrZero;

@@ -1,4 +1,4 @@
-package org.example.hydrocore.repository.entity;
+package org.example.hydrocore.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ public class Avisos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_avisos")
-    private Integer idAvisos;
+    private Integer id;
 
     private String descricao;
 

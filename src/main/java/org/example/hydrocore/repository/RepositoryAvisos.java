@@ -1,6 +1,6 @@
 package org.example.hydrocore.repository;
 
-import org.example.hydrocore.repository.entity.Avisos;
+import org.example.hydrocore.model.Avisos;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

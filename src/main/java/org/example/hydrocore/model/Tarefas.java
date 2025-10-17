@@ -1,4 +1,4 @@
-package org.example.hydrocore.repository.entity;
+package org.example.hydrocore.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity(name = "tarefa")
@@ -23,14 +24,14 @@ public class Tarefas {
     private String descricao;
 
     @Column(name = "data_criacao")
-    private LocalDateTime dataCriacao;
+    private LocalDate dataCriacao;
 
     @Column(name = "data_conclusao")
-    private LocalDateTime dataConclusao;
+    private LocalDate dataConclusao;
 
     private Integer idStatus;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_prioridade", nullable = false)
     private Prioridade prioridade;
 
