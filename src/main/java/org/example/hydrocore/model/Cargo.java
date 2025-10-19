@@ -21,8 +21,5 @@ public class Cargo {
     @Column(name = "acesso", columnDefinition = "TEXT")
     private String acesso;
 
-    @Column(name = "id_pai")
-    private Integer idPai;
-
 }
 

@@ -50,7 +50,7 @@ public interface ProdutoController {
     ResponseEntity<ProdutoResponseDTO> criarProduto(@RequestBody @Valid ProdutoRequestDTO produtoRequestDTO);
 
     @PutMapping("/atualizar/{id}")
-    @Operation(summary = "Atualiza um produto", description = "Atualiza um produto existente")
+    @Operation(summary = "Atualiza um produto", description = "Atualiza um produto existente. Utilize a unidade de medida como kilos, litros ou unidade")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Produto atualizado com sucesso",
                     content = @Content(mediaType = "application/json",
