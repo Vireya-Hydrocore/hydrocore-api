@@ -26,56 +26,41 @@ public class ProdutoService {
     private ObjectMapper objectMapper;
 
     public List<ProdutoResponseDTO> getAllProdutos() {
-        try {
-            List<ProdutoDTO> all = repositoryProduto.listarProdutos();
+        List<ProdutoDTO> all = repositoryProduto.listarProdutos();
 
-            if (all.isEmpty()) {
-                throw new EntityNotFoundException("Nenhum produto cadastrado");
-            }
-
-            return all.stream()
-                    .map(p -> {
-                        ProdutoResponseDTO dto = new ProdutoResponseDTO();
-                        dto.setId(p.getIdProduto());
-                        dto.setNomeProduto(p.getNomeProduto());
-                        dto.setTipo(p.getTipo());
-                        dto.setUnidadeMedida(p.getUnidadeMedida()); // já vem como String do SELECT
-                        return dto;
-                    })
-                    .toList();
-
-        } catch (EntityNotFoundException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao buscar produtos: " + e.getMessage(), e);
+        if (all.isEmpty()) {
+            throw new EntityNotFoundException("Nenhum produto cadastrado");
         }
+
+        return all.stream()
+                .map(p -> {
+                    ProdutoResponseDTO dto = new ProdutoResponseDTO();
+                    dto.setId(p.getIdProduto());
+                    dto.setNomeProduto(p.getNomeProduto());
+                    dto.setTipo(p.getTipo());
+                    dto.setUnidadeMedida(p.getUnidadeMedida());
+                    return dto;
+                })
+                .toList();
     }
 
     public ProdutoResponseDTO getProdutoById(Integer id) {
-        try {
-            Optional<Produto> byId = repositoryProduto.findById(id);
+        Optional<Produto> byId = repositoryProduto.findById(id);
 
-            if (byId.isEmpty()) {
-                throw new EntityNotFoundException("Produto com id " + id + " não encontrado");
-            }
-
-            Produto p = byId.get();
-            ProdutoResponseDTO dto = new ProdutoResponseDTO();
-            dto.setId(p.getIdProduto());
-            dto.setNomeProduto(p.getNomeProduto());
-            dto.setTipo(p.getTipo());
-            dto.setUnidadeMedida(String.valueOf(p.getIdUnidadeMedida())); // converte ID em string
-            return dto;
-
-        } catch (EntityNotFoundException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao buscar produto por id: " + e.getMessage(), e);
+        if (byId.isEmpty()) {
+            throw new EntityNotFoundException("Produto com id " + id + " não encontrado");
         }
+
+        Produto p = byId.get();
+        ProdutoResponseDTO dto = new ProdutoResponseDTO();
+        dto.setId(p.getIdProduto());
+        dto.setNomeProduto(p.getNomeProduto());
+        dto.setTipo(p.getTipo());
+        dto.setUnidadeMedida(String.valueOf(p.getIdUnidadeMedida())); // converte ID em string
+        return dto;
     }
 
     public ProdutoResponseDTO createProduto(ProdutoRequestDTO produto) {
-        try {
             Produto save = repositoryProduto.save(objectMapper.convertValue(produto, Produto.class));
 
             repositoryProduto.findById(save.getIdProduto())
@@ -87,64 +72,51 @@ public class ProdutoService {
             dto.setTipo(save.getTipo());
             dto.setUnidadeMedida(String.valueOf(save.getIdUnidadeMedida()));
             return dto;
-
-        } catch (EntityNotFoundException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao criar produto: " + e.getMessage(), e);
-        }
     }
 
     public ProdutoResponseDTO updateProduto(Integer id, ProdutoRequestDTO produtoRequestDTO) {
-        try {
-            repositoryProduto.findById(id)
-                    .orElseThrow(() -> new EntityNotFoundException("Produto com id " + id + " não encontrado."));
+        repositoryProduto.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Produto com id " + id + " não encontrado."));
 
-            Produto produtoParaSalvar = objectMapper.convertValue(produtoRequestDTO, Produto.class);
-            produtoParaSalvar.setIdProduto(id);
+        Produto produtoParaSalvar = objectMapper.convertValue(produtoRequestDTO, Produto.class);
+        produtoParaSalvar.setIdProduto(id);
 
-            Produto produtoSalvo = repositoryProduto.save(produtoParaSalvar);
+        String unidadeStr = produtoRequestDTO.getUnidadeMedida().trim().toLowerCase();
+        Integer idUnidade = switch (unidadeStr) {
+            case "kilos" -> 1;
+            case "litro" -> 2;
+            case "unidade" -> 3;
+            default -> throw new IllegalArgumentException(
+                    "Unidade '" + unidadeStr + "' inválida. Use: kilos, litro ou unidade.");
+        };
+        produtoParaSalvar.setIdUnidadeMedida(idUnidade);
 
-            ProdutoResponseDTO dto = new ProdutoResponseDTO();
-            dto.setId(produtoSalvo.getIdProduto());
-            dto.setNomeProduto(produtoSalvo.getNomeProduto());
-            dto.setTipo(produtoSalvo.getTipo());
-            dto.setUnidadeMedida(String.valueOf(produtoSalvo.getIdUnidadeMedida()));
-            return dto;
+        Produto produtoSalvo = repositoryProduto.save(produtoParaSalvar);
 
-        } catch (EntityNotFoundException e) {
-            throw e;
-        } catch (DataIntegrityViolationException e) {
-            String nomeProduto = produtoRequestDTO.getNomeProduto();
-            if (e.getMessage() != null && e.getMessage().contains("produto_nome_produto_key")) {
-                throw new IllegalArgumentException("O nome do produto '" + nomeProduto + "' já está em uso por outro registro.", e);
-            }
-            throw new RuntimeException("Erro de integridade ao atualizar produto: " + e.getMessage(), e);
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao atualizar produto: " + e.getMessage(), e);
-        }
+        ProdutoResponseDTO dto = new ProdutoResponseDTO();
+        dto.setId(produtoSalvo.getIdProduto());
+        dto.setNomeProduto(produtoSalvo.getNomeProduto());
+        dto.setTipo(produtoSalvo.getTipo());
+        dto.setUnidadeMedida(produtoRequestDTO.getUnidadeMedida());
+
+        return dto;
     }
 
+
+
     public ProdutoResponseDTO deleteProduto(Integer id) {
-        try {
-            Produto produto = repositoryProduto.deletarProduto(id);
+        Produto produto = repositoryProduto.deletarProduto(id);
 
-            if (produto == null) {
-                throw new EntityNotFoundException("Produto com id " + id + " não encontrado");
-            }
-
-            ProdutoResponseDTO dto = new ProdutoResponseDTO();
-            dto.setId(produto.getIdProduto());
-            dto.setNomeProduto(produto.getNomeProduto());
-            dto.setTipo(produto.getTipo());
-            dto.setUnidadeMedida(String.valueOf(produto.getIdUnidadeMedida()));
-            return dto;
-
-        } catch (EntityNotFoundException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao deletar produto: " + e.getMessage(), e);
+        if (produto == null) {
+            throw new EntityNotFoundException("Produto com id " + id + " não encontrado");
         }
+
+        ProdutoResponseDTO dto = new ProdutoResponseDTO();
+        dto.setId(produto.getIdProduto());
+        dto.setNomeProduto(produto.getNomeProduto());
+        dto.setTipo(produto.getTipo());
+        dto.setUnidadeMedida(String.valueOf(produto.getIdUnidadeMedida()));
+        return dto;
     }
 
     public List<ProdutosUsadosMesResponseDTO> getProdutosMaisUsadosMes(Integer mes, Integer ano){

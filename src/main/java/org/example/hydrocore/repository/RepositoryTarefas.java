@@ -15,7 +15,7 @@ public interface RepositoryTarefas extends JpaRepository<Tarefas, Integer> {
 
     @Query(value = """
        SELECT t.id_tarefa AS id, t.descricao, t.data_criacao AS dataCriacao, t.data_conclusao AS dataConclusao, 
-              p.nivel AS prioridade, f.nome AS nomeFuncionario, s.status AS status 
+              p.nivel AS prioridade, f.nome AS nome, s.status AS status 
        FROM tarefa t
        JOIN funcionario f ON t.id_funcionario = f.id_funcionario
        JOIN cargo c ON f.id_cargo = c.id_cargo
