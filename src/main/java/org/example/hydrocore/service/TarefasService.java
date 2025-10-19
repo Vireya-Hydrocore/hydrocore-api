@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.example.hydrocore.dto.ResumoTarefasEtaResponseDTO;
 import org.example.hydrocore.dto.TarefasProjection;
+import org.example.hydrocore.dto.request.TarefasCreateRequestDTO;
 import org.example.hydrocore.dto.request.TarefasRequestDTO;
 import org.example.hydrocore.dto.response.TarefasResponseDTO;
-import org.example.hydrocore.dto.response.TarefasSimplesDTO;
 import org.example.hydrocore.model.Funcionario;
 import org.example.hydrocore.model.Prioridade;
 import org.example.hydrocore.model.Status;
@@ -78,42 +78,31 @@ public class TarefasService {
     }
 
     @Transactional
-    public TarefasResponseDTO criarTarefa(Integer idFuncionario, TarefasRequestDTO requestDTO) {
+    public TarefasResponseDTO criarTarefa(Integer idFuncionario, TarefasCreateRequestDTO requestDTO) {
         Funcionario funcionario = repositoryFuncionario.findById(idFuncionario)
                 .orElseThrow(() -> new EntityNotFoundException("Funcionário com ID " + idFuncionario + " não encontrado."));
 
-        Tarefas novaTarefa = objectMapper.convertValue(requestDTO, Tarefas.class);
-
-        novaTarefa.setDataCriacao(LocalDate.now());
-
-        switch (requestDTO.getStatus().toLowerCase()) {
-            case "concluida":
-                novaTarefa.setIdStatus(3);
-                break;
-            case "em andamento":
-                novaTarefa.setIdStatus(2);
-                break;
-            default:
-                novaTarefa.setIdStatus(1);
-                break;
+        if (requestDTO.getPrioridade() == null || requestDTO.getPrioridade().isBlank()) {
+            throw new IllegalArgumentException("O nível de prioridade deve ser fornecido ao criar uma tarefa.");
         }
 
-        if (requestDTO.getNivel() == null || requestDTO.getNivel().isBlank()) {
-            throw new IllegalArgumentException("O nível de prioridade (nivel) deve ser fornecido ao criar uma tarefa.");
-        }
-
-        Prioridade prioridade = repositoryPrioridade.findByNivelCaseInsensitive(requestDTO.getNivel());
+        Prioridade prioridade = repositoryPrioridade.findByNivelCaseInsensitive(requestDTO.getPrioridade());
 
         if (prioridade == null) {
-            throw new EntityNotFoundException("Nível de prioridade '" + requestDTO.getNivel() + "' não encontrado. Verifique se o nível existe no banco.");
+            throw new EntityNotFoundException("Nível de prioridade '" + requestDTO.getPrioridade() + "' não encontrado. Verifique se o nível existe no banco.");
         }
 
+        Tarefas novaTarefa = new Tarefas();
+
+        novaTarefa.setDescricao(requestDTO.getDescricao());
         novaTarefa.setPrioridade(prioridade);
         novaTarefa.setIdFuncionario(funcionario);
+        novaTarefa.setDataCriacao(LocalDate.now());
+        novaTarefa.setIdStatus(1);
 
         Tarefas salva = repositoryTarefas.save(novaTarefa);
 
-        Optional<Status> status = repositoryStatus.findById(salva.getIdStatus());
+        Optional<Status> statusOptional = repositoryStatus.findById(salva.getIdStatus());
 
         TarefasResponseDTO dto = new TarefasResponseDTO();
 
@@ -121,9 +110,15 @@ public class TarefasService {
         dto.setDescricao(salva.getDescricao());
         dto.setDataCriacao(salva.getDataCriacao());
         dto.setDataConclusao(salva.getDataConclusao());
-        dto.setPrioridade(salva.getPrioridade().getNivel());
-        dto.setStatus(status.get().getStatus());
-        dto.setNome(salva.getIdFuncionario().getNome());
+
+        dto.setPrioridade(salva.getPrioridade() != null ? salva.getPrioridade().getNivel() : null);
+        dto.setNome(salva.getIdFuncionario() != null ? salva.getIdFuncionario().getNome() : null);
+
+        if (statusOptional.isPresent()) {
+            dto.setStatus(statusOptional.get().getStatus());
+        } else {
+            dto.setStatus("Status Desconhecido");
+        }
 
         return dto;
     }
@@ -204,10 +199,10 @@ public class TarefasService {
             tarefa.setDescricao(requestDTO.getDescricao());
         }
 
-        if (requestDTO.getNivel() != null) {
-            Prioridade prioridade = repositoryPrioridade.findByNivelCaseInsensitive(requestDTO.getNivel());
+        if (requestDTO.getPrioridade() != null) {
+            Prioridade prioridade = repositoryPrioridade.findByNivelCaseInsensitive(requestDTO.getPrioridade());
             if (prioridade == null) {
-                throw new EntityNotFoundException("Nível de prioridade '" + requestDTO.getNivel() + "' não encontrado.");
+                throw new EntityNotFoundException("Nível de prioridade '" + requestDTO.getPrioridade() + "' não encontrado.");
             }
             tarefa.setPrioridade(prioridade);
         }
@@ -242,10 +237,10 @@ public class TarefasService {
             throw new IllegalArgumentException("O status é obrigatório na atualização completa (PUT).");
         }
 
-        if (requestDTO.getNivel() != null) {
-            Prioridade prioridade = repositoryPrioridade.findByNivelCaseInsensitive(requestDTO.getNivel());
+        if (requestDTO.getPrioridade() != null) {
+            Prioridade prioridade = repositoryPrioridade.findByNivelCaseInsensitive(requestDTO.getPrioridade());
             if (prioridade == null) {
-                throw new EntityNotFoundException("Nível de prioridade '" + requestDTO.getNivel() + "' não encontrado.");
+                throw new EntityNotFoundException("Nível de prioridade '" + requestDTO.getPrioridade() + "' não encontrado.");
             }
             tarefaExistente.setPrioridade(prioridade);
         } else {

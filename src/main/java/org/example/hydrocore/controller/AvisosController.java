@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.example.hydrocore.dto.request.AvisoPatchRequestDTO;
 import org.example.hydrocore.dto.request.AvisosRequestDTO;
 import org.example.hydrocore.dto.response.AvisosResponseDTO;
@@ -36,7 +37,7 @@ public interface AvisosController {
                             schema = @Schema(implementation = AvisosResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Dados inválidos")
     })
-    ResponseEntity<AvisosResponseDTO> criarAviso(@RequestBody AvisosRequestDTO aviso);
+    ResponseEntity<AvisosResponseDTO> criarAviso(@RequestBody @Valid AvisosRequestDTO aviso);
 
     @PutMapping("/atualizar/{id}")
     @Operation(summary = "Atualizar um aviso", description = "Atualiza os dados de um aviso existente")
@@ -47,7 +48,7 @@ public interface AvisosController {
             @ApiResponse(responseCode = "404", description = "Aviso não encontrado")
     })
     ResponseEntity<AvisosResponseDTO> atualizarAviso(@PathVariable("id") Integer id,
-                                                     @RequestBody AvisosRequestDTO requestDTO);
+                                                     @RequestBody @Valid AvisosRequestDTO requestDTO);
 
     @DeleteMapping("/deletar/{id}")
     @Operation(summary = "Deletar um aviso", description = "Remove um aviso do sistema pelo ID")
@@ -68,7 +69,7 @@ public interface AvisosController {
             @ApiResponse(responseCode = "404", description = "Aviso não encontrado")
     })
     ResponseEntity<AvisosResponseDTO> atualizarParcialmenteAviso(@PathVariable("id") Integer id,
-                                                     @RequestBody AvisoPatchRequestDTO requestDTO);
+                                                      @RequestBody @Valid AvisoPatchRequestDTO requestDTO);
 
 }
 

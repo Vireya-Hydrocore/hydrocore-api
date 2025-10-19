@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.example.hydrocore.dto.request.CalculadoraCoagulacaoRequestDTO;
 import org.example.hydrocore.dto.request.CalculadoraFloculacaoRequestDTO;
 import org.example.hydrocore.dto.response.ProdutoDosagemResponseDTO;
@@ -26,7 +27,7 @@ public interface CalculadoraController {
                             schema = @Schema(implementation = ProdutoDosagemResponseDTO.class))),
             @ApiResponse(responseCode = "204", description = "Sem dados para calcular o pH")
     })
-    ResponseEntity<ProdutoDosagemResponseDTO> calcularPhFloculacao(@RequestBody CalculadoraFloculacaoRequestDTO calculoRequestDTO);
+    ResponseEntity<ProdutoDosagemResponseDTO> calcularPhFloculacao(@RequestBody @Valid CalculadoraFloculacaoRequestDTO calculoRequestDTO);
 
     @PostMapping("/coagulacao")
     @Operation(summary = "Cálculo de ph baseado na coagulação", description = "Calcula o pH de acordo com a coagulação da água")
@@ -36,6 +37,6 @@ public interface CalculadoraController {
                             schema = @Schema(implementation = ProdutoDosagemResponseDTO.class))),
             @ApiResponse(responseCode = "204", description = "Sem dados para calcular o pH")
     })
-    ResponseEntity<ProdutoDosagemResponseDTO> calcularPhCoagulacao(@RequestBody CalculadoraCoagulacaoRequestDTO calculoRequestDTO);
+    ResponseEntity<ProdutoDosagemResponseDTO> calcularPhCoagulacao(@RequestBody @Valid CalculadoraCoagulacaoRequestDTO calculoRequestDTO);
 
 }
