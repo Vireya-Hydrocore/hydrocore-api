@@ -18,8 +18,8 @@ public class TarefasControllerImpl implements TarefasController {
     private TarefasService tarefasService;
 
     @Override
-    public ResponseEntity<List<TarefasResponseDTO>> mostrarTarefas() {
-        return ResponseEntity.ok(tarefasService.listarTarefas());
+    public ResponseEntity<List<TarefasResponseDTO>> mostrarTarefas(Boolean tarefasConcluidas) {
+        return ResponseEntity.ok(tarefasService.listarTarefas(tarefasConcluidas));
     }
 
     @Override
@@ -28,8 +28,8 @@ public class TarefasControllerImpl implements TarefasController {
     }
 
     @Override
-    public ResponseEntity<List<TarefasResponseDTO>> buscarTarefaPorNome(String nome) {
-        return ResponseEntity.ok(tarefasService.buscarTarefaPorNome(nome));
+    public ResponseEntity<List<TarefasResponseDTO>> buscarTarefaPorNome(String nome, Boolean tarefasConcluidas) {
+        return ResponseEntity.ok(tarefasService.buscarTarefaPorNome(nome, tarefasConcluidas));
     }
 
     @Override

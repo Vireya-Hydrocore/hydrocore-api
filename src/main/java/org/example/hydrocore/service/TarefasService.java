@@ -42,8 +42,8 @@ public class TarefasService {
     @Autowired
     private ObjectMapper objectMapper;
 
-    public List<TarefasResponseDTO> listarTarefas() {
-        List<TarefasProjection> todasTarefas = repositoryTarefas.findAllTarefas();
+    public List<TarefasResponseDTO> listarTarefas(Boolean tarefasConcluidas) {
+        List<TarefasProjection> todasTarefas = repositoryTarefas.findAllTarefas(tarefasConcluidas);
 
         if (todasTarefas.isEmpty()) {
             throw new EntityNotFoundException("Nenhuma tarefa encontrada.");
@@ -55,8 +55,8 @@ public class TarefasService {
 
     }
 
-    public List<TarefasResponseDTO> buscarTarefaPorNome(String nome) {
-        List<TarefasProjection> tarefasPorNome = repositoryTarefas.findAllTarefasPorNome(nome);
+    public List<TarefasResponseDTO> buscarTarefaPorNome(String nome, Boolean tarefasConcluidas) {
+        List<TarefasProjection> tarefasPorNome = repositoryTarefas.findAllTarefasPorNome(nome, tarefasConcluidas);
 
         if (tarefasPorNome.isEmpty()) {
             throw new EntityNotFoundException("Nenhuma tarefa encontrada para o funcionário com nome: " + nome);

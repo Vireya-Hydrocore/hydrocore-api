@@ -26,7 +26,7 @@ public interface TarefasController {
                             schema = @Schema(implementation = TarefasResponseDTO.class))),
             @ApiResponse(responseCode = "204", description = "Nenhuma tarefa encontrada")
     })
-    ResponseEntity<List<TarefasResponseDTO>> mostrarTarefas();
+    ResponseEntity<List<TarefasResponseDTO>> mostrarTarefas(@RequestParam(required = false) Boolean tarefasConcluidas);
 
     @DeleteMapping("/deletar/{id}")
     @Operation(summary = "Deletar uma tarefa", description = "Deleta uma tarefa existente.")
@@ -47,7 +47,7 @@ public interface TarefasController {
                             schema = @Schema(implementation = TarefasResponseDTO.class))),
             @ApiResponse(responseCode = "204", description = "Nenhuma tarefa encontrada para o nome especificado")
     })
-    ResponseEntity<List<TarefasResponseDTO>> buscarTarefaPorNome(@PathVariable String nome);
+    ResponseEntity<List<TarefasResponseDTO>> buscarTarefaPorNome(@PathVariable String nome, @RequestParam(required = false) Boolean tarefasConcluidas);
 
     @PostMapping()
     @Operation(summary = "Criar uma nova tarefa", description = "Cria uma nova tarefa e a associa a um funcionário pelo ID.")
