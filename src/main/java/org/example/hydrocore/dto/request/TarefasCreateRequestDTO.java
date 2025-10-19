@@ -3,23 +3,18 @@ package org.example.hydrocore.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TarefasRequestDTO {
+public class TarefasCreateRequestDTO {
+
 
     @NotBlank(message = "A descrição da tarefa é obrigatória.")
     @Size(max = 500, message = "A descrição não pode exceder 500 caracteres.")
     private String descricao;
-
-    @NotBlank(message = "O status da tarefa é obrigatório.")
-    @Size(max = 50, message = "O status é muito longo.")
-    private String status;
 
     @NotBlank(message = "O nível de prioridade é obrigatório.")
     @Size(max = 7, message = "O nível é muito longo.")

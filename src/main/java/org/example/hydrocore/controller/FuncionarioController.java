@@ -1,17 +1,17 @@
 package org.example.hydrocore.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.example.hydrocore.dto.response.ResumoTarefasResponseDTO;
+import jakarta.validation.Valid;
 import org.example.hydrocore.dto.request.FuncionarioPatchRequestDTO;
 import org.example.hydrocore.dto.request.FuncionarioRequestDTO;
 import org.example.hydrocore.dto.response.FuncionarioEmailResponseDTO;
 import org.example.hydrocore.dto.response.FuncionarioResponseDTO;
-import jakarta.validation.Valid;
+import org.example.hydrocore.dto.response.ResumoTarefasResponseDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,7 +49,7 @@ public interface FuncionarioController {
                             schema = @Schema(implementation = FuncionarioResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Dados inválidos")
     })
-    ResponseEntity<FuncionarioResponseDTO> salvarFuncionario(@Valid @RequestBody FuncionarioRequestDTO requestDTO);
+    ResponseEntity<FuncionarioResponseDTO> salvarFuncionario(@RequestBody @Valid FuncionarioRequestDTO requestDTO);
 
     @PutMapping("/atualizar/{id}")
     @Operation(summary = "Atualiza um funcionário existente", description = "Atualiza todos os dados de um funcionário")
@@ -60,7 +60,7 @@ public interface FuncionarioController {
             @ApiResponse(responseCode = "404", description = "Funcionário não encontrado")
     })
     ResponseEntity<FuncionarioResponseDTO> atualizarFuncionario(@PathVariable Integer id,
-                                                                @Valid @RequestBody FuncionarioRequestDTO requestDTO);
+                                                                @RequestBody @Valid FuncionarioRequestDTO requestDTO);
 
     @DeleteMapping("/deletar/{id}")
     @Operation(summary = "Deleta um funcionário", description = "Remove um funcionário do sistema pelo ID")
@@ -91,7 +91,7 @@ public interface FuncionarioController {
             @ApiResponse(responseCode = "404", description = "Funcionário não encontrado")
     })
     ResponseEntity<FuncionarioResponseDTO> atualizarFuncionarioParcial(@PathVariable Integer id,
-                                                                @Valid @RequestBody FuncionarioPatchRequestDTO requestDTO);
+                                                                @RequestBody @Valid FuncionarioPatchRequestDTO requestDTO);
 
 
     @GetMapping("/resumo-tarefas")

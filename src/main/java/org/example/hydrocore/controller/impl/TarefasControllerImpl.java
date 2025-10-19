@@ -2,6 +2,7 @@ package org.example.hydrocore.controller.impl;
 
 import org.example.hydrocore.controller.TarefasController;
 import org.example.hydrocore.dto.ResumoTarefasEtaResponseDTO;
+import org.example.hydrocore.dto.request.TarefasCreateRequestDTO;
 import org.example.hydrocore.dto.request.TarefasRequestDTO;
 import org.example.hydrocore.dto.response.TarefasResponseDTO;
 import org.example.hydrocore.service.TarefasService;
@@ -33,7 +34,7 @@ public class TarefasControllerImpl implements TarefasController {
     }
 
     @Override
-    public ResponseEntity<TarefasResponseDTO> criarTarefa(Integer idFuncionario, TarefasRequestDTO tarefasRequestDTO) {
+    public ResponseEntity<TarefasResponseDTO> criarTarefa(Integer idFuncionario, TarefasCreateRequestDTO tarefasRequestDTO) {
         return ResponseEntity.ok(tarefasService.criarTarefa(idFuncionario, tarefasRequestDTO));
     }
 

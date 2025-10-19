@@ -6,7 +6,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.example.hydrocore.dto.ResumoTarefasEtaResponseDTO;
+import org.example.hydrocore.dto.request.TarefasCreateRequestDTO;
 import org.example.hydrocore.dto.request.TarefasRequestDTO;
 import org.example.hydrocore.dto.response.TarefasResponseDTO;
 import org.springframework.http.ResponseEntity;
@@ -59,7 +61,7 @@ public interface TarefasController {
     })
     ResponseEntity<TarefasResponseDTO> criarTarefa(
             @RequestHeader Integer idFuncionario,
-            @RequestBody TarefasRequestDTO tarefasRequestDTO);
+            @RequestBody @Valid TarefasCreateRequestDTO tarefasRequestDTO);
 
     @PatchMapping("/atualizar-status")
     @Operation(summary = "Atualizar o status da tarefa", description = "Altera o status (ex: PENDENTE, CONCLUÍDA) de uma tarefa existente.")
@@ -95,7 +97,7 @@ public interface TarefasController {
     })
     ResponseEntity<TarefasResponseDTO> atualizarTarefaParcial(
             @PathVariable("id") Integer idTarefa,
-            @RequestBody TarefasRequestDTO tarefasRequestDTO);
+            @RequestBody @Valid TarefasRequestDTO tarefasRequestDTO);
 
     @PutMapping("/atualizar/{id}")
     @Operation(summary = "Atualizar a tarefa completamente", description = "Atualzia todos os dados da tarefa")
@@ -108,7 +110,7 @@ public interface TarefasController {
     })
     ResponseEntity<TarefasResponseDTO> atualizarTarefaCompleta(
             @PathVariable("id") Integer idTarefa,
-            @RequestBody TarefasRequestDTO tarefasRequestDTO);
+            @RequestBody @Valid TarefasRequestDTO tarefasRequestDTO);
 
     @GetMapping("/resumo/{idEta}")
     @Operation(summary = "Resumo de tarefas por eta", description = "Retorna o resumo de tarefas por eta")
