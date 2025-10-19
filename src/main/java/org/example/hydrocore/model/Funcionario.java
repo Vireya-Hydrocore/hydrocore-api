@@ -1,5 +1,6 @@
-package org.example.hydrocore.repository.entity;
+package org.example.hydrocore.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
@@ -43,7 +44,8 @@ public class Funcionario {
     @JoinColumn(name = "id_cargo")
     private Cargo idCargo;
 
-    @OneToMany(mappedBy = "idFuncionario")
+    @OneToMany(mappedBy = "idFuncionario", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Tarefas> tarefas;
 
 }

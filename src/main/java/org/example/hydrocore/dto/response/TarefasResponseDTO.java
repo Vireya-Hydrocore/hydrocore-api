@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -14,20 +15,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class TarefasResponseDTO {
 
-    private Integer idTarefa;
-
+    private Integer id;
     private String descricao;
-
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime dataCriacao;
-
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime dataConclusao;
-
-    private Integer idStatus;
-
-    private Integer idFuncionario;
-
-    private String nivel;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dataCriacao;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dataConclusao;
+    private String prioridade;
+    private String nome;
+    private String status;
 
 }

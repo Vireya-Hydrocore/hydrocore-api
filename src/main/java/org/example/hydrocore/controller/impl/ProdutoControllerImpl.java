@@ -3,6 +3,7 @@ package org.example.hydrocore.controller.impl;
 import org.example.hydrocore.controller.ProdutoController;
 import org.example.hydrocore.dto.request.ProdutoRequestDTO;
 import org.example.hydrocore.dto.response.ProdutoResponseDTO;
+import org.example.hydrocore.dto.response.ProdutosUsadosMesResponseDTO;
 import org.example.hydrocore.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,4 +41,10 @@ public class ProdutoControllerImpl implements ProdutoController {
     public ResponseEntity<ProdutoResponseDTO> deletarProduto(Integer id) {
         return ResponseEntity.ok(produtoService.deleteProduto(id));
     }
+
+    @Override
+    public ResponseEntity<List<ProdutosUsadosMesResponseDTO>> produtosMaisUsados(Integer mes, Integer ano) {
+        return ResponseEntity.ok(produtoService.getProdutosMaisUsadosMes(mes, ano));
+    }
+
 }

@@ -1,6 +1,7 @@
 package org.example.hydrocore.controller.impl;
 
 import org.example.hydrocore.controller.TarefasController;
+import org.example.hydrocore.dto.ResumoTarefasEtaResponseDTO;
 import org.example.hydrocore.dto.request.TarefasRequestDTO;
 import org.example.hydrocore.dto.response.TarefasResponseDTO;
 import org.example.hydrocore.service.TarefasService;
@@ -17,8 +18,8 @@ public class TarefasControllerImpl implements TarefasController {
     private TarefasService tarefasService;
 
     @Override
-    public ResponseEntity<List<TarefasResponseDTO>> mostrarTarefas() {
-        return ResponseEntity.ok(tarefasService.listarTarefas());
+    public ResponseEntity<List<TarefasResponseDTO>> mostrarTarefas(Boolean tarefasConcluidas) {
+        return ResponseEntity.ok(tarefasService.listarTarefas(tarefasConcluidas));
     }
 
     @Override
@@ -27,8 +28,8 @@ public class TarefasControllerImpl implements TarefasController {
     }
 
     @Override
-    public ResponseEntity<List<TarefasResponseDTO>> buscarTarefaPorNome(String nome) {
-        return ResponseEntity.ok(tarefasService.buscarTarefaPorNome(nome));
+    public ResponseEntity<List<TarefasResponseDTO>> buscarTarefaPorNome(String nome, Boolean tarefasConcluidas) {
+        return ResponseEntity.ok(tarefasService.buscarTarefaPorNome(nome, tarefasConcluidas));
     }
 
     @Override
@@ -54,6 +55,11 @@ public class TarefasControllerImpl implements TarefasController {
     @Override
     public ResponseEntity<TarefasResponseDTO> atualizarTarefaCompleta(Integer idTarefa, TarefasRequestDTO tarefasRequestDTO){
         return ResponseEntity.ok(tarefasService.atualizarTarefaCompleta(idTarefa, tarefasRequestDTO));
+    }
+
+    @Override
+    public ResponseEntity<ResumoTarefasEtaResponseDTO> resumoTarefasPorEta(Integer idEta) {
+        return ResponseEntity.ok(tarefasService.mostrarResumoTarefasEta(idEta));
     }
 
 }
