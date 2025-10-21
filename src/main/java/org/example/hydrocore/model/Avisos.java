@@ -28,6 +28,9 @@ public class Avisos {
     @Column(name = "id_eta")
     private Integer idEta;
 
+    @Column(name = "id_status")
+    private Integer idStatus;
+
     @Column(name = "id_prioridade")
     private Integer idPrioridade;
 

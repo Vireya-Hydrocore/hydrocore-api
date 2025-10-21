@@ -54,8 +54,9 @@ public class AvisosService {
     public AvisoIdResponseDTO criarAviso(AvisosRequestDTO aviso) {
         Avisos avisoEntity = mapper.convertValue(aviso, Avisos.class);
 
-        Avisos salvo = repositoryAvisos.save(avisoEntity);
+        avisoEntity.setIdStatus(1);
 
+        Avisos salvo = repositoryAvisos.save(avisoEntity);
         repositoryAvisos.flush();
 
         if (salvo == null) {
