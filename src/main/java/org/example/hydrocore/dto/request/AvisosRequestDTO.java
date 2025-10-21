@@ -18,7 +18,6 @@ public class AvisosRequestDTO {
     private String descricao;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @NotBlank
     @NonNull
     private LocalDate dataOcorrencia;
 

@@ -1,6 +1,6 @@
 package org.example.hydrocore.repository;
 
-import org.example.hydrocore.dto.TarefasProjection;
+import org.example.hydrocore.projection.TarefasProjection;
 import org.example.hydrocore.model.Tarefas;
 import org.example.hydrocore.projection.ResumoTarefasEtaProjection;
 import org.springframework.data.jpa.repository.JpaRepository;

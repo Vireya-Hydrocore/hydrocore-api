@@ -2,6 +2,7 @@ package org.example.hydrocore.controller.impl;
 
 import org.example.hydrocore.controller.ProdutoController;
 import org.example.hydrocore.dto.request.ProdutoRequestDTO;
+import org.example.hydrocore.dto.response.ProdutoCriarResponseDTO;
 import org.example.hydrocore.dto.response.ProdutoResponseDTO;
 import org.example.hydrocore.dto.response.ProdutosUsadosMesResponseDTO;
 import org.example.hydrocore.service.ProdutoService;

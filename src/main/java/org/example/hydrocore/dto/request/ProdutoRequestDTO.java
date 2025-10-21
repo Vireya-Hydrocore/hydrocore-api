@@ -21,9 +21,8 @@ public class ProdutoRequestDTO {
     @NotNull
     private String tipo;
 
-    @NotBlank
     @NotNull
-    private String unidadeMedida;
+    private Integer idUnidadeMedida;
 
 
 }
