@@ -2,8 +2,10 @@ package org.example.hydrocore.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.example.hydrocore.dto.request.AvisoPatchRequestDTO;
 import org.example.hydrocore.dto.request.AvisosRequestDTO;
+import org.example.hydrocore.dto.response.AvisoIdResponseDTO;
 import org.example.hydrocore.dto.response.AvisosResponseDTO;
 import org.example.hydrocore.projection.AvisosProjection;
 import org.example.hydrocore.repository.RepositoryAvisos;
@@ -48,30 +50,25 @@ public class AvisosService {
 
     }
 
-    public AvisosResponseDTO criarAviso(AvisosRequestDTO aviso) {
+    @Transactional
+    public AvisoIdResponseDTO criarAviso(AvisosRequestDTO aviso) {
         Avisos avisoEntity = mapper.convertValue(aviso, Avisos.class);
+
         Avisos salvo = repositoryAvisos.save(avisoEntity);
+
+        repositoryAvisos.flush();
 
         if (salvo == null) {
             throw new CannotCreateTransactionException("O aviso não foi salvo, possivelmente devido a um erro de transação.");
         }
 
-        List<AvisosProjection> allAvisos = repositoryAvisos.getAllAvisos(salvo.getId());
+        AvisoIdResponseDTO responseDTO = new AvisoIdResponseDTO();
+        responseDTO.setId(salvo.getId());
 
-        return allAvisos.stream().map(p -> {
-            AvisosResponseDTO responseDTO = new AvisosResponseDTO();
-            responseDTO.setId(p.getId());
-            responseDTO.setDescricao(p.getDescricao());
-            responseDTO.setDataOcorrencia(p.getDataOcorrencia());
-            responseDTO.setNomeEta(p.getNomeEta());
-            responseDTO.setPrioridade(p.getPrioridade());
-            responseDTO.setStatus(p.getStatus());
-            return responseDTO;
-        }).toList().get(0);
-
+        return responseDTO;
     }
 
-    public AvisosResponseDTO atualizarAviso(Integer id, AvisosRequestDTO novoAviso) {
+    public AvisoIdResponseDTO atualizarAviso(Integer id, AvisosRequestDTO novoAviso) {
         Avisos existente = repositoryAvisos.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Aviso com ID " + id + " não encontrado para atualização."));
 
@@ -82,43 +79,27 @@ public class AvisosService {
 
         Avisos atualizado = repositoryAvisos.save(existente);
 
-        List<AvisosProjection> allAvisos = repositoryAvisos.getAllAvisos(atualizado.getId());
+        AvisoIdResponseDTO responseDTO = new AvisoIdResponseDTO();
+        responseDTO.setId(atualizado.getId());
 
-        return allAvisos.stream().map(p -> {
-            AvisosResponseDTO responseDTO = new AvisosResponseDTO();
-            responseDTO.setId(p.getId());
-            responseDTO.setDescricao(p.getDescricao());
-            responseDTO.setDataOcorrencia(p.getDataOcorrencia());
-            responseDTO.setNomeEta(p.getNomeEta());
-            responseDTO.setPrioridade(p.getPrioridade());
-            responseDTO.setStatus(p.getStatus());
-            return responseDTO;
-        }).toList().get(0);
+        return responseDTO;
 
     }
 
-    public AvisosResponseDTO deletarAviso(Integer id) {
+    public AvisoIdResponseDTO deletarAviso(Integer id) {
         Avisos avisoParaRetorno = repositoryAvisos.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(id + " não encontrado para exclusão."));
 
         Avisos avisos = repositoryAvisos.deleteByIdAvisos(id);
 
-        List<AvisosProjection> allAvisos = repositoryAvisos.getAllAvisos(avisos.getId());
+        AvisoIdResponseDTO responseDTO = new AvisoIdResponseDTO();
+        responseDTO.setId(avisos.getId());
 
-        return allAvisos.stream().map(p -> {
-            AvisosResponseDTO responseDTO = new AvisosResponseDTO();
-            responseDTO.setId(p.getId());
-            responseDTO.setDescricao(p.getDescricao());
-            responseDTO.setDataOcorrencia(p.getDataOcorrencia());
-            responseDTO.setNomeEta(p.getNomeEta());
-            responseDTO.setPrioridade(p.getPrioridade());
-            responseDTO.setStatus(p.getStatus());
-            return responseDTO;
-        }).toList().get(0);
+        return responseDTO;
 
     }
 
-    public AvisosResponseDTO atualizarAvisoParcial(Integer id, AvisoPatchRequestDTO avisoParcial) {
+    public AvisoIdResponseDTO atualizarAvisoParcial(Integer id, AvisoPatchRequestDTO avisoParcial) {
         Avisos existente = repositoryAvisos.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Aviso com ID " + id + " não encontrado para atualização."));
 
@@ -137,18 +118,11 @@ public class AvisosService {
 
         Avisos atualizado = repositoryAvisos.save(existente);
 
-        List<AvisosProjection> allAvisos = repositoryAvisos.getAllAvisos(atualizado.getId());
 
-        return allAvisos.stream().map(p -> {
-            AvisosResponseDTO responseDTO = new AvisosResponseDTO();
-            responseDTO.setId(p.getId());
-            responseDTO.setDescricao(p.getDescricao());
-            responseDTO.setDataOcorrencia(p.getDataOcorrencia());
-            responseDTO.setNomeEta(p.getNomeEta());
-            responseDTO.setPrioridade(p.getPrioridade());
-            responseDTO.setStatus(p.getStatus());
-            return responseDTO;
-        }).toList().get(0);
+        AvisoIdResponseDTO responseDTO = new AvisoIdResponseDTO();
+        responseDTO.setId(atualizado.getId());
+
+        return responseDTO;
 
     }
 

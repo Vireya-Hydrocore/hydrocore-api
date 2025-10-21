@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.example.hydrocore.dto.request.AvisoPatchRequestDTO;
 import org.example.hydrocore.dto.request.AvisosRequestDTO;
+import org.example.hydrocore.dto.response.AvisoIdResponseDTO;
 import org.example.hydrocore.dto.response.AvisosResponseDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,22 +34,22 @@ public interface AvisosController {
     @PostMapping()
     @Operation(summary = "Criar um aviso", description = "Cria um novo aviso no sistema")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Aviso criado com sucesso",
+            @ApiResponse(responseCode = "200", description = "Aviso criado com sucesso (Retorna o id do aviso criado)",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AvisosResponseDTO.class))),
+                            schema = @Schema(implementation = AvisoIdResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Dados inválidos")
     })
-    ResponseEntity<AvisosResponseDTO> criarAviso(@RequestBody @Valid AvisosRequestDTO aviso);
+    ResponseEntity<AvisoIdResponseDTO> criarAviso(@RequestBody @Valid AvisosRequestDTO aviso);
 
     @PutMapping("/atualizar/{id}")
     @Operation(summary = "Atualizar um aviso", description = "Atualiza os dados de um aviso existente")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Aviso atualizado com sucesso",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AvisosResponseDTO.class))),
+                            schema = @Schema(implementation = AvisoIdResponseDTO.class))),
             @ApiResponse(responseCode = "404", description = "Aviso não encontrado")
     })
-    ResponseEntity<AvisosResponseDTO> atualizarAviso(@PathVariable("id") Integer id,
+    ResponseEntity<AvisoIdResponseDTO> atualizarAviso(@PathVariable("id") Integer id,
                                                      @RequestBody @Valid AvisosRequestDTO requestDTO);
 
     @DeleteMapping("/deletar/{id}")
@@ -56,20 +57,20 @@ public interface AvisosController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Aviso deletado com sucesso",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AvisosResponseDTO.class))),
+                            schema = @Schema(implementation = AvisoIdResponseDTO.class))),
             @ApiResponse(responseCode = "404", description = "Aviso não encontrado")
     })
-    ResponseEntity<AvisosResponseDTO> deletarAviso(@PathVariable("id") Integer id);
+    ResponseEntity<AvisoIdResponseDTO> deletarAviso(@PathVariable("id") Integer id);
 
     @PatchMapping("/atualizar-parcial/{id}")
     @Operation(summary = "Atualizar parcialmente um aviso", description = "Atualiza parcialmente os dados de um aviso existente")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Aviso atualizado com sucesso",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AvisosResponseDTO.class))),
+                            schema = @Schema(implementation = AvisoIdResponseDTO.class))),
             @ApiResponse(responseCode = "404", description = "Aviso não encontrado")
     })
-    ResponseEntity<AvisosResponseDTO> atualizarParcialmenteAviso(@PathVariable("id") Integer id,
+    ResponseEntity<AvisoIdResponseDTO> atualizarParcialmenteAviso(@PathVariable("id") Integer id,
                                                       @RequestBody @Valid AvisoPatchRequestDTO requestDTO);
 
     @GetMapping("/ultimos-avisos")
