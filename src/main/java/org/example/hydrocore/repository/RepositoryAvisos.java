@@ -23,9 +23,9 @@ public interface RepositoryAvisos extends JpaRepository<Avisos, Integer> {
             p.nivel AS prioridade,
             s.status AS status
         FROM avisos a
-        JOIN eta e on e.id_eta = a.id_eta
-        JOIN prioridade p on p.id_prioridade = a.id_prioridade
-        JOIN status s on a.id_status = s.id_status
+        LEFT JOIN eta e on e.id_eta = a.id_eta
+        LEFT JOIN prioridade p on p.id_prioridade = a.id_prioridade
+        LEFT JOIN status s on a.id_status = s.id_status
         WHERE (:idAviso IS NULL OR a.id_avisos = :idAviso);
     """, nativeQuery = true)
     List<AvisosProjection> getAllAvisos(@Param("idAviso") Integer idAvisos);
