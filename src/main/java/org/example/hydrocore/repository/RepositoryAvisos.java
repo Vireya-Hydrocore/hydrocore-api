@@ -42,8 +42,8 @@ public interface RepositoryAvisos extends JpaRepository<Avisos, Integer> {
         JOIN eta e ON e.id_eta = a.id_eta
         JOIN prioridade p ON p.id_prioridade = a.id_prioridade
         JOIN status s ON a.id_status = s.id_status
-        WHERE a.data_ocorrencia BETWEEN (:dataReferencia - INTERVAL '6 days') AND :dataReferencia           
-    """, nativeQuery = true)
+        WHERE a.data_ocorrencia BETWEEN (CAST(:dataReferencia AS DATE) - INTERVAL '6 days') AND :dataReferencia;
+        """, nativeQuery = true)
     List<AvisosProjection> getAvisosByData(@Param("dataReferencia") LocalDate dataReferencia);
 
 }

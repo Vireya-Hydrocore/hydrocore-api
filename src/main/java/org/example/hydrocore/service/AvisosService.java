@@ -156,7 +156,7 @@ public class AvisosService {
         List<AvisosProjection> avisosByData = repositoryAvisos.getAvisosByData(dataReferencia);
 
         if (avisosByData.isEmpty()){
-            throw new EntityNotFoundException("Nenhum aviso encontrado para a data " + dataReferencia);
+            throw new EntityNotFoundException("Nenhum aviso encontrado para os ultimos 6 dias da data " + dataReferencia);
         }
 
         return avisosByData.stream().map(p -> {
