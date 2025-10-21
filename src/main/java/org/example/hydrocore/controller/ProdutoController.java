@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.example.hydrocore.dto.request.ProdutoRequestDTO;
+import org.example.hydrocore.dto.response.ProdutoCriarResponseDTO;
 import org.example.hydrocore.dto.response.ProdutoResponseDTO;
 import org.example.hydrocore.dto.response.ProdutosUsadosMesResponseDTO;
 import org.springframework.http.ResponseEntity;

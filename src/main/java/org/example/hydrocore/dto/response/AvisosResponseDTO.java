@@ -15,14 +15,11 @@ import java.time.LocalDate;
 public class AvisosResponseDTO {
 
     private Integer id;
-
     private String descricao;
-
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataOcorrencia;
-
-    private Integer idEta;
-
-    private Integer idPrioridade;
+    private String nomeEta;
+    private String prioridade;
+    private String status;
 
 }

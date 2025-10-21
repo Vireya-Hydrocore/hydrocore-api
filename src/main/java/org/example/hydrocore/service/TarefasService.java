@@ -2,8 +2,8 @@ package org.example.hydrocore.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
-import org.example.hydrocore.dto.ResumoTarefasEtaResponseDTO;
-import org.example.hydrocore.dto.TarefasProjection;
+import org.example.hydrocore.dto.response.ResumoTarefasEtaResponseDTO;
+import org.example.hydrocore.projection.TarefasProjection;
 import org.example.hydrocore.dto.request.TarefasCreateRequestDTO;
 import org.example.hydrocore.dto.request.TarefasRequestDTO;
 import org.example.hydrocore.dto.response.TarefasResponseDTO;

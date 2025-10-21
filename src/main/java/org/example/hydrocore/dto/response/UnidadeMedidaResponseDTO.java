@@ -1,19 +1,15 @@
 package org.example.hydrocore.dto.response;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProdutoResponseDTO {
+public class UnidadeMedidaResponseDTO {
 
     private Integer id;
     private String nome;
-    private String tipo;
-    private String unidadeMedida;
 
 }

@@ -1,4 +1,4 @@
-package org.example.hydrocore.dto;
+package org.example.hydrocore.projection;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

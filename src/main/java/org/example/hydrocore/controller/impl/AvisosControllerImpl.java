@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -40,6 +41,11 @@ public class AvisosControllerImpl implements AvisosController {
     @Override
     public ResponseEntity<AvisosResponseDTO> atualizarParcialmenteAviso(Integer id, AvisoPatchRequestDTO requestDTO) {
         return ResponseEntity.ok(avisosService.atualizarAvisoParcial(id, requestDTO));
+    }
+
+    @Override
+    public ResponseEntity<List<AvisosResponseDTO>> listarUltimosAvisos(LocalDate dataReferencia) {
+        return ResponseEntity.ok(avisosService.listarAvisosPorData(dataReferencia));
     }
 
 }

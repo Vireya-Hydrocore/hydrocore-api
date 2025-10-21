@@ -13,6 +13,7 @@ import org.example.hydrocore.dto.response.AvisosResponseDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Tag(name = "Avisos Controller", description = "Gerenciamento de avisos")
@@ -70,6 +71,16 @@ public interface AvisosController {
     })
     ResponseEntity<AvisosResponseDTO> atualizarParcialmenteAviso(@PathVariable("id") Integer id,
                                                       @RequestBody @Valid AvisoPatchRequestDTO requestDTO);
+
+    @GetMapping("/ultimos-avisos")
+    @Operation(summary = "Listar todos os avisos dos ultimos 6 dias", description = "Retorna a lista de avisos")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AvisosResponseDTO.class))),
+            @ApiResponse(responseCode = "204", description = "Nenhum aviso encontrado")
+    })
+    ResponseEntity<List<AvisosResponseDTO>> listarUltimosAvisos(@RequestHeader LocalDate dataReferencia);
 
 }
 
