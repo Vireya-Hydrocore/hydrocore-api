@@ -52,4 +52,9 @@ public class AvisosControllerImpl implements AvisosController {
         return ResponseEntity.ok(avisosService.listarAvisosPorData(dataReferencia));
     }
 
+    @Override
+    public ResponseEntity<AvisosResponseDTO> listarAvisoPorId(Integer id) {
+        return ResponseEntity.ok(avisosService.listarAvisosPorId(id));
+    }
+
 }

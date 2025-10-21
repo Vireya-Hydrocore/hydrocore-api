@@ -83,5 +83,15 @@ public interface AvisosController {
     })
     ResponseEntity<List<AvisosResponseDTO>> listarUltimosAvisos(@RequestHeader LocalDate dataReferencia);
 
+    @GetMapping("/{id}")
+    @Operation(summary = "Listar aviso por ID", description = "Retorna avisos")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Aviso retornadao com sucesso",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AvisosResponseDTO.class))),
+            @ApiResponse(responseCode = "204", description = "Nenhum aviso encontrado")
+    })
+    ResponseEntity<AvisosResponseDTO> listarAvisoPorId(@PathVariable("id") Integer id);
+
 }
 

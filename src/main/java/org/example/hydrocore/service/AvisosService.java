@@ -146,4 +146,23 @@ public class AvisosService {
 
     }
 
+    public AvisosResponseDTO listarAvisosPorId(Integer id){
+        List<AvisosProjection> allAvisos = repositoryAvisos.getAllAvisos(id);
+
+        if (allAvisos.isEmpty()){
+            throw new EntityNotFoundException("Aviso com ID " + id + " não encontrado.");
+        }
+
+        AvisosProjection aviso = allAvisos.get(0);
+
+        AvisosResponseDTO responseDTO = new AvisosResponseDTO();
+        responseDTO.setId(aviso.getId());
+        responseDTO.setDescricao(aviso.getDescricao());
+        responseDTO.setDataOcorrencia(aviso.getDataOcorrencia());
+        responseDTO.setNomeEta(aviso.getNomeEta());
+        responseDTO.setPrioridade(aviso.getPrioridade());
+        responseDTO.setStatus(aviso.getStatus());
+
+        return responseDTO;
+    }
 }
