@@ -11,6 +11,7 @@ import org.example.hydrocore.dto.request.FuncionarioPatchRequestDTO;
 import org.example.hydrocore.dto.request.FuncionarioRequestDTO;
 import org.example.hydrocore.dto.response.FuncionarioEmailResponseDTO;
 import org.example.hydrocore.dto.response.FuncionarioResponseDTO;
+import org.example.hydrocore.dto.response.OrganogramaResponseDTO;
 import org.example.hydrocore.dto.response.ResumoTarefasResponseDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -103,5 +104,15 @@ public interface FuncionarioController {
             @ApiResponse(responseCode = "404", description = "Funcionário não encontrado")
     })
     ResponseEntity<ResumoTarefasResponseDTO> resumoTarefasUsuario(@RequestHeader("id") Integer id);
+
+    @GetMapping("/organograma/{id}")
+    @Operation(summary = "Retorna o organograma da eta", description = "Retorna os funcionarios da eta e seus supervisores")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Organograma retornada com sucesso",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = OrganogramaResponseDTO.class))),
+            @ApiResponse(responseCode = "204", description = "Não foi encontrado nenhum organograma para a eta informada")
+    })
+    ResponseEntity<List<OrganogramaResponseDTO>> mostrarOrganograma(@RequestParam("idEta") Integer idEta);
 
 }
