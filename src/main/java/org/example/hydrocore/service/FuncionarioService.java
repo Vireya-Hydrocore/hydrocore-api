@@ -4,12 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.example.hydrocore.dto.FuncionarioEmailDTO;
 import org.example.hydrocore.dto.ResumoTarefasDTO;
+import org.example.hydrocore.dto.response.OrganogramaResponseDTO;
 import org.example.hydrocore.dto.response.ResumoTarefasResponseDTO;
 import org.example.hydrocore.dto.request.FuncionarioPatchRequestDTO;
 import org.example.hydrocore.dto.request.FuncionarioRequestDTO;
 import org.example.hydrocore.dto.response.FuncionarioEmailResponseDTO;
 import org.example.hydrocore.dto.response.FuncionarioResponseDTO;
 import org.example.hydrocore.projection.FuncionarioDTO;
+import org.example.hydrocore.projection.OrganogramaProjection;
 import org.example.hydrocore.repository.RepositoryCargo;
 import org.example.hydrocore.repository.RepositoryEstacaoTratamentoDaAgua;
 import org.example.hydrocore.repository.RepositoryFuncionario;
@@ -212,6 +214,28 @@ public class FuncionarioService {
         }
 
         return objectMapper.convertValue(resumo, ResumoTarefasResponseDTO.class);
+
+    }
+
+    public List<OrganogramaResponseDTO> listarOrganogramas(Integer idEta){
+
+        List<OrganogramaProjection> organogramaProjections = funcionarioRepository.organogramaEta(idEta);
+
+        if (organogramaProjections.isEmpty()){
+            throw new EntityNotFoundException("Não existem organogramas para a ETA com id " + idEta);
+        }
+
+        return organogramaProjections.stream().map(p -> {
+            OrganogramaResponseDTO org = new OrganogramaResponseDTO();
+
+            org.setId(p.getIdFuncionario());
+            org.setCargo(p.getCargoFuncionario());
+            org.setNome(p.getNomeFuncionario());
+            org.setIdSupervisor(p.getIdSupervisor());
+            org.setNomeSupervisor(p.getNomeSupervisor());
+
+            return org;
+        }).toList();
 
     }
 
