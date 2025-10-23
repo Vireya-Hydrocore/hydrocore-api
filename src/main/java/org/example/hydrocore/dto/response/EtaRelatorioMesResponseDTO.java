@@ -20,5 +20,6 @@ public class EtaRelatorioMesResponseDTO {
     private String bairro;
     private Double phMin;
     private Double phMax;
+    private String comentarioGerente;
 
 }
