@@ -6,5 +6,6 @@ public interface ProdutoProjection {
     String getNomeProduto();
     String getTipo();
     String getUnidade();
+    Integer getIdUnidade();
 
 }

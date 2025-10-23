@@ -53,6 +53,7 @@ public class EtaService {
             responseDTO.setBairro(etaRelatorioMesDTO.getBairro());
             responseDTO.setPhMin(etaRelatorioMesDTO.getPhMin());
             responseDTO.setPhMax(etaRelatorioMesDTO.getPhMax());
+            responseDTO.setComentarioGerente(etaRelatorioMesDTO.getComentarioGerente());
             responseList.add(responseDTO);
         }
 

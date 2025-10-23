@@ -16,7 +16,7 @@ import lombok.Setter;
 public class CalculadoraFloculacaoRequestDTO {
 
     @Min(0)
-    @Max(100)
+    @Max(500)
     @NotNull(message = "A turbidez não pode estar nula")
     private Integer turbidez;
 

@@ -15,7 +15,7 @@ public class Produto {
     private Integer idProduto;
 
     @Column(name = "nome_produto")
-    private String nomeProduto;
+    private String nome;
 
     private String tipo;
 

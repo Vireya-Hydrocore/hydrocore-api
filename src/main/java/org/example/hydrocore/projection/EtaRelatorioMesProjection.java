@@ -14,5 +14,6 @@ public interface EtaRelatorioMesProjection {
     String getBairro();
     Double getPhMin();
     Double getPhMax();
+    String getComentarioGerente();
 }
 

@@ -18,7 +18,8 @@ public interface RepositoryProduto extends JpaRepository<Produto, Integer> {
             SELECT p.id_produto AS id,
             p.nome_produto AS nomeProduto,
             p.tipo AS tipo,
-            u.nome AS unidade
+            u.nome AS unidade,
+            u.id_unidade AS idUnidade
             FROM produto p 
             JOIN unidade_medida u ON p.id_unidade = u.id_unidade
             WHERE (:idProduto IS NULL OR p.id_produto = :idProduto);

@@ -15,5 +15,6 @@ public class ProdutoResponseDTO {
     private String nome;
     private String tipo;
     private String unidadeMedida;
+    private Integer idUnidade;
 
 }
