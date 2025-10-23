@@ -37,6 +37,7 @@ public class ProdutoService {
                     dto.setNome(p.getNomeProduto());
                     dto.setTipo(p.getTipo());
                     dto.setUnidadeMedida(p.getUnidade());
+                    dto.setIdUnidade(p.getIdUnidade());
                     return dto;
                 })
                 .toList();
@@ -56,6 +57,7 @@ public class ProdutoService {
             dto.setNome(p.getNomeProduto());
             dto.setTipo(p.getTipo());
             dto.setUnidadeMedida(p.getUnidade());
+            dto.setIdUnidade(p.getIdUnidade());
             return dto;
         }).toList().get(0);
 
@@ -76,6 +78,7 @@ public class ProdutoService {
                     dto.setNome(p.getNomeProduto());
                     dto.setTipo(p.getTipo());
                     dto.setUnidadeMedida(p.getUnidade());
+                    dto.setIdUnidade(p.getIdUnidade());
                     return dto;
                 }).toList().get(0);
 
@@ -100,6 +103,7 @@ public class ProdutoService {
             dto.setNome(p.getNomeProduto());
             dto.setTipo(p.getTipo());
             dto.setUnidadeMedida(p.getUnidade());
+            dto.setIdUnidade(p.getIdUnidade());
             return dto;
         }).toList().get(0);
 
@@ -116,9 +120,10 @@ public class ProdutoService {
 
         ProdutoResponseDTO dto = new ProdutoResponseDTO();
         dto.setId(produto.getIdProduto());
-        dto.setNome(produto.getNomeProduto());
+        dto.setNome(produto.getNome());
         dto.setTipo(produto.getTipo());
         dto.setUnidadeMedida(String.valueOf(produto.getIdUnidadeMedida()));
+        dto.setIdUnidade(produto.getIdUnidadeMedida());
         return dto;
     }
 

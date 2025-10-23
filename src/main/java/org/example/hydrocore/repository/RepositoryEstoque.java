@@ -27,7 +27,7 @@ public interface RepositoryEstoque extends JpaRepository<Estoque, Integer> {
     List<EstoqueInfoProjection> findAllEstoqueComNomes(@Param("nomeEta") String nomeEta);
 
     @Query("SELECT new org.example.hydrocore.dto.EstoqueDTO(" +
-            "e.idEstoque, e.quantidade, p.nomeProduto, eta.nome) " +
+            "e.idEstoque, e.quantidade, p.nome, eta.nome) " +
             "FROM estoque e " +
             "JOIN e.produto p " +
             "JOIN e.eta eta " +

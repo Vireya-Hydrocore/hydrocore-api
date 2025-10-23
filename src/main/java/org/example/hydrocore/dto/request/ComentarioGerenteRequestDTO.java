@@ -3,26 +3,24 @@ package org.example.hydrocore.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+import java.time.LocalDate;
+
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProdutoRequestDTO {
+public class ComentarioGerenteRequestDTO {
 
     @NotBlank
     @NotNull
-    private String nome;
-
-    @NotBlank
-    @NotNull
-    private String tipo;
+    private String comentario;
 
     @NotNull
-    private Integer idUnidadeMedida;
+    private LocalDate anoMes;
 
+    @NotNull
+    private Integer idEtaAdmin;
 
 }

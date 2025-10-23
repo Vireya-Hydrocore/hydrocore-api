@@ -76,7 +76,7 @@ public interface ProdutoController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Produtos encontrados para o mês e ano informado",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ProdutoResponseDTO.class))),
+                            schema = @Schema(implementation = ProdutosUsadosMesResponseDTO.class))),
             @ApiResponse(responseCode = "404", description = "Produtos não encontrado")
     })
     ResponseEntity<List<ProdutosUsadosMesResponseDTO>> produtosMaisUsados(@RequestHeader("mes") Integer mes, @RequestHeader ("ano") Integer ano);
