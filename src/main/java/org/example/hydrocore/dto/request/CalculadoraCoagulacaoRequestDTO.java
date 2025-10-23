@@ -16,12 +16,12 @@ import lombok.Setter;
 public class CalculadoraCoagulacaoRequestDTO {
 
     @Min(0)
-    @Max(100)
+    @Max(500)
     private Integer turbidez;
 
     @Min(0)
     @Max(14)
-    @NotBlank(message = "A temperatura não pode estar em branco")
+    @NotNull(message = "A temperatura não pode ser nula")
     private Double ph;
 
     @NotNull(message = "A cor não pode estar nula")
@@ -31,19 +31,16 @@ public class CalculadoraCoagulacaoRequestDTO {
     @Min(0)
     @Max(100)
     @NotNull(message = "O volume não pode estar nulo")
-    @NotBlank(message = "O volume não pode estar em branco")
     private Integer volume;
 
     @Min(0)
     @Max(100)
     @NotNull(message = "A alumina não pode estar nulo")
-    @NotBlank(message = "A alumina não pode estar em branco")
     private Double alumina;
 
     @Min(0)
     @Max(100)
     @NotNull(message = "A alcalinidade não pode estar nula")
-    @NotBlank(message = "A alcalinidade não pode estar em branco")
     private Double alcalinidade;
 
     @NotNull(message = "O produto químico não pode estar nulo")
