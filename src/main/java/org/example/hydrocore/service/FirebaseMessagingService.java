@@ -10,8 +10,11 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.FileInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Map;
 
 @Service
 public class FirebaseMessagingService {
@@ -22,14 +25,25 @@ public class FirebaseMessagingService {
     @PostConstruct
     public void initialize() throws IOException {
         if (FirebaseApp.getApps().isEmpty()) {
-            FileInputStream serviceAccount =
-                    new FileInputStream(FIREBASE_JSON);
+            String json = Files.readString(Paths.get(FIREBASE_JSON));
 
-            FirebaseOptions options = FirebaseOptions.builder()
-                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                    .build();
+            Map<String, String> env = System.getenv();
+            for (Map.Entry<String, String> entry : env.entrySet()) {
+                String placeholder = "${" + entry.getKey() + "}";
+                String value = entry.getValue();
+                if (value != null) {
+                    value = value.replace("\\n", "\n");
+                }
+                json = json.replace(placeholder, value != null ? value : "");
+            }
 
-            FirebaseApp.initializeApp(options);
+            try (ByteArrayInputStream serviceAccount = new ByteArrayInputStream(json.getBytes())) {
+                FirebaseOptions options = FirebaseOptions.builder()
+                        .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                        .build();
+
+                FirebaseApp.initializeApp(options);
+            }
         }
     }
 
