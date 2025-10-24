@@ -22,11 +22,11 @@ public interface RepositoryTarefas extends JpaRepository<Tarefas, Integer> {
        JOIN prioridade p ON t.id_prioridade = p.id_prioridade
        JOIN status s ON t.id_status = s.id_status
        WHERE (
-         :concluidas IS NULL OR :concluidas = FALSE OR t.id_status = 3
+         :pendentes IS NULL OR :pendentes = FALSE OR t.id_status = 1
        )
    """, nativeQuery = true)
     List<TarefasProjection> findAllTarefas(
-            @Param("concluidas") Boolean concluidas
+            @Param("pendentes") Boolean pendentes
     );
 
     @Query(value = """

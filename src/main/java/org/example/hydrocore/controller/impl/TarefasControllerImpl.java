@@ -19,8 +19,8 @@ public class TarefasControllerImpl implements TarefasController {
     private TarefasService tarefasService;
 
     @Override
-    public ResponseEntity<List<TarefasResponseDTO>> mostrarTarefas(Boolean tarefasConcluidas) {
-        return ResponseEntity.ok(tarefasService.listarTarefas(tarefasConcluidas));
+    public ResponseEntity<List<TarefasResponseDTO>> mostrarTarefas(Boolean tarefasPendentes) {
+        return ResponseEntity.ok(tarefasService.listarTarefas(tarefasPendentes));
     }
 
     @Override
