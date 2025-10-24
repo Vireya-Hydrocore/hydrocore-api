@@ -7,11 +7,10 @@ import org.example.hydrocore.dto.request.AvisoPatchRequestDTO;
 import org.example.hydrocore.dto.request.AvisosRequestDTO;
 import org.example.hydrocore.dto.response.AvisoIdResponseDTO;
 import org.example.hydrocore.dto.response.AvisosResponseDTO;
+import org.example.hydrocore.model.Avisos;
 import org.example.hydrocore.projection.AvisosProjection;
 import org.example.hydrocore.repository.RepositoryAvisos;
-import org.example.hydrocore.model.Avisos;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.CannotCreateTransactionException;
 
@@ -27,6 +26,9 @@ public class AvisosService {
 
     @Autowired
     private ObjectMapper mapper;
+
+    @Autowired
+    private FirebaseMessagingService firebaseService;
 
     public List<AvisosResponseDTO> listarAvisos() {
         List<AvisosProjection> all = repositoryAvisos.getAllAvisos(null);
@@ -47,13 +49,11 @@ public class AvisosService {
                     return responseDTO;
                 })
                 .collect(Collectors.toList());
-
     }
 
     @Transactional
     public AvisoIdResponseDTO criarAviso(AvisosRequestDTO aviso) {
         Avisos avisoEntity = mapper.convertValue(aviso, Avisos.class);
-
         avisoEntity.setIdStatus(1);
 
         Avisos salvo = repositoryAvisos.save(avisoEntity);
@@ -63,9 +63,14 @@ public class AvisosService {
             throw new CannotCreateTransactionException("O aviso não foi salvo, possivelmente devido a um erro de transação.");
         }
 
+        try {
+            firebaseService.enviarNotificacao("Novo aviso geral", aviso.getDescricao());
+        } catch (Exception e) {
+            System.err.println("Falha ao enviar notificação: " + e.getMessage());
+        }
+
         AvisoIdResponseDTO responseDTO = new AvisoIdResponseDTO();
         responseDTO.setId(salvo.getId());
-
         return responseDTO;
     }
 
@@ -82,9 +87,7 @@ public class AvisosService {
 
         AvisoIdResponseDTO responseDTO = new AvisoIdResponseDTO();
         responseDTO.setId(atualizado.getId());
-
         return responseDTO;
-
     }
 
     public AvisoIdResponseDTO deletarAviso(Integer id) {
@@ -95,9 +98,7 @@ public class AvisosService {
 
         AvisoIdResponseDTO responseDTO = new AvisoIdResponseDTO();
         responseDTO.setId(avisos.getId());
-
         return responseDTO;
-
     }
 
     public AvisoIdResponseDTO atualizarAvisoParcial(Integer id, AvisoPatchRequestDTO avisoParcial) {
@@ -118,13 +119,9 @@ public class AvisosService {
         }
 
         Avisos atualizado = repositoryAvisos.save(existente);
-
-
         AvisoIdResponseDTO responseDTO = new AvisoIdResponseDTO();
         responseDTO.setId(atualizado.getId());
-
         return responseDTO;
-
     }
 
     public List<AvisosResponseDTO> listarAvisosPorData(LocalDate dataReferencia){
@@ -144,13 +141,12 @@ public class AvisosService {
             responseDTO.setStatus(p.getStatus());
             return responseDTO;
         }).toList();
-
     }
 
-    public AvisosResponseDTO listarAvisosPorId(Integer id){
+    public AvisosResponseDTO listarAvisosPorId(Integer id) {
         List<AvisosProjection> allAvisos = repositoryAvisos.getAllAvisos(id);
 
-        if (allAvisos.isEmpty()){
+        if (allAvisos.isEmpty()) {
             throw new EntityNotFoundException("Aviso com ID " + id + " não encontrado.");
         }
 

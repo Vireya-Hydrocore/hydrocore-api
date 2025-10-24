@@ -1,5 +1,6 @@
 package org.example.hydrocore.exception;
 
+import com.google.firebase.messaging.FirebaseMessagingException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -73,4 +74,15 @@ public class GlobalExceptionHandler {
         Map<String, Object> body = createErrorBody(HttpStatus.INTERNAL_SERVER_ERROR, "Erro Desconhecido", "Ocorreu um erro fatal no servidor. Detalhes: " + ex.getMessage());
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(FirebaseMessagingException.class)
+    public ResponseEntity<Map<String, Object>> handleFirebaseMessagingException(FirebaseMessagingException ex) {
+        Map<String, Object> body = createErrorBody(
+                HttpStatus.BAD_GATEWAY,
+                "Erro ao Enviar Notificação",
+                "Falha na comunicação com o serviço Firebase Messaging. Detalhes: " + ex.getMessage()
+        );
+        return new ResponseEntity<>(body, HttpStatus.BAD_GATEWAY);
+    }
+
 }

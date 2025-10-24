@@ -28,7 +28,7 @@ public interface TarefasController {
                             schema = @Schema(implementation = TarefasResponseDTO.class))),
             @ApiResponse(responseCode = "204", description = "Nenhuma tarefa encontrada")
     })
-    ResponseEntity<List<TarefasResponseDTO>> mostrarTarefas(@RequestParam(required = false) Boolean tarefasConcluidas);
+    ResponseEntity<List<TarefasResponseDTO>> mostrarTarefas(@RequestParam(required = false) Boolean tarefasPendentes);
 
     @DeleteMapping("/deletar/{id}")
     @Operation(summary = "Deletar uma tarefa", description = "Deleta uma tarefa existente.")
