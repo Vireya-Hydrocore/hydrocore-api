@@ -29,17 +29,17 @@ public class CalculadoraCoagulacaoRequestDTO {
     private String cor;
 
     @Min(0)
-    @Max(100)
+    @Max(500000)
     @NotNull(message = "O volume não pode estar nulo")
     private Integer volume;
 
     @Min(0)
-    @Max(100)
+    @Max(2)
     @NotNull(message = "A alumina não pode estar nulo")
     private Double alumina;
 
     @Min(0)
-    @Max(100)
+    @Max(300)
     @NotNull(message = "A alcalinidade não pode estar nula")
     private Double alcalinidade;
 
