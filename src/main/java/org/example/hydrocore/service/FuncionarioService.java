@@ -173,20 +173,29 @@ public class FuncionarioService {
         if (requestDTO.getNome() != null) {
             funcionario.setNome(requestDTO.getNome());
         }
+
         if (requestDTO.getEmail() != null) {
             funcionario.setEmail(requestDTO.getEmail());
         }
+
         if (requestDTO.getDataAdmissao() != null) {
             funcionario.setDataAdmissao(requestDTO.getDataAdmissao());
         }
+
         if (requestDTO.getDataNascimento() != null) {
             funcionario.setDataNascimento(requestDTO.getDataNascimento());
         }
+
+        if (requestDTO.getSenha() != null) {
+            funcionario.setSenha(requestDTO.getSenha());
+        }
+
         if (requestDTO.getIdEta() != null) {
             EstacaoTratamentoDaAgua eta = etaRepository.findById(requestDTO.getIdEta())
                     .orElseThrow(() -> new EntityNotFoundException("ETA não encontrada com id " + requestDTO.getIdEta()));
             funcionario.setIdEta(eta);
         }
+
         if (requestDTO.getIdCargo() != null) {
             Cargo cargo = repositoryCargo.findById(requestDTO.getIdCargo())
                     .orElseThrow(() -> new EntityNotFoundException("Cargo não encontrado com id " + requestDTO.getIdCargo()));

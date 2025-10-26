@@ -6,8 +6,10 @@ import jakarta.transaction.Transactional;
 import org.example.hydrocore.dto.request.AvisoPatchRequestDTO;
 import org.example.hydrocore.dto.request.AvisosRequestDTO;
 import org.example.hydrocore.dto.response.AvisoIdResponseDTO;
+import org.example.hydrocore.dto.response.AvisosHojeResponseDTO;
 import org.example.hydrocore.dto.response.AvisosResponseDTO;
 import org.example.hydrocore.model.Avisos;
+import org.example.hydrocore.projection.AvisosHojeProjection;
 import org.example.hydrocore.projection.AvisosProjection;
 import org.example.hydrocore.repository.RepositoryAvisos;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -162,4 +164,33 @@ public class AvisosService {
 
         return responseDTO;
     }
+
+    public List<AvisosHojeResponseDTO> listarAvisosPorHoje() {
+        List<AvisosHojeProjection> avisosDeHoje = repositoryAvisos.getAvisosHoje();
+
+        if (avisosDeHoje.isEmpty()) {
+            throw new EntityNotFoundException("Nenhum aviso encontrado para hoje.");
+        }
+
+        return avisosDeHoje.stream().map(p -> {
+            AvisosHojeResponseDTO dto = new AvisosHojeResponseDTO();
+            dto.setId(p.getId());
+            dto.setNome(p.getNome());
+            dto.setDescricao(p.getDescricao());
+
+            if (p.getDataCriacao().isBefore(LocalDate.now())) {
+                dto.setStatus("Recebeu uma tarefa");
+            }
+            else if (p.getStatus().equals("pendente")){
+                dto.setStatus("Tarefa em desenvolvimento");
+            }
+            else {
+                dto.setStatus("Tarefa finalizada");
+            }
+
+            return dto;
+
+        }).toList();
+    }
+
 }

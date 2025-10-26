@@ -16,6 +16,7 @@ public class FuncionarioPatchRequestDTO {
 
     private String nome;
     private String email;
+    private String senha;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataAdmissao;

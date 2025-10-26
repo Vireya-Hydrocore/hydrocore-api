@@ -4,6 +4,7 @@ import org.example.hydrocore.controller.AvisosController;
 import org.example.hydrocore.dto.request.AvisoPatchRequestDTO;
 import org.example.hydrocore.dto.request.AvisosRequestDTO;
 import org.example.hydrocore.dto.response.AvisoIdResponseDTO;
+import org.example.hydrocore.dto.response.AvisosHojeResponseDTO;
 import org.example.hydrocore.dto.response.AvisosResponseDTO;
 import org.example.hydrocore.service.AvisosService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,11 @@ public class AvisosControllerImpl implements AvisosController {
     @Override
     public ResponseEntity<AvisosResponseDTO> listarAvisoPorId(Integer id) {
         return ResponseEntity.ok(avisosService.listarAvisosPorId(id));
+    }
+
+    @Override
+    public ResponseEntity<List<AvisosHojeResponseDTO>> listarAvisosHoje() {
+        return ResponseEntity.ok(avisosService.listarAvisosPorHoje());
     }
 
 }

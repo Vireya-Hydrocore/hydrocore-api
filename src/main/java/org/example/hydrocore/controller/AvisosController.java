@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.example.hydrocore.dto.request.AvisoPatchRequestDTO;
 import org.example.hydrocore.dto.request.AvisosRequestDTO;
 import org.example.hydrocore.dto.response.AvisoIdResponseDTO;
+import org.example.hydrocore.dto.response.AvisosHojeResponseDTO;
 import org.example.hydrocore.dto.response.AvisosResponseDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -86,12 +87,22 @@ public interface AvisosController {
     @GetMapping("/{id}")
     @Operation(summary = "Listar aviso por ID", description = "Retorna avisos")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Aviso retornadao com sucesso",
+            @ApiResponse(responseCode = "200", description = "Aviso retornado com sucesso",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = AvisosResponseDTO.class))),
             @ApiResponse(responseCode = "204", description = "Nenhum aviso encontrado")
     })
     ResponseEntity<AvisosResponseDTO> listarAvisoPorId(@PathVariable("id") Integer id);
+
+    @GetMapping("/hoje")
+    @Operation(summary = "Listar avisos de hoje", description = "Retorna avisos de hoje")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Aviso retornado com sucesso",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AvisosHojeResponseDTO.class))),
+            @ApiResponse(responseCode = "204", description = "Nenhum aviso encontrado")
+    })
+    ResponseEntity<List<AvisosHojeResponseDTO>> listarAvisosHoje();
 
 }
 
