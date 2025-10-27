@@ -2,7 +2,7 @@ package org.example.hydrocore.repository;
 
 import org.example.hydrocore.dto.FuncionarioEmailDTO;
 import org.example.hydrocore.dto.ResumoTarefasDTO;
-import org.example.hydrocore.projection.FuncionarioDTO;
+import org.example.hydrocore.projection.FuncionarioProjection;
 import org.example.hydrocore.model.Funcionario;
 import org.example.hydrocore.projection.OrganogramaProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,7 +14,7 @@ import java.util.List;
 public interface RepositoryFuncionario extends JpaRepository<Funcionario, Integer> {
 
     @Query(value = "SELECT * FROM relatorio_funcionarios(:idFuncionario)", nativeQuery = true)
-    List<FuncionarioDTO> listarFuncionarios(@Param("idFuncionario") Integer idFuncionario);
+    List<FuncionarioProjection> listarFuncionarios(@Param("idFuncionario") Integer idFuncionario);
 
     @Query(value = "DELETE FROM funcionario WHERE id_funcionario = :idFuncionario RETURNING *", nativeQuery = true)
     Funcionario deletarFuncionario(@Param("idFuncionario") Integer idFuncionario);

@@ -10,7 +10,7 @@ import org.example.hydrocore.dto.request.FuncionarioPatchRequestDTO;
 import org.example.hydrocore.dto.request.FuncionarioRequestDTO;
 import org.example.hydrocore.dto.response.FuncionarioEmailResponseDTO;
 import org.example.hydrocore.dto.response.FuncionarioResponseDTO;
-import org.example.hydrocore.projection.FuncionarioDTO;
+import org.example.hydrocore.projection.FuncionarioProjection;
 import org.example.hydrocore.projection.OrganogramaProjection;
 import org.example.hydrocore.repository.RepositoryCargo;
 import org.example.hydrocore.repository.RepositoryEstacaoTratamentoDaAgua;
@@ -46,7 +46,7 @@ public class FuncionarioService {
     }
 
     public List<FuncionarioResponseDTO> getAllFuncionarios() {
-        List<FuncionarioDTO> funcionariosProjecao = funcionarioRepository.listarFuncionarios(null);
+        List<FuncionarioProjection> funcionariosProjecao = funcionarioRepository.listarFuncionarios(null);
 
         if (funcionariosProjecao.isEmpty()) {
             throw new EntityNotFoundException("Nenhum Funcionario encontrado");
@@ -67,7 +67,7 @@ public class FuncionarioService {
 
     public FuncionarioResponseDTO getFuncionarioById(Integer idFuncionario) {
         try{
-            List<FuncionarioDTO> byId = funcionarioRepository.listarFuncionarios(idFuncionario);
+            List<FuncionarioProjection> byId = funcionarioRepository.listarFuncionarios(idFuncionario);
             return objectMapper.convertValue(byId.get(0), FuncionarioResponseDTO.class);
 
         } catch (EntityNotFoundException ex) {
@@ -100,7 +100,6 @@ public class FuncionarioService {
         Funcionario funcionario = new Funcionario();
         funcionario.setNome(requestDTO.getNome());
         funcionario.setEmail(requestDTO.getEmail());
-        funcionario.setSenha(requestDTO.getSenha());
         funcionario.setDataAdmissao(requestDTO.getDataAdmissao());
         funcionario.setDataNascimento(requestDTO.getDataNascimento());
         funcionario.setIdEta(eta);
@@ -184,10 +183,6 @@ public class FuncionarioService {
 
         if (requestDTO.getDataNascimento() != null) {
             funcionario.setDataNascimento(requestDTO.getDataNascimento());
-        }
-
-        if (requestDTO.getSenha() != null) {
-            funcionario.setSenha(requestDTO.getSenha());
         }
 
         if (requestDTO.getIdEta() != null) {
