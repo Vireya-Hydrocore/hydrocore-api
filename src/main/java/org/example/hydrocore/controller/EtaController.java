@@ -6,11 +6,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.example.hydrocore.dto.response.EtaDataRelatorioResponseDTO;
 import org.example.hydrocore.dto.response.EtaRelatorioMesResponseDTO;
 import org.example.hydrocore.dto.response.EtaResponseDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -37,5 +40,16 @@ public interface EtaController {
             @ApiResponse(responseCode = "204", description = "Nenhum estoque cadastrado para essa eta")
     })
     ResponseEntity<List<EtaRelatorioMesResponseDTO>> gerarRelatorioMensal(Integer mes, Integer ano);
+
+    @GetMapping("/listar-relatorios/{id}")
+    @Operation(summary = "Listar os relatórios disponiveis por eta")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista de etas com relatórios existentes",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = EtaDataRelatorioResponseDTO.class))),
+            @ApiResponse(responseCode = "204", description = "Nenhuma resultado encontrado")
+    })
+    ResponseEntity<List<EtaDataRelatorioResponseDTO>> listarRelatorioData(@PathVariable("id") Integer idEta);
+
 
 }

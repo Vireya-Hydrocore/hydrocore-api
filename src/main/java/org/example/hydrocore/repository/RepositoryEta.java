@@ -1,6 +1,7 @@
 package org.example.hydrocore.repository;
 
 import org.example.hydrocore.dto.EtaDTO;
+import org.example.hydrocore.projection.EtaDataRelatorioProjection;
 import org.example.hydrocore.projection.EtaRelatorioMesProjection;
 import org.example.hydrocore.model.EstacaoTratamentoDaAgua;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,5 +17,8 @@ public interface RepositoryEta extends JpaRepository<EstacaoTratamentoDaAgua, In
 
     @Query(value = "SELECT * FROM gerar_relatorio_mes(:mes, :ano)", nativeQuery = true)
     List<EtaRelatorioMesProjection> gerarRelatorioMes(@Param("mes") Integer mes, @Param("ano") Integer ano);
+
+    @Query(value = "SELECT * FROM data_relatorio_eta(:idEta)", nativeQuery = true)
+    List<EtaDataRelatorioProjection> listarDataRelatorio(@Param("idEta") Integer idEta);
 
 }

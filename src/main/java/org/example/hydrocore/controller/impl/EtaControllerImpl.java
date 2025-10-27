@@ -1,6 +1,7 @@
 package org.example.hydrocore.controller.impl;
 
 import org.example.hydrocore.controller.EtaController;
+import org.example.hydrocore.dto.response.EtaDataRelatorioResponseDTO;
 import org.example.hydrocore.dto.response.EtaRelatorioMesResponseDTO;
 import org.example.hydrocore.dto.response.EtaResponseDTO;
 import org.example.hydrocore.service.EtaService;
@@ -24,6 +25,11 @@ public class EtaControllerImpl implements EtaController {
     @Override
     public ResponseEntity<List<EtaRelatorioMesResponseDTO>> gerarRelatorioMensal(Integer mes, Integer ano) {
         return ResponseEntity.ok(etaService.mostrarRelatorioMes(mes, ano));
+    }
+
+    @Override
+    public ResponseEntity<List<EtaDataRelatorioResponseDTO>> listarRelatorioData(Integer idEta) {
+        return ResponseEntity.ok(etaService.listarRelatorioData(idEta));
     }
 
 }
