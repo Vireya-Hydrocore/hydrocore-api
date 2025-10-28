@@ -27,8 +27,8 @@ public class PrioridadeService {
             throw new EntityNotFoundException("Nenhuma prioridade encontrada.");
         }
 
-        return unidadeAll.stream().map(u ->
-                objectMapper.convertValue(u, PrioridadeResponseDTO.class)
-                ).toList();
+        return unidadeAll.stream()
+                .map(p -> new PrioridadeResponseDTO(p.getIdPrioridade(), p.getNivel()))
+                .toList();
     }
 }

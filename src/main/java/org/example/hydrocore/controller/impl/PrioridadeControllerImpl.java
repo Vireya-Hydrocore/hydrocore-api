@@ -17,6 +17,12 @@ public class PrioridadeControllerImpl implements PrioridadeController {
 
     @Override
     public ResponseEntity<List<PrioridadeResponseDTO>> mostrarPrioridades() {
-        return ResponseEntity.ok(prioridadeService.mostrarPrioridade());
+        List<PrioridadeResponseDTO> prioridades = prioridadeService.mostrarPrioridade();
+
+        if (prioridades.isEmpty()) {
+            return ResponseEntity.noContent().build(); // Retorna 204 se não houver dados
+        }
+
+        return ResponseEntity.ok(prioridades);
     }
 }

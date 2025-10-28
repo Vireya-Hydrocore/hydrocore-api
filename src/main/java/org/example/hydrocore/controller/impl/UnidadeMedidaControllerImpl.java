@@ -17,6 +17,12 @@ public class UnidadeMedidaControllerImpl implements UnidadeMedidaController {
 
     @Override
     public ResponseEntity<List<UnidadeMedidaResponseDTO>> mostrarUnidadesMedida() {
-        return ResponseEntity.ok(unidadeMedidaService.mostrarUnidadeMedida());
+        List<UnidadeMedidaResponseDTO> unidades = unidadeMedidaService.mostrarUnidadeMedida();
+
+        if (unidades.isEmpty()) {
+            return ResponseEntity.noContent().build(); // Retorna 204 se não houver dados
+        }
+
+        return ResponseEntity.ok(unidades);
     }
 }
