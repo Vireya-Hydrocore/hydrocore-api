@@ -64,7 +64,6 @@ public class TarefasService {
 
         if (tarefasConcluidas) {
             return tarefasPorNome.stream()
-                    .filter(t -> t.getDataConclusao() != null) // Só inclui tarefas com data de conclusão
                     .map(t -> {
                         TarefasResponseDTO dto = new TarefasResponseDTO();
                         dto.setId(t.getId());
@@ -80,7 +79,7 @@ public class TarefasService {
         }
 
         return tarefasPorNome.stream()
-                .filter(t -> t.getDataConclusao() == null) // Só inclui tarefas não concluídas
+                .filter(t -> !"concluída".equalsIgnoreCase(t.getStatus()))
                 .map(t -> {
                     TarefasResponseDTO dto = new TarefasResponseDTO();
                     dto.setId(t.getId());
@@ -94,6 +93,7 @@ public class TarefasService {
                 })
                 .toList();
     }
+
 
     @Transactional
     public TarefasResponseDTO criarTarefa(Integer idFuncionario, TarefasCreateRequestDTO requestDTO) {
