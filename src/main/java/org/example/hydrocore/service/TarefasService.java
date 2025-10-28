@@ -62,16 +62,34 @@ public class TarefasService {
             throw new EntityNotFoundException("Nenhuma tarefa encontrada para o funcionário com nome: " + nome);
         }
 
+        if (tarefasConcluidas) {
+            return tarefasPorNome.stream()
+                    .filter(t -> t.getDataConclusao() != null) // Só inclui tarefas com data de conclusão
+                    .map(t -> {
+                        TarefasResponseDTO dto = new TarefasResponseDTO();
+                        dto.setId(t.getId());
+                        dto.setDescricao(t.getDescricao());
+                        dto.setDataCriacao(t.getDataCriacao());
+                        dto.setDataConclusao(t.getDataConclusao());
+                        dto.setPrioridade(t.getPrioridade());
+                        dto.setNome(t.getNome());
+                        dto.setStatus(t.getStatus());
+                        return dto;
+                    })
+                    .toList();
+        }
+
         return tarefasPorNome.stream()
-                .map(p -> {
+                .filter(t -> t.getDataConclusao() == null) // Só inclui tarefas não concluídas
+                .map(t -> {
                     TarefasResponseDTO dto = new TarefasResponseDTO();
-                    dto.setId(p.getId());
-                    dto.setDescricao(p.getDescricao());
-                    dto.setDataCriacao(p.getDataCriacao());
-                    dto.setDataConclusao(p.getDataConclusao());
-                    dto.setPrioridade(p.getPrioridade());
-                    dto.setNome(p.getNome());
-                    dto.setStatus(p.getStatus());
+                    dto.setId(t.getId());
+                    dto.setDescricao(t.getDescricao());
+                    dto.setDataCriacao(t.getDataCriacao());
+                    dto.setDataConclusao(t.getDataConclusao());
+                    dto.setPrioridade(t.getPrioridade());
+                    dto.setNome(t.getNome());
+                    dto.setStatus(t.getStatus());
                     return dto;
                 })
                 .toList();
