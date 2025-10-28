@@ -1,6 +1,5 @@
 package org.example.hydrocore.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.example.hydrocore.dto.response.UnidadeMedidaResponseDTO;
 import org.example.hydrocore.model.UnidadeMedida;
@@ -9,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UnidadeMedidaService {
@@ -16,22 +16,16 @@ public class UnidadeMedidaService {
     @Autowired
     private RepositoryUnidadeMedida repositoryUnidadeMedida;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     public List<UnidadeMedidaResponseDTO> mostrarUnidadeMedida() {
+        List<UnidadeMedida> unidades = repositoryUnidadeMedida.findAll();
 
-        List<UnidadeMedida> unidadeAll = repositoryUnidadeMedida.findAll();
-
-        if (unidadeAll.isEmpty()) {
+        if (unidades.isEmpty()) {
             throw new EntityNotFoundException("Nenhuma unidade de medida encontrada.");
         }
 
-        return unidadeAll.stream().map(u ->
-                objectMapper.convertValue(u, UnidadeMedidaResponseDTO.class)
-                ).toList();
-
+        // Conversão manual do modelo para o DTO
+        return unidades.stream()
+                .map(u -> new UnidadeMedidaResponseDTO(u.getId(), u.getNome()))
+                .collect(Collectors.toList());
     }
-
-
 }

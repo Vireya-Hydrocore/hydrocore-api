@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UnidadeMedidaResponseDTO {
-
     private Integer id;
     private String nome;
-
 }
