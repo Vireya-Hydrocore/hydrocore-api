@@ -52,7 +52,6 @@ $ docker-compose up --build
 
 | Documentação       | Links                                                                             |
 | -----------------  | --------------------------------------------------------------------------------- |
-| Hydrocore-Api-QA   | [Swagger QA](https://hydrocore-api-qa.onrender.com/swagger-ui/index.html#/)       |
 | Hydrocore-Api-PRD  | [Swagger PROD](https://hydrocore-api-prod.onrender.com/swagger-ui/index.html#/)   |
 
 ###
