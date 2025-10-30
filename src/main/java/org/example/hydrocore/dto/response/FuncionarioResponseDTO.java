@@ -26,5 +26,6 @@ public class FuncionarioResponseDTO {
 
     private String eta;
     private String cargo;
+    private Integer idEta;
 
 }

@@ -4,36 +4,32 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.example.hydrocore.dto.FuncionarioEmailDTO;
 import org.example.hydrocore.dto.ResumoTarefasDTO;
-import org.example.hydrocore.dto.response.OrganogramaResponseDTO;
-import org.example.hydrocore.dto.response.ResumoTarefasResponseDTO;
 import org.example.hydrocore.dto.request.FuncionarioPatchRequestDTO;
 import org.example.hydrocore.dto.request.FuncionarioRequestDTO;
 import org.example.hydrocore.dto.response.FuncionarioEmailResponseDTO;
 import org.example.hydrocore.dto.response.FuncionarioResponseDTO;
+import org.example.hydrocore.dto.response.OrganogramaResponseDTO;
+import org.example.hydrocore.dto.response.ResumoTarefasResponseDTO;
+import org.example.hydrocore.model.Cargo;
+import org.example.hydrocore.model.EstacaoTratamentoDaAgua;
+import org.example.hydrocore.model.Funcionario;
 import org.example.hydrocore.projection.FuncionarioProjection;
 import org.example.hydrocore.projection.OrganogramaProjection;
 import org.example.hydrocore.repository.RepositoryCargo;
 import org.example.hydrocore.repository.RepositoryEstacaoTratamentoDaAgua;
 import org.example.hydrocore.repository.RepositoryFuncionario;
-import org.example.hydrocore.model.Cargo;
-import org.example.hydrocore.model.EstacaoTratamentoDaAgua;
-import org.example.hydrocore.model.Funcionario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.CannotCreateTransactionException;
 
 import java.util.List;
 
 @Service
 public class FuncionarioService {
 
-    @Autowired
     private final RepositoryFuncionario funcionarioRepository;
 
-    @Autowired
     private final RepositoryEstacaoTratamentoDaAgua etaRepository;
 
-    @Autowired
     private final RepositoryCargo repositoryCargo;
 
     @Autowired
@@ -60,34 +56,30 @@ public class FuncionarioService {
                         projecao.getDataAdmissao(),
                         projecao.getDataNascimento(),
                         projecao.getEta(),
-                        projecao.getCargo()
+                        projecao.getCargo(),
+                        projecao.getIdEta()
                 ))
                 .toList();
     }
 
     public FuncionarioResponseDTO getFuncionarioById(Integer idFuncionario) {
-        try{
             List<FuncionarioProjection> byId = funcionarioRepository.listarFuncionarios(idFuncionario);
-            return objectMapper.convertValue(byId.get(0), FuncionarioResponseDTO.class);
 
-        } catch (EntityNotFoundException ex) {
-            ex.printStackTrace();
-            throw new EntityNotFoundException("Erro: " + ex.getMessage());
-        }
+            if (byId.isEmpty()) {
+                throw new EntityNotFoundException("Nenhum Funcionario encontrado");
+            }
+
+        return objectMapper.convertValue(byId.get(0), FuncionarioResponseDTO.class);
+
     }
 
     public FuncionarioResponseDTO deletarFuncionario(Integer idFuncionario) {
-        try{
             Funcionario funcionario = funcionarioRepository.findById(idFuncionario)
                     .orElseThrow(() -> new EntityNotFoundException("Funcionario não encontrado"));
 
             funcionarioRepository.deletarFuncionario(idFuncionario);
 
             return  objectMapper.convertValue(funcionario, FuncionarioResponseDTO.class);
-        } catch (CannotCreateTransactionException ex){
-            ex.printStackTrace();
-            throw new CannotCreateTransactionException("Erro: " + ex.getMessage());
-        }
     }
 
     public FuncionarioResponseDTO salvarFuncionario(FuncionarioRequestDTO requestDTO) {
@@ -114,7 +106,8 @@ public class FuncionarioService {
                 funcionarioSalvo.getDataAdmissao(),
                 funcionarioSalvo.getDataNascimento(),
                 funcionarioSalvo.getIdEta().getNome(),
-                funcionarioSalvo.getIdCargo().getNome()
+                funcionarioSalvo.getIdCargo().getNome(),
+                funcionarioSalvo.getIdFuncionario()
         );
     }
 
@@ -144,7 +137,8 @@ public class FuncionarioService {
                 funcionarioAtualizado.getDataAdmissao(),
                 funcionarioAtualizado.getDataNascimento(),
                 funcionarioAtualizado.getIdEta().getNome(),
-                funcionarioAtualizado.getIdCargo().getNome()
+                funcionarioAtualizado.getIdCargo().getNome(),
+                eta.getIdEta()
         );
     }
 
@@ -206,7 +200,8 @@ public class FuncionarioService {
                 funcionarioAtualizado.getDataAdmissao(),
                 funcionarioAtualizado.getDataNascimento(),
                 funcionarioAtualizado.getIdEta().getNome(),
-                funcionarioAtualizado.getIdCargo().getNome()
+                funcionarioAtualizado.getIdCargo().getNome(),
+                funcionario.getIdEta().getIdEta()
         );
     }
 

@@ -10,6 +10,5 @@ public interface FuncionarioProjection {
     LocalDate getDataNascimento();
     String getEta();
     String getCargo();
-    String getDescricaoTarefa();
-    String getStatusTarefa();
+    Integer getIdEta();
 }
