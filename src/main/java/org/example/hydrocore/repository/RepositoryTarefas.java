@@ -30,8 +30,8 @@ public interface RepositoryTarefas extends JpaRepository<Tarefas, Integer> {
     );
 
     @Query(value = """
-        SELECT t.id_tarefa AS id, t.descricao, t.data_criacao AS dataCriacao, t.data_conclusao AS dataConclusao, 
-               p.nivel AS prioridade, f.nome AS nome, s.status AS status 
+        SELECT t.id_tarefa AS id, t.descricao, t.data_criacao AS dataCriacao, t.data_conclusao AS dataConclusao,
+        p.nivel AS prioridade, f.nome AS nome, s.status AS status
         FROM tarefa t
         JOIN funcionario f ON t.id_funcionario = f.id_funcionario
         JOIN cargo c ON f.id_cargo = c.id_cargo
@@ -39,8 +39,9 @@ public interface RepositoryTarefas extends JpaRepository<Tarefas, Integer> {
         JOIN status s ON t.id_status = s.id_status
         WHERE LOWER(f.nome) LIKE LOWER(CONCAT('%', :nome, '%'))
           AND (
-            :concluidas IS NULL OR :concluidas = FALSE OR t.id_status = 2
-          )
+              :concluidas = TRUE
+              OR (:concluidas = FALSE AND t.id_status = 1)
+          );
 """, nativeQuery = true)
     List<TarefasProjection> findAllTarefasPorNome(
             @Param("nome") String nome,
