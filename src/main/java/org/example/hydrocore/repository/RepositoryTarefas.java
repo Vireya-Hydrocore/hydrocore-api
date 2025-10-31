@@ -39,7 +39,7 @@ public interface RepositoryTarefas extends JpaRepository<Tarefas, Integer> {
         JOIN status s ON t.id_status = s.id_status
         WHERE LOWER(f.nome) LIKE LOWER(CONCAT('%', :nome, '%'))
           AND (
-            :concluidas IS NULL OR :concluidas = FALSE OR t.id_status = 3
+            :concluidas IS NULL OR :concluidas = FALSE OR t.id_status = 2
           )
 """, nativeQuery = true)
     List<TarefasProjection> findAllTarefasPorNome(
