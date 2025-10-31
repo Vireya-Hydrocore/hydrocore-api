@@ -39,13 +39,15 @@ public class EstoqueControllerImpl implements EstoqueController {
     }
 
     @Override
-    public ResponseEntity<EstoqueResponseDTO> adicionarProdutosAoEstoque(Integer idProduto, Integer idEta, BigDecimal quantidade) {
-        return ResponseEntity.ok(estoqueService.adicionarProdutoEstoque(idProduto, idEta, quantidade));
+    public ResponseEntity<Void> adicionarProdutosAoEstoque(Integer idProduto, Integer idEta, BigDecimal quantidade) {
+        estoqueService.adicionarProdutoEstoque(idProduto, idEta, quantidade);
+        return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<EstoqueResponseDTO> removerProdutosDoEstoque(Integer idProduto, Integer idEta, BigDecimal quantidade) {
-        return ResponseEntity.ok(estoqueService.removerProdutoEstoque(idProduto, idEta, quantidade));
+    public ResponseEntity<Void> removerProdutosDoEstoque(Integer idProduto, Integer idEta, BigDecimal quantidade) {
+        estoqueService.removerProdutoEstoque(idProduto, idEta, quantidade);
+        return ResponseEntity.ok().build();
     }
 
 }
