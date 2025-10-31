@@ -9,7 +9,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.example.hydrocore.dto.response.EstoqueResponseDTO;
 import org.example.hydrocore.dto.response.ProdutoEtaResponseDTO;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -42,20 +45,18 @@ public interface EstoqueController {
     @Operation(summary = "Adicionar produtos ao estoque")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Adicionado produtos ao estoque",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = EstoqueResponseDTO.class))),
+                    content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "204", description = "Nenhum produto no estoque foi encontrado")
     })
-    ResponseEntity<EstoqueResponseDTO> adicionarProdutosAoEstoque(@RequestHeader Integer idProduto, @RequestHeader Integer idEta, @RequestHeader BigDecimal quantidade);
+    ResponseEntity<Void> adicionarProdutosAoEstoque(@RequestHeader Integer idProduto, @RequestHeader Integer idEta, @RequestHeader BigDecimal quantidade);
 
     @PostMapping("/remover")
     @Operation(summary = "Remover produtos ao estoque")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Removendo produtos ao estoque",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = EstoqueResponseDTO.class))),
+                    content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "204", description = "Nenhum produto no estoque foi encontrado")
     })
-    ResponseEntity<EstoqueResponseDTO> removerProdutosDoEstoque(@RequestHeader Integer idProduto, @RequestHeader Integer idEta, @RequestHeader BigDecimal quantidade);
+    ResponseEntity<Void> removerProdutosDoEstoque(@RequestHeader Integer idProduto, @RequestHeader Integer idEta, @RequestHeader BigDecimal quantidade);
 
 }

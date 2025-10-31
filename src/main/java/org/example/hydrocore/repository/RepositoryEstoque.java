@@ -4,6 +4,7 @@ import org.example.hydrocore.dto.EstoqueDTO;
 import org.example.hydrocore.projection.EstoqueInfoProjection;
 import org.example.hydrocore.model.Estoque;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -47,9 +48,11 @@ public interface RepositoryEstoque extends JpaRepository<Estoque, Integer> {
     """, nativeQuery = true)
     List<Object[]> buscarProdutosPorEta(@Param("nomeEta") String nomeEta);
 
-    @Query(value = "SELECT adicionar_estoque(:idProduto, :idEta, :quantidade)", nativeQuery = true)
-    Integer adicionarEstoque(@Param("idProduto") Integer idProduto, @Param("idEta") Integer idEta, @Param("quantidade") java.math.BigDecimal quantidade);
+    @Modifying
+    @Query(value = "CALL adicionar_estoque(:idProduto, :idEta, :quantidade)", nativeQuery = true)
+    void adicionarEstoque(@Param("idProduto") Integer idProduto, @Param("idEta") Integer idEta, @Param("quantidade") java.math.BigDecimal quantidade);
 
-    @Query(value = "SELECT tirar_estoque(:idProduto, :idEta, :quantidade)", nativeQuery = true)
-    Integer tirarEstoque(@Param("idProduto") Integer idProduto, @Param("idEta") Integer idEta, @Param("quantidade") java.math.BigDecimal quantidade);
+    @Modifying
+    @Query(value = "CALL tirar_estoque(:idProduto, :idEta, :quantidade)", nativeQuery = true)
+    void tirarEstoque(@Param("idProduto") Integer idProduto, @Param("idEta") Integer idEta, @Param("quantidade") java.math.BigDecimal quantidade);
 }

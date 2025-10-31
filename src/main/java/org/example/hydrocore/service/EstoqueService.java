@@ -1,13 +1,12 @@
 package org.example.hydrocore.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.hydrocore.dto.EstoqueDTO;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.example.hydrocore.dto.response.EstoqueResponseDTO;
 import org.example.hydrocore.dto.response.ProdutoEtaResponseDTO;
 import org.example.hydrocore.projection.EstoqueInfoProjection;
 import org.example.hydrocore.repository.RepositoryEstoque;
-import org.example.hydrocore.repository.RepositoryEta;
-import org.example.hydrocore.repository.RepositoryProduto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,12 +20,6 @@ public class EstoqueService {
 
     @Autowired
     private RepositoryEstoque repositoryEstoque;
-
-    @Autowired
-    private RepositoryProduto repositoryProduto;
-
-    @Autowired
-    private RepositoryEta repositoryEta;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -71,89 +64,21 @@ public class EstoqueService {
         }).toList();
     }
 
-    public EstoqueResponseDTO adicionarProdutoEstoque(Integer idProduto, Integer idEta, BigDecimal quantidade) {
-        List<EstoqueDTO> estoquesAnteriores = repositoryEstoque.findAllEstoquePorProduto(idProduto);
-
-        EstoqueDTO estoqueAnteriorDTO = estoquesAnteriores.stream()
-                .filter(e -> e.getId().equals(idEta))
-                .findFirst()
-                .orElse(null);
-
-        Integer quantidadeAnterior = estoqueAnteriorDTO != null ? estoqueAnteriorDTO.getQuantidade() : 0;
-
-        repositoryEstoque.adicionarEstoque(idProduto, idEta, quantidade);
-
-        List<EstoqueDTO> estoquesAtuais = repositoryEstoque.findAllEstoquePorProduto(idProduto);
-
-        EstoqueDTO estoqueAtualDTO = estoquesAtuais.stream()
-                .filter(e -> e.getId().equals(idEta))
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException("Estoque deveria existir após a adição e não foi encontrado para o Produto/Eta."));
-
-        Integer quantidadeAtual = estoqueAtualDTO.getQuantidade();
-
-        if (quantidadeAtual > quantidadeAnterior) {
-            EstoqueDTO estoqueParaRetorno = new EstoqueDTO(
-                    estoqueAtualDTO.getId(),
-                    quantidadeAtual,
-                    estoqueAtualDTO.getNomeProduto(),
-                    estoqueAtualDTO.getNomeEta()
-            );
-
-            EstoqueResponseDTO estoqueResponseDTO = objectMapper.convertValue(estoqueParaRetorno, EstoqueResponseDTO.class);
-
-            preencherStatus(estoqueResponseDTO);
-
-            return estoqueResponseDTO;
-        } else {
-            throw new IllegalStateException("A quantidade de estoque atual (" + quantidadeAtual + ") não é maior que a anterior (" + quantidadeAnterior + "). A operação de adição pode ter falhado ou não alterou o estoque.");
+    @Transactional
+    public void adicionarProdutoEstoque(Integer idProduto, Integer idEta, BigDecimal quantidade) {
+        try {
+            repositoryEstoque.adicionarEstoque(idProduto, idEta, quantidade);
+        } catch (EntityNotFoundException e){
+            throw e;
         }
     }
 
-    public EstoqueResponseDTO removerProdutoEstoque(Integer idProduto, Integer idEta, BigDecimal quantidade) {
-
-        List<EstoqueDTO> estoquesAnteriores = repositoryEstoque.findAllEstoquePorProduto(idProduto);
-
-        EstoqueDTO estoqueAnteriorDTO = estoquesAnteriores.stream()
-                .filter(e -> e.getId().equals(idEta))
-                .findFirst()
-                .orElse(null);
-
-        Integer quantidadeAnterior = estoqueAnteriorDTO != null ? estoqueAnteriorDTO.getQuantidade() : 0;
-
-        if (quantidadeAnterior == 0) {
-            throw new IllegalArgumentException("Não há estoque do produto (ID: " + idProduto + ") na ETA (ID: " + idEta + ") para ser removido.");
-        }
-
-        repositoryEstoque.tirarEstoque(idProduto, idEta, quantidade);
-
-        List<EstoqueDTO> estoquesAtuais = repositoryEstoque.findAllEstoquePorProduto(idProduto);
-
-        EstoqueDTO estoqueAtualDTO = estoquesAtuais.stream()
-                .filter(e -> e.getId().equals(idEta))
-                .findFirst()
-                .orElse(null);
-
-        Integer quantidadeAtual = estoqueAtualDTO != null ? estoqueAtualDTO.getQuantidade() : 0;
-
-        if (quantidadeAtual < quantidadeAnterior) {
-
-            EstoqueDTO baseDTO = estoqueAtualDTO != null ? estoqueAtualDTO : estoqueAnteriorDTO;
-
-            EstoqueDTO estoqueParaRetorno = new EstoqueDTO(
-                    idEta,
-                    quantidadeAtual,
-                    baseDTO.getNomeProduto(),
-                    baseDTO.getNomeEta()
-            );
-
-            EstoqueResponseDTO estoqueResponseDTO = objectMapper.convertValue(estoqueParaRetorno, EstoqueResponseDTO.class);
-
-            preencherStatus(estoqueResponseDTO);
-
-            return estoqueResponseDTO;
-        } else {
-            throw new IllegalStateException("A quantidade de estoque atual (" + quantidadeAtual + ") não é menor que a anterior (" + quantidadeAnterior + "). A operação de remoção pode ter falhado ou a quantidade solicitada era inválida.");
+    @Transactional
+    public void removerProdutoEstoque(Integer idProduto, Integer idEta, BigDecimal quantidade) {
+        try {
+            repositoryEstoque.tirarEstoque(idProduto, idEta, quantidade);
+        }catch (EntityNotFoundException e) {
+            throw e;
         }
     }
 
