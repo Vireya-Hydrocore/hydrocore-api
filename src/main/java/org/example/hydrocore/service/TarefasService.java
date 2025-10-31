@@ -59,7 +59,7 @@ public class TarefasService {
         List<TarefasProjection> tarefasPorNome = repositoryTarefas.findAllTarefasPorNome(nome, tarefasConcluidas);
 
         if (tarefasPorNome.isEmpty()) {
-            throw new EntityNotFoundException("Nenhuma tarefa encontrada para o funcionário com nome: " + nome);
+            return List.of();
         }
 
         if (tarefasConcluidas) {
