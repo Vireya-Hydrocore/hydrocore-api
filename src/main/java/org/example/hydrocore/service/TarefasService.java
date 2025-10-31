@@ -150,7 +150,7 @@ public class TarefasService {
             tarefa.setIdStatus(1);
             tarefa.setDataConclusao(null);
         } else if ("concluida".equalsIgnoreCase(status)) {
-            tarefa.setIdStatus(3);
+            tarefa.setIdStatus(2);
             tarefa.setDataConclusao(LocalDate.now());
         } else {
             throw new IllegalArgumentException("Status inválido. Use 'pendente' ou 'concluida'.");
